@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.pt
+*.onnx
+.env
+webhook_failed_events.jsonl
+datasets/
+runs/
+*.egg-info/
+dist/
+build/
+.DS_Store

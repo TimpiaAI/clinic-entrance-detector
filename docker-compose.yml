@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  clinic-entrance-detector:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: clinic-entrance-detector
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./calibration.json:/app/calibration.json
+      - ./logs:/app/logs
+    ports:
+      - "8080:8080"
+    devices:
+      - "/dev/video0:/dev/video0"
+    command: ["python", "main.py"]

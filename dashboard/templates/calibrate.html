@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calibration</title>
+  <style>
+    :root {
+      --bg: #f4f6f2;
+      --panel: #ffffff;
+      --border: #d4ded7;
+      --text: #12222c;
+      --accent: #126177;
+      --ok: #1a7d42;
+      --warn: #b16312;
+      --sans: "Space Grotesk", "Segoe UI", sans-serif;
+      --mono: "IBM Plex Mono", monospace;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      color: var(--text);
+      background: linear-gradient(140deg, #eef2ec 0%, #f6f7fb 100%);
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.9);
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+    h1 { margin: 0; font-size: 1rem; }
+    .btn {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--panel);
+      padding: 8px 10px;
+      cursor: pointer;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+    }
+    .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .wrap {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: minmax(320px, 2fr) minmax(240px, 1fr);
+      padding: 12px;
+    }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+      box-shadow: 0 3px 12px rgba(11, 23, 31, 0.08);
+    }
+    .video-box {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: #091018;
+    }
+    #video {
+      width: 100%;
+      display: block;
+      user-select: none;
+    }
+    #overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      cursor: crosshair;
+    }
+    .controls {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .field {
+      display: grid;
+      gap: 6px;
+      font-size: 0.85rem;
+    }
+    select, button {
+      font: inherit;
+    }
+    select {
+      padding: 8px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #fff;
+    }
+    .hint {
+      margin-top: 8px;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: #4f616a;
+      line-height: 1.4;
+    }
+    #status {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      color: var(--ok);
+      min-height: 20px;
+    }
+    @media (max-width: 960px) {
+      .wrap { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Camera Calibration</h1>
+    <a href="/" class="btn">Back to Dashboard</a>
+  </header>
+
+  <div class="wrap">
+    <section class="panel">
+      <div class="video-box" id="videoBox">
+        <img id="video" src="/video_feed" alt="Live video feed" />
+        <canvas id="overlay"></canvas>
+      </div>
+      <div class="hint">
+        Mode <b>Entry Zone</b>: click and drag rectangle around the door.<br />
+        Mode <b>Tripwire</b>: click first point then second point for line.<br />
+        Save updates to write <code>calibration.json</code>.
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="controls">
+        <label class="field">
+          Draw Mode
+          <select id="modeSelect">
+            <option value="zone">Entry Zone</option>
+            <option value="tripwire">Tripwire</option>
+          </select>
+        </label>
+        <label class="field">
+          Entry Direction
+          <select id="directionSelect">
+            <option value="top_to_bottom">Top to Bottom</option>
+            <option value="bottom_to_top">Bottom to Top</option>
+            <option value="left_to_right">Left to Right</option>
+            <option value="right_to_left">Right to Left</option>
+          </select>
+        </label>
+      </div>
+
+      <div style="display:flex; gap:8px; flex-wrap:wrap;">
+        <button class="btn" id="reloadBtn">Reload</button>
+        <button class="btn" id="clearBtn">Clear</button>
+        <button class="btn primary" id="saveBtn">Save</button>
+      </div>
+
+      <div id="status"></div>
+      <div class="hint" id="testStatus">Test mode: waiting for live updates...</div>
+    </section>
+  </div>
+
+  <script>
+    const video = document.getElementById("video");
+    const canvas = document.getElementById("overlay");
+    const ctx = canvas.getContext("2d");
+    const modeSelect = document.getElementById("modeSelect");
+    const directionSelect = document.getElementById("directionSelect");
+    const statusEl = document.getElementById("status");
+    const testStatus = document.getElementById("testStatus");
+
+    const state = {
+      frame_width: 1280,
+      frame_height: 720,
+      entry_zone: null,
+      tripwire: null,
+      drawing: false,
+      start: null,
+      tempEnd: null,
+      tripwireTemp: [],
+    };
+
+    function setStatus(msg, isError = false) {
+      statusEl.textContent = msg;
+      statusEl.style.color = isError ? "#b9313f" : "#1a7d42";
+    }
+
+    function resizeCanvas() {
+      const rect = video.getBoundingClientRect();
+      canvas.width = Math.max(1, Math.round(rect.width));
+      canvas.height = Math.max(1, Math.round(rect.height));
+      redraw();
+    }
+
+    function frameToCanvas(pt) {
+      return {
+        x: (pt.x / state.frame_width) * canvas.width,
+        y: (pt.y / state.frame_height) * canvas.height,
+      };
+    }
+
+    function canvasToFrame(x, y) {
+      return {
+        x: Math.round((x / canvas.width) * state.frame_width),
+        y: Math.round((y / canvas.height) * state.frame_height),
+      };
+    }
+
+    function redraw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (state.entry_zone) {
+        const p1 = frameToCanvas({ x: state.entry_zone.x1, y: state.entry_zone.y1 });
+        const p2 = frameToCanvas({ x: state.entry_zone.x2, y: state.entry_zone.y2 });
+        const x = Math.min(p1.x, p2.x);
+        const y = Math.min(p1.y, p2.y);
+        const w = Math.abs(p2.x - p1.x);
+        const h = Math.abs(p2.y - p1.y);
+        ctx.fillStyle = "rgba(0, 180, 0, 0.2)";
+        ctx.fillRect(x, y, w, h);
+        ctx.strokeStyle = "rgba(0, 180, 0, 0.95)";
+        ctx.lineWidth = 2;
+        ctx.strokeRect(x, y, w, h);
+      }
+
+      if (state.tripwire) {
+        const a = frameToCanvas({ x: state.tripwire.x1, y: state.tripwire.y1 });
+        const b = frameToCanvas({ x: state.tripwire.x2, y: state.tripwire.y2 });
+        ctx.strokeStyle = "rgba(255, 195, 0, 0.95)";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.stroke();
+      }
+
+      if (state.drawing && state.start && state.tempEnd && modeSelect.value === "zone") {
+        const x = Math.min(state.start.x, state.tempEnd.x);
+        const y = Math.min(state.start.y, state.tempEnd.y);
+        const w = Math.abs(state.tempEnd.x - state.start.x);
+        const h = Math.abs(state.tempEnd.y - state.start.y);
+        ctx.strokeStyle = "rgba(0, 130, 255, 1)";
+        ctx.lineWidth = 2;
+        ctx.strokeRect(x, y, w, h);
+      }
+
+      if (state.tripwireTemp.length === 1 && modeSelect.value === "tripwire") {
+        const p = frameToCanvas(state.tripwireTemp[0]);
+        ctx.fillStyle = "#ff9900";
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    canvas.addEventListener("mousedown", (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      if (modeSelect.value === "zone") {
+        state.drawing = true;
+        state.start = { x, y };
+        state.tempEnd = { x, y };
+      } else {
+        const framePt = canvasToFrame(x, y);
+        state.tripwireTemp.push(framePt);
+        if (state.tripwireTemp.length === 2) {
+          const [a, b] = state.tripwireTemp;
+          state.tripwire = { x1: a.x, y1: a.y, x2: b.x, y2: b.y };
+          state.tripwireTemp = [];
+        }
+      }
+      redraw();
+    });
+
+    canvas.addEventListener("mousemove", (e) => {
+      if (!state.drawing || modeSelect.value !== "zone") return;
+      const rect = canvas.getBoundingClientRect();
+      state.tempEnd = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+      redraw();
+    });
+
+    canvas.addEventListener("mouseup", () => {
+      if (!state.drawing || modeSelect.value !== "zone") return;
+      state.drawing = false;
+
+      const p1 = canvasToFrame(state.start.x, state.start.y);
+      const p2 = canvasToFrame(state.tempEnd.x, state.tempEnd.y);
+      state.entry_zone = {
+        x1: Math.min(p1.x, p2.x),
+        y1: Math.min(p1.y, p2.y),
+        x2: Math.max(p1.x, p2.x),
+        y2: Math.max(p1.y, p2.y),
+      };
+      redraw();
+    });
+
+    async function loadCalibration() {
+      try {
+        const res = await fetch("/api/calibration");
+        const data = await res.json();
+        state.frame_width = data.frame_width;
+        state.frame_height = data.frame_height;
+        state.entry_zone = data.entry_zone;
+        state.tripwire = data.tripwire;
+        directionSelect.value = data.entry_direction;
+        setStatus("Calibration loaded");
+        redraw();
+      } catch (err) {
+        setStatus(`Load failed: ${err}`, true);
+      }
+    }
+
+    async function saveCalibration() {
+      if (!state.entry_zone || !state.tripwire) {
+        setStatus("Define both entry zone and tripwire before saving.", true);
+        return;
+      }
+      const payload = {
+        entry_zone: state.entry_zone,
+        tripwire: state.tripwire,
+        entry_direction: directionSelect.value,
+        frame_width: state.frame_width,
+        frame_height: state.frame_height,
+      };
+      try {
+        const res = await fetch("/api/calibration", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) {
+          const txt = await res.text();
+          setStatus(`Save failed: ${txt}`, true);
+          return;
+        }
+        setStatus("Calibration saved.");
+      } catch (err) {
+        setStatus(`Save error: ${err}`, true);
+      }
+    }
+
+    document.getElementById("saveBtn").addEventListener("click", saveCalibration);
+    document.getElementById("reloadBtn").addEventListener("click", loadCalibration);
+    document.getElementById("clearBtn").addEventListener("click", () => {
+      state.entry_zone = null;
+      state.tripwire = null;
+      state.tripwireTemp = [];
+      redraw();
+      setStatus("Cleared current drawings (not saved yet).");
+    });
+
+    const wsProtocol = location.protocol === "https:" ? "wss" : "ws";
+    const socket = new WebSocket(`${wsProtocol}://${location.host}/ws`);
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      if (data.calibration && data.calibration.frame_width) {
+        state.frame_width = data.calibration.frame_width;
+        state.frame_height = data.calibration.frame_height;
+      }
+      testStatus.textContent = `Test mode: ${data.current_people} person(s) in frame | FPS ${Number(data.fps || 0).toFixed(1)}`;
+    };
+
+    window.addEventListener("resize", resizeCanvas);
+    video.addEventListener("load", resizeCanvas);
+
+    loadCalibration().then(() => {
+      resizeCanvas();
+      setInterval(resizeCanvas, 1200);
+    });
+  </script>
+</body>
+</html>

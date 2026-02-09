@@ -1,0 +1,18 @@
+{
+  "entry_zone": {
+    "x1": 554,
+    "y1": 61,
+    "x2": 842,
+    "y2": 716
+  },
+  "tripwire": {
+    "x1": 559,
+    "y1": 618,
+    "x2": 836,
+    "y2": 615
+  },
+  "entry_direction": "top_to_bottom",
+  "frame_width": 1280,
+  "frame_height": 720,
+  "calibrated_at": "2026-02-09T20:09:24.624600+00:00"
+}

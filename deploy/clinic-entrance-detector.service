@@ -1,0 +1,16 @@
+[Unit]
+Description=Clinic Entrance Detection System
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/clinic-entrance-detector
+ExecStart=/usr/bin/python3 /opt/clinic-entrance-detector/main.py
+Restart=always
+RestartSec=5
+EnvironmentFile=/opt/clinic-entrance-detector/.env
+StandardOutput=append:/var/log/clinic-entrance-detector.log
+StandardError=append:/var/log/clinic-entrance-detector.log
+
+[Install]
+WantedBy=multi-user.target
