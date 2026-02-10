@@ -1,0 +1,19 @@
+# Tuned BoT-SORT config for clinic entrance detection
+# Higher thresholds to reduce false tracks, larger buffer for occlusion
+
+tracker_type: botsort
+track_high_thresh: 0.35       # Higher than default 0.25 — stricter first-stage match
+track_low_thresh: 0.15        # Slightly higher — less noise from weak detections
+new_track_thresh: 0.4         # Higher than default 0.25 — don't start tracks on weak detections
+track_buffer: 45              # Higher than default 30 — keep lost tracks longer through brief occlusion
+match_thresh: 0.75            # Slightly tighter than 0.8 — more willing to match existing tracks
+fuse_score: True
+
+# BoT-SORT specifics
+gmc_method: sparseOptFlow     # Camera motion compensation
+
+# ReID
+proximity_thresh: 0.5
+appearance_thresh: 0.8
+with_reid: False
+model: auto

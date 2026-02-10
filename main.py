@@ -335,6 +335,7 @@ def run() -> int:
         classes=settings.YOLO_CLASSES,
         tracker_config=settings.TRACKER,
         logger=logger,
+        imgsz=settings.YOLO_IMGSZ,
     )
 
     analyzer = EntryAnalyzer(calibration=calibration, settings=settings, logger=logger)

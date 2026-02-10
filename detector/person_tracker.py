@@ -28,12 +28,14 @@ class PersonTracker:
         classes: list[int],
         tracker_config: str,
         logger: Any,
+        imgsz: int = 640,
     ) -> None:
         self.model_name = model_name
         self.confidence = confidence
         self.classes = classes
         self.tracker_config = tracker_config
         self.logger = logger
+        self.imgsz = imgsz
 
         try:
             from ultralytics import YOLO
@@ -53,6 +55,7 @@ class PersonTracker:
             conf=self.confidence,
             classes=self.classes,
             tracker=self.tracker_config,
+            imgsz=self.imgsz,
             verbose=False,
         )
         if not results:

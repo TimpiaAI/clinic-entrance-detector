@@ -60,7 +60,8 @@ class Settings:
     YOLO_MODEL: str = "yolov8m.pt"
     YOLO_CONFIDENCE: float = 0.4
     YOLO_CLASSES: list[int] = field(default_factory=lambda: [0])
-    TRACKER: str = "botsort.yaml"
+    TRACKER: str = "botsort_tuned.yaml"
+    YOLO_IMGSZ: int = 1280
 
     # === Entry Detection Thresholds ===
     BBOX_GROWTH_RATIO: float = 1.3
@@ -132,7 +133,8 @@ def load_settings(env_path: str | Path | None = None) -> Settings:
         YOLO_MODEL=_env_str("YOLO_MODEL", "yolov8m.pt"),
         YOLO_CONFIDENCE=_env_float("YOLO_CONFIDENCE", 0.4),
         YOLO_CLASSES=classes,
-        TRACKER=_env_str("TRACKER", "botsort.yaml"),
+        TRACKER=_env_str("TRACKER", "botsort_tuned.yaml"),
+        YOLO_IMGSZ=_env_int("YOLO_IMGSZ", 1280),
         BBOX_GROWTH_RATIO=_env_float("BBOX_GROWTH_RATIO", 1.3),
         Y_MOVEMENT_THRESHOLD=_env_int("Y_MOVEMENT_THRESHOLD", 50),
         DWELL_TIME_MIN=_env_float("DWELL_TIME_MIN", 1.5),
