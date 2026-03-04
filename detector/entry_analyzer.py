@@ -76,7 +76,7 @@ class PersonTrackState:
         return dwell
 
 
-def _build_zones(calibration: CalibrationData) -> tuple[np.ndarray, np.ndarray]:
+def _build_zones(calibration: CalibrationData, split_ratio: float = 0.35) -> tuple[np.ndarray, np.ndarray]:
     """Build outer (Zone A) and inner (Zone B) polygon zones from calibration.
 
     Zone A = the full entry_zone rectangle (approach area).
@@ -96,7 +96,7 @@ def _build_zones(calibration: CalibrationData) -> tuple[np.ndarray, np.ndarray]:
     zone_a = np.array([[x1, y1], [x2, y1], [x2, y2], [x1, y2]], dtype=np.int32)
 
     # Zone B = inner portion (where person has committed to entering)
-    split = 0.35
+    split = split_ratio
     if direction == "top_to_bottom":
         split_y = int(y1 + (y2 - y1) * (1 - split))
         zone_b = np.array([[x1, split_y], [x2, split_y], [x2, y2], [x1, y2]], dtype=np.int32)
@@ -143,7 +143,10 @@ class EntryAnalyzer:
 
     def _rebuild_zones(self) -> None:
         """Rebuild supervision polygon zones from current calibration."""
-        zone_a_poly, zone_b_poly = _build_zones(self.calibration)
+        zone_a_poly, zone_b_poly = _build_zones(
+            self.calibration,
+            split_ratio=self.settings.ZONE_B_SPLIT_RATIO,
+        )
         fw = self.calibration.frame_width
         fh = self.calibration.frame_height
         self.zone_a_polygon = zone_a_poly
@@ -303,7 +306,7 @@ class EntryAnalyzer:
 
         # Zone crossing: graduated by consecutive Zone B frames (0.0 → 0.25)
         zone_cross_score = 0.0
-        min_b_frames = 5
+        min_b_frames = self.settings.MIN_ZONE_B_FRAMES
         if state.seen_in_zone_a and state.seen_in_zone_b:
             # Must have seen Zone A before Zone B (temporal ordering)
             a_ts = state.zone_a_first_ts or now_ts
@@ -355,7 +358,7 @@ class EntryAnalyzer:
         if (
             state.seen_in_zone_a
             and state.seen_in_zone_b
-            and state.consecutive_zone_b_frames >= 5
+            and state.consecutive_zone_b_frames >= self.settings.MIN_ZONE_B_FRAMES
             and (state.zone_a_first_ts or 0) <= (state.zone_b_first_ts or 0)
             and score >= self.settings.ENTRY_CONFIDENCE_THRESHOLD
             and dwell <= self.settings.DWELL_TIME_MAX
@@ -463,6 +466,8 @@ class EntryAnalyzer:
             seen_ids.add(person_id)
             cx, cy = detection.center_bottom
             area = max(1.0, float((detection.bbox[2] - detection.bbox[0]) * (detection.bbox[3] - detection.bbox[1])))
+            if area < self.settings.MIN_BBOX_AREA:
+                continue
             in_zone_a, in_zone_b = zone_membership.get(person_id, (False, False))
             in_zone = in_zone_a or in_zone_b  # backwards compat
 

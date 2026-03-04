@@ -57,18 +57,18 @@ class Settings:
     TARGET_FPS: int = 15
 
     # === Detection ===
-    YOLO_MODEL: str = "yolov8m.pt"
-    YOLO_CONFIDENCE: float = 0.4
+    YOLO_MODEL: str = "yolo11n.pt"
+    YOLO_CONFIDENCE: float = 0.5
     YOLO_CLASSES: list[int] = field(default_factory=lambda: [0])
     TRACKER: str = "botsort_tuned.yaml"
-    YOLO_IMGSZ: int = 1280
+    YOLO_IMGSZ: int = 640
 
     # === Entry Detection Thresholds ===
     BBOX_GROWTH_RATIO: float = 1.3
     Y_MOVEMENT_THRESHOLD: int = 50
     DWELL_TIME_MIN: float = 1.5
     DWELL_TIME_MAX: float = 15.0
-    ENTRY_CONFIDENCE_THRESHOLD: float = 0.5
+    ENTRY_CONFIDENCE_THRESHOLD: float = 0.6
     TRAJECTORY_HISTORY_SECONDS: int = 5
 
     # === Webhook ===
@@ -80,6 +80,11 @@ class Settings:
     WEBHOOK_COOLDOWN_GLOBAL: int = 3
     WEBHOOK_INCLUDE_SNAPSHOT: bool = True
     WEBHOOK_SECRET: str = ""
+
+    # === Zone Tuning ===
+    ZONE_B_SPLIT_RATIO: float = 0.35
+    MIN_ZONE_B_FRAMES: int = 5
+    MIN_BBOX_AREA: int = 2000
 
     # === Cleanup ===
     PERSON_TIMEOUT: int = 5
@@ -130,17 +135,20 @@ def load_settings(env_path: str | Path | None = None) -> Settings:
         FRAME_WIDTH=_env_int("FRAME_WIDTH", 1280),
         FRAME_HEIGHT=_env_int("FRAME_HEIGHT", 720),
         TARGET_FPS=_env_int("TARGET_FPS", 15),
-        YOLO_MODEL=_env_str("YOLO_MODEL", "yolov8m.pt"),
-        YOLO_CONFIDENCE=_env_float("YOLO_CONFIDENCE", 0.4),
+        YOLO_MODEL=_env_str("YOLO_MODEL", "yolo11n.pt"),
+        YOLO_CONFIDENCE=_env_float("YOLO_CONFIDENCE", 0.5),
         YOLO_CLASSES=classes,
         TRACKER=_env_str("TRACKER", "botsort_tuned.yaml"),
-        YOLO_IMGSZ=_env_int("YOLO_IMGSZ", 1280),
+        YOLO_IMGSZ=_env_int("YOLO_IMGSZ", 640),
         BBOX_GROWTH_RATIO=_env_float("BBOX_GROWTH_RATIO", 1.3),
         Y_MOVEMENT_THRESHOLD=_env_int("Y_MOVEMENT_THRESHOLD", 50),
         DWELL_TIME_MIN=_env_float("DWELL_TIME_MIN", 1.5),
         DWELL_TIME_MAX=_env_float("DWELL_TIME_MAX", 15.0),
-        ENTRY_CONFIDENCE_THRESHOLD=_env_float("ENTRY_CONFIDENCE_THRESHOLD", 0.5),
+        ENTRY_CONFIDENCE_THRESHOLD=_env_float("ENTRY_CONFIDENCE_THRESHOLD", 0.6),
         TRAJECTORY_HISTORY_SECONDS=_env_int("TRAJECTORY_HISTORY_SECONDS", 5),
+        ZONE_B_SPLIT_RATIO=_env_float("ZONE_B_SPLIT_RATIO", 0.35),
+        MIN_ZONE_B_FRAMES=_env_int("MIN_ZONE_B_FRAMES", 5),
+        MIN_BBOX_AREA=_env_int("MIN_BBOX_AREA", 2000),
         WEBHOOK_URL=_env_str("WEBHOOK_URL", "https://example.com/webhook"),
         WEBHOOK_TIMEOUT=_env_int("WEBHOOK_TIMEOUT", 5),
         WEBHOOK_RETRY_COUNT=_env_int("WEBHOOK_RETRY_COUNT", 3),
@@ -174,6 +182,7 @@ YOLO_MODEL = SETTINGS.YOLO_MODEL
 YOLO_CONFIDENCE = SETTINGS.YOLO_CONFIDENCE
 YOLO_CLASSES = SETTINGS.YOLO_CLASSES
 TRACKER = SETTINGS.TRACKER
+YOLO_IMGSZ = SETTINGS.YOLO_IMGSZ
 BBOX_GROWTH_RATIO = SETTINGS.BBOX_GROWTH_RATIO
 Y_MOVEMENT_THRESHOLD = SETTINGS.Y_MOVEMENT_THRESHOLD
 DWELL_TIME_MIN = SETTINGS.DWELL_TIME_MIN
@@ -194,3 +203,6 @@ ENTRY_LOG_SIZE = SETTINGS.ENTRY_LOG_SIZE
 DASHBOARD_PORT = SETTINGS.DASHBOARD_PORT
 DASHBOARD_HOST = SETTINGS.DASHBOARD_HOST
 CALIBRATION_FILE = SETTINGS.CALIBRATION_FILE
+ZONE_B_SPLIT_RATIO = SETTINGS.ZONE_B_SPLIT_RATIO
+MIN_ZONE_B_FRAMES = SETTINGS.MIN_ZONE_B_FRAMES
+MIN_BBOX_AREA = SETTINGS.MIN_BBOX_AREA
