@@ -28,9 +28,9 @@ Requirements for the unified web platform release. Each maps to roadmap phases.
 ### Video Controller
 
 - [x] **VCTL-01**: 8 instructional videos (video1-8.mp4) play in the same browser window overlaid on the camera feed
-- [ ] **VCTL-02**: Video playback is triggered automatically by entrance detection webhook events
+- [x] **VCTL-02**: Video playback is triggered automatically by entrance detection webhook events
 - [x] **VCTL-03**: Idle video loops continuously when no patient workflow is active
-- [ ] **VCTL-04**: Text overlays (marquee) display extracted patient data during video playback
+- [x] **VCTL-04**: Text overlays (marquee) display extracted patient data during video playback
 - [x] **VCTL-05**: Video transitions are event-driven (onended callback), not time-based
 
 ### Speech & Data Capture
@@ -143,9 +143,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | KIOSK-04 | Phase 2 | Complete |
 | KIOSK-06 | Phase 2 | Complete |
 | VCTL-01 | Phase 3 | Complete |
-| VCTL-02 | Phase 3 | Pending |
+| VCTL-02 | Phase 3 | Complete |
 | VCTL-03 | Phase 3 | Complete |
-| VCTL-04 | Phase 3 | Pending |
+| VCTL-04 | Phase 3 | Complete |
 | VCTL-05 | Phase 3 | Complete |
 | STT-01 | Phase 4 | Pending |
 | STT-02 | Phase 4 | Pending |

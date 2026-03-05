@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 03-01-PLAN.md (Video overlay infrastructure)
-last_updated: "2026-03-05T10:32:49.633Z"
+stopped_at: Completed 03-02-PLAN.md (WebSocket event trigger + marquee overlays)
+last_updated: "2026-03-05T10:37:24.981Z"
 last_activity: 2026-03-05 — Completed 03-01 Video overlay infrastructure
 progress:
   total_phases: 6
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 8
-  completed_plans: 7
+  completed_plans: 8
   percent: 88
 ---
 
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-05)
 
 **Core value:** When activated, the system reliably detects clinic entries, plays instructional videos, and captures patient data — all from a single browser window that never lets the computer sleep.
-**Current focus:** Phase 3 — Video Overlay
+**Current focus:** Phase 3 complete — ready for Phase 4
 
 ## Current Position
 
-Phase: 3 of 6 (Video Overlay)
-Plan: 1 of 2 in current phase
-Status: In Progress
-Last activity: 2026-03-05 — Completed 03-01 Video overlay infrastructure
+Phase: 3 of 6 (Video Overlay) -- COMPLETE
+Plan: 2 of 2 in current phase
+Status: Phase Complete
+Last activity: 2026-03-05 — Completed 03-02 WebSocket event trigger + marquee overlays
 
-Progress: [█████████░] 88% (Phase 3, Plan 1 of 2 complete)
+Progress: [██████████] 100% (Phase 3 complete, 8/8 plans done)
 
 ## Performance Metrics
 
@@ -57,6 +57,7 @@ Progress: [█████████░] 88% (Phase 3, Plan 1 of 2 complete)
 | Phase 02 P03 | 4min | 2 tasks | 6 files |
 | Phase 02 P02 | 5min | 2 tasks | 5 files |
 | Phase 03 P01 | 2min | 2 tasks | 5 files |
+| Phase 03 P02 | 2min | 1 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -93,6 +94,8 @@ Recent decisions affecting current work:
 - [Phase 03]: opacity:0 for hiding video (not display:none) -- preserves element in render tree, prevents Chrome buffer release
 - [Phase 03]: z-index spacing 1/10/20/30 -- provides insertion room between stacking layers
 - [Phase 03]: muted attribute on video element ensures autoplay before user gesture; F2 keypress unmutes
+- [Phase 03]: Timestamp comparison for person_entered dedup -- naturally handles WebSocket reconnects without extra logic
+- [Phase 03]: VIDEO_LABELS Record mapping from filename to RO constant -- extensible if sequence changes
 
 ### Pending Todos
 
@@ -107,6 +110,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-05T10:32:49.631Z
-Stopped at: Completed 03-01-PLAN.md (Video overlay infrastructure)
+Last session: 2026-03-05T10:37:24.980Z
+Stopped at: Completed 03-02-PLAN.md (WebSocket event trigger + marquee overlays)
 Resume file: None
