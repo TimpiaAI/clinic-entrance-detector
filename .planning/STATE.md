@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 01-01-PLAN.md (process manager)
-last_updated: "2026-03-05T09:21:10.916Z"
-last_activity: 2026-03-05 — Completed 01-01 process manager plan
+stopped_at: Completed 01-02-PLAN.md (transcription endpoint)
+last_updated: "2026-03-05T09:21:24Z"
+last_activity: 2026-03-05 — Completed 01-02 transcription endpoint plan
 progress:
   total_phases: 6
   completed_phases: 0
   total_plans: 3
-  completed_plans: 1
-  percent: 33
+  completed_plans: 2
+  percent: 67
 ---
 
 # Project State
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-03-05)
 ## Current Position
 
 Phase: 1 of 6 (Backend Extensions)
-Plan: 1 of 3 in current phase
+Plan: 2 of 3 in current phase
 Status: Executing
-Last activity: 2026-03-05 — Completed 01-01 process manager plan
+Last activity: 2026-03-05 — Completed 01-02 transcription endpoint plan
 
-Progress: [███░░░░░░░] 33%
+Progress: [██████░░░░] 67%
 
 ## Performance Metrics
 
@@ -51,6 +51,7 @@ Progress: [███░░░░░░░] 33%
 
 *Updated after each plan completion*
 | Phase 01 P01 | 3min | 2 tasks | 4 files |
+| Phase 01 P02 | 4min | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -65,6 +66,9 @@ Recent decisions affecting current work:
 - [Init]: Fetch-to-canvas for MJPEG (not img tag) — mandatory from day one to prevent 24/7 memory leak
 - [Phase 01]: Followed RESEARCH.md Pattern 2 exactly: module-level _detector_proc singleton with psutil tree kill
 - [Phase 01]: Installed pytest as test framework (was missing from venv)
+- [Phase 01]: Word boundaries for short at/et/ad regex patterns prevent false matches in Romanian words
+- [Phase 01]: Email extraction uses rfind('@') + last token for mixed-text robustness (improved over controller.py)
+- [Phase 01]: Whisper import deferred inside get_model() to allow tests without faster-whisper loaded
 
 ### Pending Todos
 
@@ -79,6 +83,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-05T09:21:10.914Z
-Stopped at: Completed 01-01-PLAN.md (process manager)
+Last session: 2026-03-05T09:21:24Z
+Stopped at: Completed 01-02-PLAN.md (transcription endpoint)
 Resume file: None
