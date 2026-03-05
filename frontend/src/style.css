@@ -53,7 +53,7 @@ body {
   border-left: 1px solid #333;
   padding: 12px;
   overflow-y: auto;
-  z-index: 2;
+  z-index: 30;
 }
 
 .panel-title {
@@ -134,7 +134,7 @@ body {
   padding: 12px;
   overflow-y: auto;
   max-height: 40vh;
-  z-index: 2;
+  z-index: 30;
 }
 
 .log-table {
@@ -192,7 +192,55 @@ body {
   text-align: center;
   font-size: 12px;
   color: #888;
-  z-index: 2;
+  z-index: 30;
+}
+
+/* -----------------------------------------------------------------------
+   Video overlay — positioned over feed canvas, below sidebar
+   ----------------------------------------------------------------------- */
+#video-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(100% - 300px);
+  height: calc(100% - 30px);
+  object-fit: contain;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.3s;
+  background: #000;
+  pointer-events: none;
+}
+
+/* -----------------------------------------------------------------------
+   Text overlay — marquee text on top of video
+   ----------------------------------------------------------------------- */
+#text-overlay {
+  position: absolute;
+  bottom: 12%;
+  left: 0;
+  width: calc(100% - 300px);
+  z-index: 20;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+#text-overlay .marquee-content {
+  display: inline-block;
+  white-space: nowrap;
+  padding-left: 100%;
+  font-size: 36px;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.9);
+  animation: marquee-scroll 12s linear infinite;
+}
+
+@keyframes marquee-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
 }
 
 /* -----------------------------------------------------------------------
@@ -217,5 +265,13 @@ body {
   #entry-log {
     border-left: none;
     max-height: 30vh;
+  }
+
+  #video-overlay,
+  #text-overlay {
+    width: 100%;
+  }
+  #video-overlay {
+    height: auto;
   }
 }
