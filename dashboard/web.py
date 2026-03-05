@@ -17,6 +17,7 @@ from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse
 from fastapi.templating import Jinja2Templates
 import uvicorn
 
+from api.process_manager import router as process_router
 from detector.zone_config import CalibrationData, EntryZone, Tripwire, ZoneConfigManager
 
 
@@ -251,6 +252,9 @@ def create_dashboard_app(
         if not queued:
             raise HTTPException(status_code=429, detail="Webhook test rejected by cooldown or sender state")
         return JSONResponse(content={"status": "queued", "payload": payload})
+
+    # Process management endpoints (start/stop/status for detector subprocess)
+    app.include_router(process_router)
 
     return app
 
