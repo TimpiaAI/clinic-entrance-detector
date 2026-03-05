@@ -15,7 +15,7 @@
 
 import { apiSubmitPatient } from './api.ts';
 import { recordAndTranscribe } from './audio.ts';
-import type { PatientData, TranscribeResult, WorkflowState } from './types.ts';
+import type { EventLogEntry, PatientData, TranscribeResult, WorkflowState } from './types.ts';
 import {
   hideTranscriptionPanel,
   showConfirmationSummary,
@@ -535,4 +535,27 @@ export function onPersonEntered(): void {
   if (currentState === 'idle') {
     transition('greeting');
   }
+}
+
+// ---------------------------------------------------------------------------
+//  Person-entered detection (event log diffing for workflow)
+// ---------------------------------------------------------------------------
+
+/** Timestamp of the last person_entered event processed by the workflow. */
+let lastWorkflowPersonTimestamp: string | null = null;
+
+/**
+ * Check the event log for a new person_entered event and call onPersonEntered().
+ * Mirrors the timestamp-diffing pattern from video.ts but routes to the workflow
+ * state machine instead of the linear instruction sequence.
+ *
+ * Called from main.ts setOnStateUpdate callback on every WebSocket snapshot.
+ */
+export function checkForPersonEnteredWorkflow(eventLog: EventLogEntry[]): void {
+  const latest = eventLog.find((e) => e.event === 'person_entered');
+  if (!latest) return;
+  if (latest.timestamp === lastWorkflowPersonTimestamp) return;
+
+  lastWorkflowPersonTimestamp = latest.timestamp;
+  onPersonEntered(); // Guards internally: only acts if workflow is in 'idle' state
 }

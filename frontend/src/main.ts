@@ -1,17 +1,25 @@
 /**
- * Entry point -- wires MJPEG feed, WebSocket state, and UI together.
+ * Entry point -- wires MJPEG feed, WebSocket state, workflow,
+ * system control, and keyboard shortcuts together.
  */
 
-import { apiStartDetector, apiStopDetector, apiTestWebhook, apiWakeLockRelease } from './api.ts';
-import { initAudio, isMicReady } from './audio.ts';
+import { apiTestWebhook } from './api.ts';
 import { startMjpegCanvas } from './feed.ts';
 import { registerShortcut, initShortcuts } from './shortcuts.ts';
-import { appState, updateState, setOnStateUpdate } from './state.ts';
+import { updateState, setOnStateUpdate } from './state.ts';
 import './style.css';
 import type { DashboardSnapshot } from './types.ts';
 import { updateStatusPanel, updateEntryLog, updateWsBadge, resetEntryLog } from './ui.ts';
-import { initVideo, startIdleLoop, onUserGesture, checkForPersonEntered } from './video.ts';
+import { initVideo, onUserGesture, checkForPersonEntered } from './video.ts';
 import { createWsClient } from './ws.ts';
+import { initWorkflow, checkForPersonEnteredWorkflow, getWorkflowState } from './workflow.ts';
+import {
+  initSystemControl,
+  toggleSystem,
+  emergencyStop,
+  onStateUpdateForCrashDetection,
+  autoStart,
+} from './system-control.ts';
 
 document.addEventListener('DOMContentLoaded', () => {
   // --- MJPEG feed ---
@@ -22,15 +30,15 @@ document.addEventListener('DOMContentLoaded', () => {
     console.error('main: #feed-canvas not found');
   }
 
-  // --- Video overlay ---
+  // --- Initialize modules ---
   initVideo();
-  startIdleLoop();
+  initWorkflow();
+  initSystemControl();
 
   // --- Entry log container ---
   const logBody = document.getElementById('log-body') as HTMLTableSectionElement | null;
 
   // --- WebSocket state updates ---
-  // Construct ws:// or wss:// URL matching current page protocol
   const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
   const wsUrl = `${wsProtocol}//${window.location.host}/ws`;
 
@@ -40,7 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
     onStatusChange: (connected: boolean) => {
       updateWsBadge(connected);
       if (connected) {
-        // Reset entry log counter on reconnect so next snapshot rebuilds fully
         resetEntryLog();
         if (logBody) logBody.innerHTML = '';
       }
@@ -53,28 +60,22 @@ document.addEventListener('DOMContentLoaded', () => {
     if (logBody) {
       updateEntryLog(state.event_log, logBody);
     }
-    checkForPersonEntered(state.event_log);
+    onStateUpdateForCrashDetection(state);
+
+    // Route person_entered events based on workflow state
+    if (getWorkflowState() === 'stopped') {
+      // Phase 3 behavior: linear instruction sequence for F4 testing
+      checkForPersonEntered(state.event_log);
+    }
+    // Workflow handles person_entered via its own event log diffing
+    checkForPersonEnteredWorkflow(state.event_log);
   });
 
   // --- Keyboard shortcuts ---
-  // F2: Start/Stop detector toggle (KEYS-01)
+  // F2: Start/Stop system toggle (CTRL-01)
   registerShortcut('F2', async () => {
     onUserGesture(); // Capture first keypress to unmute video
-
-    // Initialize audio on first Start press (user gesture required for mic + AudioContext)
-    if (!isMicReady()) {
-      const granted = await initAudio();
-      if (!granted) {
-        console.warn('main: mic permission denied on F2');
-        // Continue anyway -- detector can still start, audio will fail gracefully later
-      }
-    }
-
-    if (appState.detector_running) {
-      await apiStopDetector();
-    } else {
-      await apiStartDetector();
-    }
+    await toggleSystem();
   });
 
   // F3: Toggle overlay visibility without breaking MJPEG connection (KEYS-02, FEED-02)
@@ -88,11 +89,13 @@ document.addEventListener('DOMContentLoaded', () => {
     await apiTestWebhook();
   });
 
-  // Escape: Emergency stop -- stops detector and releases wake lock (KEYS-04)
-  registerShortcut('Escape', async () => {
-    await apiStopDetector();
-    await apiWakeLockRelease();
+  // Escape: Emergency stop -- immediately stops everything (CTRL-02)
+  registerShortcut('Escape', () => {
+    emergencyStop();
   });
 
   initShortcuts();
+
+  // --- Auto-start detection pipeline on page load (CTRL-03) ---
+  autoStart();
 });
