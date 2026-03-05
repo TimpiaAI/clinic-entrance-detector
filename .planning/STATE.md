@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: completed
-stopped_at: Completed 03-02-PLAN.md (WebSocket event trigger + marquee overlays)
-last_updated: "2026-03-05T10:41:13.337Z"
-last_activity: 2026-03-05 — Completed 03-02 WebSocket event trigger + marquee overlays
+status: in-progress
+stopped_at: Completed 04-01-PLAN.md (audio capture pipeline)
+last_updated: "2026-03-05T13:26:24Z"
+last_activity: 2026-03-05 — Completed 04-01 audio capture pipeline
 progress:
   total_phases: 6
   completed_phases: 3
-  total_plans: 8
-  completed_plans: 8
+  total_plans: 10
+  completed_plans: 9
   percent: 100
 ---
 
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-05)
 
 **Core value:** When activated, the system reliably detects clinic entries, plays instructional videos, and captures patient data — all from a single browser window that never lets the computer sleep.
-**Current focus:** Phase 3 complete — ready for Phase 4
+**Current focus:** Phase 4 audio pipeline -- mic capture and transcription wiring
 
 ## Current Position
 
-Phase: 3 of 6 (Video Overlay) -- COMPLETE
-Plan: 2 of 2 in current phase
-Status: Phase Complete
-Last activity: 2026-03-05 — Completed 03-02 WebSocket event trigger + marquee overlays
+Phase: 4 of 6 (Audio Pipeline)
+Plan: 1 of 2 in current phase
+Status: In Progress
+Last activity: 2026-03-05 — Completed 04-01 audio capture pipeline
 
-Progress: [██████████] 100% (Phase 3 complete, 8/8 plans done)
+Progress: [█████████░] 90% (9/10 plans done)
 
 ## Performance Metrics
 
@@ -58,6 +58,7 @@ Progress: [██████████] 100% (Phase 3 complete, 8/8 plans don
 | Phase 02 P02 | 5min | 2 tasks | 5 files |
 | Phase 03 P01 | 2min | 2 tasks | 5 files |
 | Phase 03 P02 | 2min | 1 tasks | 2 files |
+| Phase 04 P01 | 3min | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -96,6 +97,10 @@ Recent decisions affecting current work:
 - [Phase 03]: muted attribute on video element ensures autoplay before user gesture; F2 keypress unmutes
 - [Phase 03]: Timestamp comparison for person_entered dedup -- naturally handles WebSocket reconnects without extra logic
 - [Phase 03]: VIDEO_LABELS Record mapping from filename to RO constant -- extensible if sequence changes
+- [Phase 04]: audio/webm;codecs=opus preferred MIME with fallback to audio/webm for browser compat
+- [Phase 04]: Test stream acquired and immediately released in initAudio -- recordAndTranscribe gets fresh stream each time
+- [Phase 04]: Mic denial is non-blocking: detector still starts, audio fails gracefully when called later
+- [Phase 04]: Backend kwargs dict pattern for optional initial_prompt preserves backward compatibility
 
 ### Pending Todos
 
@@ -110,6 +115,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-05T10:37:24.980Z
-Stopped at: Completed 03-02-PLAN.md (WebSocket event trigger + marquee overlays)
+Last session: 2026-03-05T13:26:24Z
+Stopped at: Completed 04-01-PLAN.md (audio capture pipeline)
 Resume file: None

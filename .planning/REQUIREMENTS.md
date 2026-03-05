@@ -35,12 +35,12 @@ Requirements for the unified web platform release. Each maps to roadmap phases.
 
 ### Speech & Data Capture
 
-- [ ] **STT-01**: Browser captures audio from microphone via Web Audio API / MediaRecorder
-- [ ] **STT-02**: Audio is sent to Python backend for Faster Whisper transcription (Romanian language)
-- [ ] **STT-03**: Backend extracts CNP (Romanian national ID number) from transcribed speech
-- [ ] **STT-04**: Backend extracts email address from transcribed speech
+- [x] **STT-01**: Browser captures audio from microphone via Web Audio API / MediaRecorder
+- [x] **STT-02**: Audio is sent to Python backend for Faster Whisper transcription (Romanian language)
+- [x] **STT-03**: Backend extracts CNP (Romanian national ID number) from transcribed speech
+- [x] **STT-04**: Backend extracts email address from transcribed speech
 - [ ] **STT-05**: Transcription results are displayed to operator/patient with confirmation step
-- [ ] **STT-06**: Microphone permission is requested on operator's "Start System" gesture (user interaction required)
+- [x] **STT-06**: Microphone permission is requested on operator's "Start System" gesture (user interaction required)
 
 ### Workflow State Machine
 
@@ -147,12 +147,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | VCTL-03 | Phase 3 | Complete |
 | VCTL-04 | Phase 3 | Complete |
 | VCTL-05 | Phase 3 | Complete |
-| STT-01 | Phase 4 | Pending |
-| STT-02 | Phase 4 | Pending |
-| STT-03 | Phase 4 | Pending |
-| STT-04 | Phase 4 | Pending |
+| STT-01 | Phase 4 | Complete |
+| STT-02 | Phase 4 | Complete |
+| STT-03 | Phase 4 | Complete |
+| STT-04 | Phase 4 | Complete |
 | STT-05 | Phase 4 | Pending |
-| STT-06 | Phase 4 | Pending |
+| STT-06 | Phase 4 | Complete |
 | WKFL-01 | Phase 5 | Pending |
 | WKFL-02 | Phase 5 | Pending |
 | WKFL-03 | Phase 5 | Pending |
