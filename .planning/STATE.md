@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: completed
-stopped_at: Completed 01-03-PLAN.md (sleep guard, video serving, snapshot extension) -- Phase 1 complete
-last_updated: "2026-03-05T09:33:55.744Z"
-last_activity: 2026-03-05 — Completed 01-03 sleep guard, video serving, snapshot extension
+status: in-progress
+stopped_at: Completed 02-01-PLAN.md (Vite scaffold, MJPEG renderer, WebSocket client)
+last_updated: "2026-03-05T09:56:45Z"
+last_activity: 2026-03-05 — Completed 02-01 Vite scaffold + MJPEG + WebSocket
 progress:
   total_phases: 6
   completed_phases: 1
   total_plans: 3
-  completed_plans: 3
-  percent: 100
+  completed_plans: 1
+  percent: 33
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-05)
 
 **Core value:** When activated, the system reliably detects clinic entries, plays instructional videos, and captures patient data — all from a single browser window that never lets the computer sleep.
-**Current focus:** Phase 1 — Backend Extensions
+**Current focus:** Phase 2 — Frontend Foundation
 
 ## Current Position
 
-Phase: 1 of 6 (Backend Extensions) -- COMPLETE
-Plan: 3 of 3 in current phase
-Status: Phase 1 Complete
-Last activity: 2026-03-05 — Completed 01-03 sleep guard, video serving, snapshot extension
+Phase: 2 of 6 (Frontend Foundation)
+Plan: 1 of 3 in current phase
+Status: In Progress
+Last activity: 2026-03-05 — Completed 02-01 Vite scaffold + MJPEG + WebSocket
 
-Progress: [██████████] 100% (Phase 1)
+Progress: [███-------] 33% (Phase 2)
 
 ## Performance Metrics
 
@@ -53,6 +53,7 @@ Progress: [██████████] 100% (Phase 1)
 | Phase 01 P01 | 3min | 2 tasks | 4 files |
 | Phase 01 P02 | 4min | 2 tasks | 5 files |
 | Phase 01 P03 | 4min | 3 tasks | 6 files |
+| Phase 02 P01 | 4min | 2 tasks | 11 files |
 
 ## Accumulated Context
 
@@ -75,6 +76,10 @@ Recent decisions affecting current work:
 - [Phase 01]: ALLOWED_VIDEOS whitelist prevents arbitrary file access via video endpoint
 - [Phase 01]: StaticFiles mount conditional on frontend_dist/ existence -- activates after Phase 2 build
 - [Phase 01]: detector_running and wake_lock_active sourced from module functions in snapshot(), not cached
+- [Phase 02]: fetch-to-canvas with URL.revokeObjectURL for MJPEG -- mandatory for 24/7 kiosk memory safety
+- [Phase 02]: ws:// protocol auto-detection in main.ts for HTTPS compatibility in production
+- [Phase 02]: setOnStateUpdate setter function instead of direct export assignment -- works with verbatimModuleSyntax
+- [Phase 02]: Added frontend_dist/ to root .gitignore -- build artifact should not be committed
 
 ### Pending Todos
 
@@ -89,6 +94,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-05T09:29:00Z
-Stopped at: Completed 01-03-PLAN.md (sleep guard, video serving, snapshot extension) -- Phase 1 complete
+Last session: 2026-03-05T09:56:45Z
+Stopped at: Completed 02-01-PLAN.md (Vite scaffold, MJPEG renderer, WebSocket client)
 Resume file: None
