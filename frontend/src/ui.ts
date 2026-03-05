@@ -9,7 +9,7 @@
  * Plan 03's ro.ts).
  */
 
-import type { DashboardSnapshot, EventLogEntry, TranscribeResult } from './types.ts';
+import type { DashboardSnapshot, EventLogEntry, PatientData, TranscribeResult } from './types.ts';
 import { RO } from './ro.ts';
 
 // ---------------------------------------------------------------------------
@@ -262,6 +262,62 @@ export function showTranscriptionResult(
 
     actions.appendChild(confirmBtn);
     actions.appendChild(retryBtn);
+    actions.classList.add('visible');
+  }
+}
+
+/**
+ * Show all captured patient data for final confirmation before submission.
+ * Reuses #transcription-panel with a summary layout showing name, question, CNP, email.
+ */
+export function showConfirmationSummary(
+  data: PatientData,
+  onConfirm: () => void,
+  onCancel: () => void,
+): void {
+  const panel = document.getElementById('transcription-panel');
+  const indicator = document.getElementById('recording-indicator');
+  const statusText = document.getElementById('status-text');
+  const result = document.getElementById('transcription-result');
+  const actions = document.getElementById('transcription-actions');
+  const resultText = document.getElementById('result-text');
+  const resultCnp = document.getElementById('result-cnp');
+  const resultEmail = document.getElementById('result-email');
+
+  if (panel) panel.classList.add('visible');
+  if (indicator) indicator.classList.remove('active');
+  if (statusText) statusText.textContent = RO.WORKFLOW_CONFIRM_ALL;
+
+  // Build summary in result-text area
+  const lines: string[] = [];
+  if (data.name) lines.push(`${RO.WORKFLOW_NAME_LABEL}: ${data.name}`);
+  if (data.question) lines.push(`${RO.WORKFLOW_QUESTION_LABEL}: ${data.question}`);
+  if (resultText) resultText.textContent = lines.join('\n');
+
+  if (resultCnp) {
+    resultCnp.textContent = data.cnp ? `${RO.CNP_LABEL}: ${data.cnp}` : '';
+    resultCnp.style.display = data.cnp ? 'block' : 'none';
+  }
+  if (resultEmail) {
+    resultEmail.textContent = data.email ? `${RO.EMAIL_LABEL}: ${data.email}` : '';
+    resultEmail.style.display = data.email ? 'block' : 'none';
+  }
+  if (result) result.classList.add('visible');
+
+  if (actions) {
+    actions.innerHTML = '';
+    const confirmBtn = document.createElement('button');
+    confirmBtn.className = 'btn-confirm';
+    confirmBtn.textContent = RO.WORKFLOW_CONFIRM_SEND;
+    confirmBtn.addEventListener('click', onConfirm, { once: true });
+
+    const cancelBtn = document.createElement('button');
+    cancelBtn.className = 'btn-retry';
+    cancelBtn.textContent = RO.WORKFLOW_CONFIRM_CANCEL;
+    cancelBtn.addEventListener('click', onCancel, { once: true });
+
+    actions.appendChild(confirmBtn);
+    actions.appendChild(cancelBtn);
     actions.classList.add('visible');
   }
 }

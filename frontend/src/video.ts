@@ -53,6 +53,10 @@ let state: VideoState = 'hidden';
 let sequenceIndex = 0;
 let userGestureReceived = false;
 
+/** Callback for single-video playback (used by workflow.ts). */
+type VideoEndCallback = () => void;
+let onEndedCallback: VideoEndCallback | null = null;
+
 /** Timestamp of the last person_entered event we processed. */
 let lastPersonEnteredTimestamp: string | null = null;
 
@@ -133,7 +137,11 @@ export function initVideo(): void {
   }
 
   videoEl.addEventListener('ended', () => {
-    if (state === 'playing_sequence') {
+    if (onEndedCallback) {
+      const cb = onEndedCallback;
+      onEndedCallback = null;
+      cb();
+    } else if (state === 'playing_sequence') {
       playNextInSequence();
     }
   });
@@ -191,6 +199,17 @@ export function onUserGesture(): void {
 /** Returns current video playback state. */
 export function getVideoState(): VideoState {
   return state;
+}
+
+/**
+ * Play a single video once. Callback fires on 'ended'.
+ * Used by workflow.ts for individual video + recording steps.
+ * CRITICAL: Does NOT interfere with the existing instruction sequence.
+ */
+export function playSingleVideo(filename: string, onEnded: VideoEndCallback): void {
+  state = 'playing_sequence'; // Reuse state to block checkForPersonEntered re-triggers
+  onEndedCallback = onEnded;
+  playVideo(filename, { loop: false });
 }
 
 // ---------------------------------------------------------------------------

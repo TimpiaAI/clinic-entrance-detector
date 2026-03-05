@@ -69,4 +69,15 @@ export const RO = {
   MIC_DENIED: 'Acces microfon refuzat',
   MIC_UNAVAILABLE: 'Microfon indisponibil',
   TRANSCRIPTION_EMPTY: 'Nu am inteles. Repetati va rog.',
+
+  // Workflow state machine
+  WORKFLOW_LISTENING: 'Ascultare...',
+  WORKFLOW_CONFIRM_ALL: 'Verificati datele dumneavoastra:',
+  WORKFLOW_NAME_LABEL: 'Nume',
+  WORKFLOW_QUESTION_LABEL: 'Raspuns',
+  WORKFLOW_SUBMITTING: 'Se trimite...',
+  WORKFLOW_SUBMITTED: 'Date trimise cu succes',
+  WORKFLOW_TIMEOUT: 'Timp expirat. Revenire la asteptare.',
+  WORKFLOW_CONFIRM_SEND: 'Trimite',
+  WORKFLOW_CONFIRM_CANCEL: 'Anuleaza',
 } as const;

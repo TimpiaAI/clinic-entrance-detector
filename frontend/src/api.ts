@@ -5,7 +5,7 @@
  * and same-origin works in production.
  */
 
-import type { TranscribeResult } from './types.ts';
+import type { PatientData, TranscribeResult } from './types.ts';
 
 interface StartResponse {
   status: string;
@@ -76,6 +76,20 @@ export function apiWakeLockActivate(): Promise<WakeLockResponse> {
 
 export function apiWakeLockRelease(): Promise<WakeLockResponse> {
   return post<WakeLockResponse>('/api/system/wake-lock/release');
+}
+
+export async function apiSubmitPatient(data: PatientData): Promise<{ status: string }> {
+  try {
+    const res = await fetch('/api/submit-patient', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    return (await res.json()) as { status: string };
+  } catch (err) {
+    console.error('api: POST /api/submit-patient failed', err);
+    throw err;
+  }
 }
 
 export async function apiTranscribe(

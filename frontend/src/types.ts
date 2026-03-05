@@ -35,3 +35,32 @@ export interface TranscribeResult {
   cnp: string | null;
   email: string | null;
 }
+
+export type WorkflowState =
+  | 'stopped'
+  | 'idle'
+  | 'greeting'
+  | 'ask_name'
+  | 'recording_name'
+  | 'show_name'
+  | 'ask_question'
+  | 'recording_question'
+  | 'show_question'
+  | 'ask_cnp'
+  | 'recording_cnp'
+  | 'show_cnp'
+  | 'ask_email'
+  | 'recording_email'
+  | 'show_email'
+  | 'confirm_all'
+  | 'submitting'
+  | 'farewell'
+  | 'farewell_idle'
+  | 'final';
+
+export interface PatientData {
+  name: string | null;
+  question: string | null;
+  cnp: string | null;
+  email: string | null;
+}
