@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+import os
 from collections import deque
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
@@ -12,8 +13,9 @@ import time
 from typing import Any
 
 import cv2
-from fastapi import FastAPI, HTTPException, Request, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, HTTPException, Request, Response, WebSocket, WebSocketDisconnect
 from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse
+from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 import uvicorn
 
@@ -259,6 +261,65 @@ def create_dashboard_app(
 
     # Transcription endpoint (audio -> text + CNP + email extraction)
     app.include_router(transcribe_router)
+
+    # --- Video serving with HTTP 206 range support ---
+    _video_dir_env = os.getenv("VIDEO_DIR", "")
+    video_dir = Path(_video_dir_env) if _video_dir_env else Path(__file__).resolve().parent.parent
+    ALLOWED_VIDEOS = {f"video{i}.mp4" for i in range(1, 9)}
+
+    @app.get("/api/videos/{filename}")
+    async def serve_video(filename: str, request: Request) -> Response:
+        if filename not in ALLOWED_VIDEOS:
+            raise HTTPException(status_code=404, detail="Video not found")
+
+        file_path = video_dir / filename
+        if not file_path.is_file():
+            raise HTTPException(status_code=404, detail="Video file missing")
+
+        file_size = file_path.stat().st_size
+        range_header = request.headers.get("range")
+
+        if range_header is None:
+            return Response(
+                content=file_path.read_bytes(),
+                media_type="video/mp4",
+                headers={
+                    "Accept-Ranges": "bytes",
+                    "Content-Length": str(file_size),
+                },
+            )
+
+        # Parse Range: bytes=START-END
+        range_str = range_header.replace("bytes=", "")
+        parts = range_str.split("-")
+        start = int(parts[0]) if parts[0] else 0
+        end = int(parts[1]) if parts[1] else min(start + 1024 * 1024, file_size - 1)
+        end = min(end, file_size - 1)
+
+        if start > end or start < 0 or start >= file_size:
+            raise HTTPException(status_code=416, detail="Range not satisfiable")
+
+        length = end - start + 1
+        with open(file_path, "rb") as f:
+            f.seek(start)
+            data = f.read(length)
+
+        return Response(
+            content=data,
+            status_code=206,
+            media_type="video/mp4",
+            headers={
+                "Content-Range": f"bytes {start}-{end}/{file_size}",
+                "Accept-Ranges": "bytes",
+                "Content-Length": str(length),
+            },
+        )
+
+    # --- StaticFiles mount for Vite frontend (BACK-01) ---
+    # CRITICAL: Mount AFTER all API routes (first-match routing)
+    frontend_dist = Path(__file__).resolve().parent.parent / "frontend_dist"
+    if frontend_dist.is_dir():
+        app.mount("/", StaticFiles(directory=str(frontend_dist), html=True), name="frontend")
 
     return app
 

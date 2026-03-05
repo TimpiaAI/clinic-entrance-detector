@@ -98,6 +98,9 @@ class Settings:
     # === Calibration ===
     CALIBRATION_FILE: str = "calibration.json"
 
+    # === Video Serving ===
+    VIDEO_DIR: str = ""
+
     # === Metadata ===
     CAMERA_ID: str = "clinic_entrance_01"
     LOG_LEVEL: str = "INFO"
@@ -163,6 +166,7 @@ def load_settings(env_path: str | Path | None = None) -> Settings:
         DASHBOARD_PORT=_env_int("DASHBOARD_PORT", 8080),
         DASHBOARD_HOST=_env_str("DASHBOARD_HOST", "0.0.0.0"),
         CALIBRATION_FILE=_env_str("CALIBRATION_FILE", "calibration.json"),
+        VIDEO_DIR=_env_str("VIDEO_DIR", ""),
         CAMERA_ID=_env_str("CAMERA_ID", "clinic_entrance_01"),
         LOG_LEVEL=_env_str("LOG_LEVEL", "INFO"),
     )
@@ -206,3 +210,4 @@ CALIBRATION_FILE = SETTINGS.CALIBRATION_FILE
 ZONE_B_SPLIT_RATIO = SETTINGS.ZONE_B_SPLIT_RATIO
 MIN_ZONE_B_FRAMES = SETTINGS.MIN_ZONE_B_FRAMES
 MIN_BBOX_AREA = SETTINGS.MIN_BBOX_AREA
+VIDEO_DIR = SETTINGS.VIDEO_DIR
