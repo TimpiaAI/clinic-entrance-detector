@@ -66,11 +66,11 @@ Plans:
   3. Text overlays (marquee) appear on top of the video during playback with correct Romanian labels
   4. The camera feed remains visible (behind the video layer) when no video is playing — hiding the video uses CSS opacity, not src reassignment
   5. Video autoplay works on first Chrome kiosk cold-boot with no prior user interaction (verified with `--autoplay-policy=no-user-gesture-required` flag in test launch)
-**Plans**: TBD
+**Plans:** 2 plans
 
 Plans:
-- [ ] 03-01: CSS z-index layout (feed / video / text overlay layers), idle loop, video.ts with play/pause/hide controls
-- [ ] 03-02: Webhook-triggered playback, onended transitions, marquee text overlay, autoplay validation
+- [ ] 03-01-PLAN.md — CSS z-index stacking layout, video.ts module with idle loop and onended-driven instructional sequence
+- [ ] 03-02-PLAN.md — WebSocket person_entered event trigger, marquee text overlay with Romanian labels
 
 ### Phase 4: Audio Pipeline
 **Goal**: Microphone captures speech, backend transcribes in Romanian, and CNP/email extraction works end-to-end
