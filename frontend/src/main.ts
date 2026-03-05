@@ -9,7 +9,7 @@ import { appState, updateState, setOnStateUpdate } from './state.ts';
 import './style.css';
 import type { DashboardSnapshot } from './types.ts';
 import { updateStatusPanel, updateEntryLog, updateWsBadge, resetEntryLog } from './ui.ts';
-import { initVideo, startIdleLoop, onUserGesture } from './video.ts';
+import { initVideo, startIdleLoop, onUserGesture, checkForPersonEntered } from './video.ts';
 import { createWsClient } from './ws.ts';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -52,6 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (logBody) {
       updateEntryLog(state.event_log, logBody);
     }
+    checkForPersonEntered(state.event_log);
   });
 
   // --- Keyboard shortcuts ---
