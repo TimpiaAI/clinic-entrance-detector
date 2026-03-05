@@ -259,6 +259,36 @@ def create_dashboard_app(
             raise HTTPException(status_code=429, detail="Webhook test rejected by cooldown or sender state")
         return JSONResponse(content={"status": "queued", "payload": payload})
 
+    # --- Webhook relay for detector subprocess ---
+    @app.post("/trigger")
+    async def receive_trigger(request: Request) -> JSONResponse:
+        """Receive webhook from detector subprocess, relay to WebSocket clients."""
+        payload = await request.json()
+        event_type = payload.get("event", "unknown")
+        if event_type == "person_entered":
+            state.push_event({
+                "event": "person_entered",
+                "timestamp": payload.get("timestamp", ""),
+                "person_id": payload.get("person_id", -1),
+                "confidence": payload.get("confidence", 0),
+                "snapshot": payload.get("snapshot", ""),
+            })
+        return JSONResponse(content={"status": "ok"})
+
+    # --- Patient data submission ---
+    @app.post("/api/submit-patient")
+    async def submit_patient(request: Request) -> JSONResponse:
+        """Receive confirmed patient data from frontend workflow."""
+        import logging
+        data = await request.json()
+        logging.getLogger("clinic").info(
+            "Patient data submitted: name=%s, cnp=%s, email=%s",
+            data.get("name"),
+            "***" if data.get("cnp") else None,
+            data.get("email"),
+        )
+        return JSONResponse(content={"status": "submitted"})
+
     # Process management endpoints (start/stop/status for detector subprocess)
     app.include_router(process_router)
 

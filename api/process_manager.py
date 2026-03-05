@@ -6,6 +6,7 @@ Uses psutil tree kill for reliable cross-platform process teardown.
 
 from __future__ import annotations
 
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -30,11 +31,13 @@ def start_detector() -> dict[str, Any]:
     if _detector_proc is not None and _detector_proc.poll() is None:
         return {"status": "already_running", "pid": _detector_proc.pid}
 
+    env = {**os.environ, "WEBHOOK_URL": "http://localhost:8080/trigger"}
     _detector_proc = subprocess.Popen(
-        [sys.executable, str(_project_root / "main.py")],
+        [sys.executable, str(_project_root / "main.py"), "--no-dashboard"],
         cwd=str(_project_root),
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
+        env=env,
     )
     return {"status": "started", "pid": _detector_proc.pid}
 
