@@ -31,12 +31,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. `curl -F "audio=@test.webm" localhost:8080/api/transcribe` returns a JSON response with `text`, `cnp`, and `email` fields
   4. `curl localhost:8080/api/videos/video1.mp4` streams the video file with HTTP 206 range support (browser can seek)
   5. `curl -X POST localhost:8080/api/system/wake-lock` activates sleep prevention; OS-level confirmation visible (caffeinate on macOS, SetThreadExecutionState on Windows)
-**Plans**: TBD
+**Plans:** 3 plans
 
 Plans:
-- [ ] 01-01: Process manager — subprocess.Popen, psutil tree kill, /api/process/start|stop|status
-- [ ] 01-02: Transcription endpoint — /api/transcribe, ffmpeg WAV conversion, Whisper, CNP/email extraction
-- [ ] 01-03: Wake-lock and video endpoints — /api/system/wake-lock, /api/videos/:id with range support, StaticFiles mount
+- [ ] 01-01-PLAN.md — Process manager: subprocess start/stop/status with psutil tree kill
+- [ ] 01-02-PLAN.md — Transcription endpoint: Whisper lazy-load, CNP/email extraction from Romanian speech
+- [ ] 01-03-PLAN.md — Wake-lock, video serving with HTTP 206, StaticFiles mount, DashboardState extension
 
 ### Phase 2: Frontend Foundation
 **Goal**: Browser displays live detection feed with status and keyboard shortcuts working — dev environment fully validated
@@ -127,7 +127,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Backend Extensions | 0/3 | Not started | - |
+| 1. Backend Extensions | 0/3 | Planning complete | - |
 | 2. Frontend Foundation | 0/3 | Not started | - |
 | 3. Video Overlay | 0/2 | Not started | - |
 | 4. Audio Pipeline | 0/2 | Not started | - |
