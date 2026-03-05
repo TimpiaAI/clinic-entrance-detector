@@ -57,4 +57,16 @@ export const RO = {
   VIDEO_FINAL: 'La revedere',
   VIDEO_LISTENING: 'Ascultare...',
   VIDEO_PROCESSING: 'Procesare...',
+
+  // Audio recording
+  RECORDING: 'Inregistrare...',
+  PROCESSING: 'Procesare...',
+  CONFIRM_PROMPT: 'Este corect?',
+  CONFIRM_ACCEPT: 'Confirma',
+  CONFIRM_RETRY: 'Repeta',
+  CNP_LABEL: 'CNP',
+  EMAIL_LABEL: 'Email',
+  MIC_DENIED: 'Acces microfon refuzat',
+  MIC_UNAVAILABLE: 'Microfon indisponibil',
+  TRANSCRIPTION_EMPTY: 'Nu am inteles. Repetati va rog.',
 } as const;

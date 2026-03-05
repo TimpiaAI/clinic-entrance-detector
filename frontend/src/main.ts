@@ -3,6 +3,7 @@
  */
 
 import { apiStartDetector, apiStopDetector, apiTestWebhook, apiWakeLockRelease } from './api.ts';
+import { initAudio, isMicReady } from './audio.ts';
 import { startMjpegCanvas } from './feed.ts';
 import { registerShortcut, initShortcuts } from './shortcuts.ts';
 import { appState, updateState, setOnStateUpdate } from './state.ts';
@@ -59,6 +60,16 @@ document.addEventListener('DOMContentLoaded', () => {
   // F2: Start/Stop detector toggle (KEYS-01)
   registerShortcut('F2', async () => {
     onUserGesture(); // Capture first keypress to unmute video
+
+    // Initialize audio on first Start press (user gesture required for mic + AudioContext)
+    if (!isMicReady()) {
+      const granted = await initAudio();
+      if (!granted) {
+        console.warn('main: mic permission denied on F2');
+        // Continue anyway -- detector can still start, audio will fail gracefully later
+      }
+    }
+
     if (appState.detector_running) {
       await apiStopDetector();
     } else {
