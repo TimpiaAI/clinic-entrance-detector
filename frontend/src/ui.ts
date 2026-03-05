@@ -322,6 +322,61 @@ export function showConfirmationSummary(
   }
 }
 
+// ---------------------------------------------------------------------------
+// Crash Alert
+// ---------------------------------------------------------------------------
+
+/**
+ * Show crash alert overlay when detector unexpectedly stops.
+ * Displays a Romanian message with a Restart button.
+ */
+export function showCrashAlert(onRestart: () => void): void {
+  const alert = document.getElementById('crash-alert');
+  const text = document.getElementById('crash-alert-text');
+  const btn = document.getElementById('crash-restart-btn');
+
+  if (text) text.textContent = RO.CRASH_ALERT;
+  if (btn) {
+    btn.textContent = RO.CRASH_RESTART;
+    // Remove old listeners by cloning
+    const newBtn = btn.cloneNode(true) as HTMLButtonElement;
+    btn.parentNode?.replaceChild(newBtn, btn);
+    newBtn.addEventListener('click', onRestart, { once: true });
+  }
+  if (alert) alert.classList.add('visible');
+}
+
+/**
+ * Hide the crash alert overlay.
+ */
+export function hideCrashAlert(): void {
+  const alert = document.getElementById('crash-alert');
+  if (alert) alert.classList.remove('visible');
+}
+
+// ---------------------------------------------------------------------------
+// System Toggle Button
+// ---------------------------------------------------------------------------
+
+/**
+ * Update the system toggle button text and state.
+ */
+export function updateSystemButton(running: boolean, transitioning?: boolean): void {
+  const btn = document.getElementById('system-toggle-btn');
+  if (!btn) return;
+  if (transitioning) {
+    btn.textContent = running ? RO.SYSTEM_STOPPING : RO.SYSTEM_STARTING;
+    (btn as HTMLButtonElement).disabled = true;
+  } else {
+    btn.textContent = running ? RO.SYSTEM_STOP : RO.SYSTEM_START;
+    (btn as HTMLButtonElement).disabled = false;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Transcription Panel
+// ---------------------------------------------------------------------------
+
 /**
  * Hide the entire transcription panel. Resets all sub-elements.
  * Called after confirm/retry or workflow timeout.

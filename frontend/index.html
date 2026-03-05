@@ -78,6 +78,16 @@
         </table>
       </div>
 
+      <!-- Crash alert (hidden by default, shown when detector crashes) -->
+      <div id="crash-alert" class="crash-alert">
+        <div class="crash-alert-content">
+          <p id="crash-alert-text"></p>
+          <button id="crash-restart-btn" class="btn-confirm">Repornire</button>
+        </div>
+      </div>
+
+      <button id="system-toggle-btn" class="system-toggle-btn">Start</button>
+
       <div id="shortcuts-hint">F2: Start/Stop | F3: Overlay | F4: Test | Esc: Oprire urgenta</div>
     </div>
     <script type="module" src="/src/main.ts"></script>

@@ -80,4 +80,13 @@ export const RO = {
   WORKFLOW_TIMEOUT: 'Timp expirat. Revenire la asteptare.',
   WORKFLOW_CONFIRM_SEND: 'Trimite',
   WORKFLOW_CONFIRM_CANCEL: 'Anuleaza',
+
+  // System control
+  SYSTEM_START: 'Start',
+  SYSTEM_STOP: 'Stop',
+  SYSTEM_STARTING: 'Se porneste...',
+  SYSTEM_STOPPING: 'Se opreste...',
+  CRASH_ALERT: 'Detectorul s-a oprit neasteptat!',
+  CRASH_RESTART: 'Repornire',
+  CRASH_RESTARTING: 'Se reporneste...',
 } as const;
