@@ -426,6 +426,11 @@ def run() -> int:
                         extra={"extra": {"person_id": event.person_id}},
                     )
 
+                # Generate a smaller thumbnail for the event log (320px wide, lower quality)
+                event_snapshot = ""
+                if settings.WEBHOOK_INCLUDE_SNAPSHOT:
+                    event_snapshot = encode_snapshot_base64(frame, bbox=event.bbox, target_width=320, jpeg_quality=50)
+
                 dashboard_state.push_event(
                     {
                         "event": event.event,
@@ -433,6 +438,7 @@ def run() -> int:
                         "person_id": event.person_id,
                         "confidence": event.confidence,
                         "queued": queued,
+                        "snapshot": event_snapshot,
                     }
                 )
 
