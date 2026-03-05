@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 02-02-PLAN.md (Status panel, entry log, snapshot thumbnails)
-last_updated: "2026-03-05T10:13:19.076Z"
-last_activity: 2026-03-05 — Completed 02-01 Vite scaffold + MJPEG + WebSocket
+stopped_at: Completed 03-01-PLAN.md (Video overlay infrastructure)
+last_updated: "2026-03-05T10:32:49.633Z"
+last_activity: 2026-03-05 — Completed 03-01 Video overlay infrastructure
 progress:
   total_phases: 6
   completed_phases: 2
-  total_plans: 6
-  completed_plans: 6
-  percent: 33
+  total_plans: 8
+  completed_plans: 7
+  percent: 88
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-05)
 
 **Core value:** When activated, the system reliably detects clinic entries, plays instructional videos, and captures patient data — all from a single browser window that never lets the computer sleep.
-**Current focus:** Phase 2 — Frontend Foundation
+**Current focus:** Phase 3 — Video Overlay
 
 ## Current Position
 
-Phase: 2 of 6 (Frontend Foundation)
-Plan: 1 of 3 in current phase
+Phase: 3 of 6 (Video Overlay)
+Plan: 1 of 2 in current phase
 Status: In Progress
-Last activity: 2026-03-05 — Completed 02-01 Vite scaffold + MJPEG + WebSocket
+Last activity: 2026-03-05 — Completed 03-01 Video overlay infrastructure
 
-Progress: [███-------] 33% (Phase 2)
+Progress: [█████████░] 88% (Phase 3, Plan 1 of 2 complete)
 
 ## Performance Metrics
 
@@ -56,6 +56,7 @@ Progress: [███-------] 33% (Phase 2)
 | Phase 02 P01 | 4min | 2 tasks | 11 files |
 | Phase 02 P03 | 4min | 2 tasks | 6 files |
 | Phase 02 P02 | 5min | 2 tasks | 5 files |
+| Phase 03 P01 | 2min | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -87,6 +88,11 @@ Recent decisions affecting current work:
 - [Phase 02]: Centralized RO constants object for Romanian UI strings instead of per-file inline text
 - [Phase 02]: Event log thumbnail at 320px/quality 50 separate from webhook 640/70 to keep WebSocket payload reasonable
 - [Phase 02]: Incremental entry log DOM updates via lastEventCount comparison instead of full table rebuild
+- [Phase 03]: Single video element reuse with src swap -- avoids Chromium memory leak (crbug.com/41462045)
+- [Phase 03]: onended event-driven sequence transitions -- no timers, reliable and drift-free
+- [Phase 03]: opacity:0 for hiding video (not display:none) -- preserves element in render tree, prevents Chrome buffer release
+- [Phase 03]: z-index spacing 1/10/20/30 -- provides insertion room between stacking layers
+- [Phase 03]: muted attribute on video element ensures autoplay before user gesture; F2 keypress unmutes
 
 ### Pending Todos
 
@@ -101,6 +107,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-05T10:07:09.703Z
-Stopped at: Completed 02-02-PLAN.md (Status panel, entry log, snapshot thumbnails)
+Last session: 2026-03-05T10:32:49.631Z
+Stopped at: Completed 03-01-PLAN.md (Video overlay infrastructure)
 Resume file: None
