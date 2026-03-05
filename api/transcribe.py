@@ -6,7 +6,7 @@ import os
 import re
 import tempfile
 
-from fastapi import APIRouter, File, UploadFile
+from fastapi import APIRouter, File, Form, UploadFile
 
 router = APIRouter(tags=["transcribe"])
 
@@ -99,7 +99,10 @@ def extract_email(text: str) -> str | None:
 
 
 @router.post("/api/transcribe")
-async def transcribe(audio: UploadFile = File(...)):
+async def transcribe(
+    audio: UploadFile = File(...),
+    initial_prompt: str | None = Form(None),
+):
     """Accept an audio file (WebM/WAV), transcribe with Whisper, extract CNP and email."""
     model = get_model()
 
@@ -114,7 +117,10 @@ async def transcribe(audio: UploadFile = File(...)):
         tmp_path = tmp.name
 
     try:
-        segments, _ = model.transcribe(tmp_path, language="ro", vad_filter=True)
+        kwargs: dict = {"language": "ro", "vad_filter": True}
+        if initial_prompt:
+            kwargs["initial_prompt"] = initial_prompt
+        segments, _ = model.transcribe(tmp_path, **kwargs)
         text = " ".join(s.text for s in segments).strip()
     finally:
         os.unlink(tmp_path)

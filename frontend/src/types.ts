@@ -29,3 +29,9 @@ export interface TrackedPerson {
   score: number;
   confidence: number;
 }
+
+export interface TranscribeResult {
+  text: string;
+  cnp: string | null;
+  email: string | null;
+}
