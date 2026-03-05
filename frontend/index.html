@@ -3,15 +3,62 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Detector Intrare</title>
+    <title>Detector Intrare Clinica</title>
     <link rel="stylesheet" href="/src/style.css" />
   </head>
   <body>
     <div id="app">
       <canvas id="feed-canvas"></canvas>
-      <div id="status-panel"></div>
-      <div id="entry-log"></div>
-      <div id="shortcuts-hint"></div>
+
+      <div id="status-panel">
+        <h2 class="panel-title">Stare sistem</h2>
+        <div class="status-grid">
+          <span class="label">FPS</span>
+          <span id="fps-value" class="value">--</span>
+
+          <span class="label">Persoane active</span>
+          <span id="people-value" class="value">--</span>
+
+          <span class="label">Intrari astazi</span>
+          <span id="entries-value" class="value">--</span>
+
+          <span class="label">Timp functionare</span>
+          <span id="uptime-value" class="value">--</span>
+        </div>
+        <div class="badge-row">
+          <span class="badge-label">Detector</span>
+          <span id="detector-badge" class="badge badge-err">Oprit</span>
+        </div>
+        <div class="badge-row">
+          <span class="badge-label">Webhook</span>
+          <span id="webhook-badge" class="badge badge-warn">--</span>
+        </div>
+        <div class="badge-row">
+          <span class="badge-label">Blocare ecran</span>
+          <span id="wakelock-badge" class="badge badge-warn">--</span>
+        </div>
+        <div class="badge-row">
+          <span class="badge-label">WebSocket</span>
+          <span id="ws-badge" class="badge badge-err">Deconectat</span>
+        </div>
+      </div>
+
+      <div id="entry-log">
+        <h2 class="panel-title">Jurnal intrari</h2>
+        <table class="log-table">
+          <thead>
+            <tr>
+              <th>Ora</th>
+              <th>ID Persoana</th>
+              <th>Incredere</th>
+              <th>Captura</th>
+            </tr>
+          </thead>
+          <tbody id="log-body"></tbody>
+        </table>
+      </div>
+
+      <div id="shortcuts-hint">F2: Start/Stop | F3: Overlay | F4: Test | Esc: Oprire urgenta</div>
     </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
