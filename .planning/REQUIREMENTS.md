@@ -119,13 +119,59 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| (populated by roadmapper) | | |
+| BACK-01 | Phase 1 | Pending |
+| BACK-02 | Phase 1 | Pending |
+| BACK-03 | Phase 1 | Pending |
+| BACK-04 | Phase 1 | Pending |
+| BACK-05 | Phase 1 | Pending |
+| BACK-06 | Phase 1 | Pending |
+| BACK-07 | Phase 1 | Pending |
+| BACK-08 | Phase 1 | Pending |
+| FEED-01 | Phase 2 | Pending |
+| FEED-02 | Phase 2 | Pending |
+| FEED-03 | Phase 2 | Pending |
+| FEED-04 | Phase 2 | Pending |
+| FEED-05 | Phase 2 | Pending |
+| FEED-06 | Phase 2 | Pending |
+| KEYS-01 | Phase 2 | Pending |
+| KEYS-02 | Phase 2 | Pending |
+| KEYS-03 | Phase 2 | Pending |
+| KEYS-04 | Phase 2 | Pending |
+| KEYS-05 | Phase 2 | Pending |
+| KIOSK-02 | Phase 2 | Pending |
+| KIOSK-03 | Phase 2 | Pending |
+| KIOSK-04 | Phase 2 | Pending |
+| KIOSK-06 | Phase 2 | Pending |
+| VCTL-01 | Phase 3 | Pending |
+| VCTL-02 | Phase 3 | Pending |
+| VCTL-03 | Phase 3 | Pending |
+| VCTL-04 | Phase 3 | Pending |
+| VCTL-05 | Phase 3 | Pending |
+| STT-01 | Phase 4 | Pending |
+| STT-02 | Phase 4 | Pending |
+| STT-03 | Phase 4 | Pending |
+| STT-04 | Phase 4 | Pending |
+| STT-05 | Phase 4 | Pending |
+| STT-06 | Phase 4 | Pending |
+| WKFL-01 | Phase 5 | Pending |
+| WKFL-02 | Phase 5 | Pending |
+| WKFL-03 | Phase 5 | Pending |
+| WKFL-04 | Phase 5 | Pending |
+| WKFL-05 | Phase 5 | Pending |
+| CTRL-01 | Phase 5 | Pending |
+| CTRL-02 | Phase 5 | Pending |
+| CTRL-03 | Phase 5 | Pending |
+| CTRL-04 | Phase 5 | Pending |
+| CTRL-05 | Phase 5 | Pending |
+| CTRL-06 | Phase 6 | Pending |
+| KIOSK-01 | Phase 6 | Pending |
+| KIOSK-05 | Phase 6 | Pending |
 
 **Coverage:**
-- v1 requirements: 35 total
-- Mapped to phases: 0
-- Unmapped: 35
+- v1 requirements: 47 total
+- Mapped to phases: 47
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-05*
-*Last updated: 2026-03-05 after initial definition*
+*Last updated: 2026-03-05 — traceability populated by roadmapper*
