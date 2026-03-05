@@ -1,5 +1,5 @@
 /**
- * Entry point -- wires MJPEG feed, WebSocket state, and app state together.
+ * Entry point -- wires MJPEG feed, WebSocket state, and UI together.
  */
 
 import { apiStartDetector, apiStopDetector, apiTestWebhook, apiWakeLockRelease } from './api.ts';
@@ -8,6 +8,7 @@ import { registerShortcut, initShortcuts } from './shortcuts.ts';
 import { appState, updateState, setOnStateUpdate } from './state.ts';
 import './style.css';
 import type { DashboardSnapshot } from './types.ts';
+import { updateStatusPanel, updateEntryLog, updateWsBadge, resetEntryLog } from './ui.ts';
 import { createWsClient } from './ws.ts';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -19,6 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
     console.error('main: #feed-canvas not found');
   }
 
+  // --- Entry log container ---
+  const logBody = document.getElementById('log-body') as HTMLTableSectionElement | null;
+
   // --- WebSocket state updates ---
   // Construct ws:// or wss:// URL matching current page protocol
   const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
@@ -28,14 +32,21 @@ document.addEventListener('DOMContentLoaded', () => {
     url: wsUrl,
     onMessage: updateState,
     onStatusChange: (connected: boolean) => {
-      console.log(`ws: ${connected ? 'connected' : 'disconnected'}`);
+      updateWsBadge(connected);
+      if (connected) {
+        // Reset entry log counter on reconnect so next snapshot rebuilds fully
+        resetEntryLog();
+        if (logBody) logBody.innerHTML = '';
+      }
     },
   });
 
   // --- State update callback ---
   setOnStateUpdate((state: DashboardSnapshot) => {
-    // Temporary: log FPS until UI rendering is added in Plan 02-02
-    console.log(`fps: ${state.fps.toFixed(1)} | people: ${state.current_people} | entries: ${state.entries_today}`);
+    updateStatusPanel(state);
+    if (logBody) {
+      updateEntryLog(state.event_log, logBody);
+    }
   });
 
   // --- Keyboard shortcuts ---
