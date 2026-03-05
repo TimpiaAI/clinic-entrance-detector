@@ -34,9 +34,9 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans:** 3 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Process manager: subprocess start/stop/status with psutil tree kill
-- [ ] 01-02-PLAN.md — Transcription endpoint: Whisper lazy-load, CNP/email extraction from Romanian speech
-- [ ] 01-03-PLAN.md — Wake-lock, video serving with HTTP 206, StaticFiles mount, DashboardState extension
+- [x] 01-01-PLAN.md — Process manager: subprocess start/stop/status with psutil tree kill
+- [x] 01-02-PLAN.md — Transcription endpoint: Whisper lazy-load, CNP/email extraction from Romanian speech
+- [x] 01-03-PLAN.md — Wake-lock, video serving with HTTP 206, StaticFiles mount, DashboardState extension
 
 ### Phase 2: Frontend Foundation
 **Goal**: Browser displays live detection feed with status and keyboard shortcuts working — dev environment fully validated
@@ -49,12 +49,12 @@ Plans:
   4. Pressing F3 toggles detection overlay visibility on/off; F4 fires a test entry event; Escape halts operation — all confirmed with `event.code` not `keypress`
   5. Vite dev server proxies WebSocket and MJPEG to the FastAPI backend with no connection errors — `ws: true` confirmed in vite.config.ts
   6. All UI text appears in Romanian — no English strings visible in the interface
-**Plans**: TBD
+**Plans:** 3 plans
 
 Plans:
-- [ ] 02-01: Vite scaffold, MJPEG fetch-to-canvas renderer, WebSocket with exponential backoff reconnect
-- [ ] 02-02: Status panel, entry log table with real-time WebSocket updates, snapshot thumbnails
-- [ ] 02-03: Keyboard shortcut bindings (F2/F3/F4/Escape), Romanian UI strings, dev/prod mode detection
+- [ ] 02-01-PLAN.md — Vite scaffold, MJPEG fetch-to-canvas renderer, WebSocket with exponential backoff reconnect
+- [ ] 02-02-PLAN.md — Status panel, entry log table with real-time WebSocket updates, snapshot thumbnails
+- [ ] 02-03-PLAN.md — Keyboard shortcut bindings (F2/F3/F4/Escape), Romanian UI strings, API wrappers
 
 ### Phase 3: Video Overlay
 **Goal**: Instructional videos play reliably in the browser over the camera feed, with idle loop and text overlays
@@ -127,8 +127,8 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Backend Extensions | 0/3 | Planning complete | - |
-| 2. Frontend Foundation | 0/3 | Not started | - |
+| 1. Backend Extensions | 3/3 | Complete | 2026-03-05 |
+| 2. Frontend Foundation | 0/3 | Planning complete | - |
 | 3. Video Overlay | 0/2 | Not started | - |
 | 4. Audio Pipeline | 0/2 | Not started | - |
 | 5. Workflow State Machine | 0/2 | Not started | - |
