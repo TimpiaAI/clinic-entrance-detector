@@ -9,6 +9,7 @@ import { appState, updateState, setOnStateUpdate } from './state.ts';
 import './style.css';
 import type { DashboardSnapshot } from './types.ts';
 import { updateStatusPanel, updateEntryLog, updateWsBadge, resetEntryLog } from './ui.ts';
+import { initVideo, startIdleLoop, onUserGesture } from './video.ts';
 import { createWsClient } from './ws.ts';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -19,6 +20,10 @@ document.addEventListener('DOMContentLoaded', () => {
   } else {
     console.error('main: #feed-canvas not found');
   }
+
+  // --- Video overlay ---
+  initVideo();
+  startIdleLoop();
 
   // --- Entry log container ---
   const logBody = document.getElementById('log-body') as HTMLTableSectionElement | null;
@@ -52,6 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Keyboard shortcuts ---
   // F2: Start/Stop detector toggle (KEYS-01)
   registerShortcut('F2', async () => {
+    onUserGesture(); // Capture first keypress to unmute video
     if (appState.detector_running) {
       await apiStopDetector();
     } else {

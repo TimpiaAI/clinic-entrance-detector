@@ -45,4 +45,16 @@ export const RO = {
   FEED_LOADING: 'Se incarca feed-ul video...',
   FEED_ERROR: 'Eroare la incarcarea feed-ului',
   NO_FEED: 'Feed indisponibil',
+
+  // Video overlay
+  VIDEO_IDLE: 'Asteptare...',
+  VIDEO_GREETING: 'Bine ati venit',
+  VIDEO_ASK_NAME: 'Va rugam spuneti numele',
+  VIDEO_ASK_QUESTION: 'Va rugam raspundeti',
+  VIDEO_ASK_CNP: 'Va rugam spuneti CNP-ul',
+  VIDEO_ASK_EMAIL: 'Va rugam spuneti adresa de email',
+  VIDEO_FAREWELL: 'Va multumim',
+  VIDEO_FINAL: 'La revedere',
+  VIDEO_LISTENING: 'Ascultare...',
+  VIDEO_PROCESSING: 'Procesare...',
 } as const;
