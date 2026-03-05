@@ -69,8 +69,8 @@ Plans:
 **Plans:** 2 plans
 
 Plans:
-- [ ] 03-01-PLAN.md — CSS z-index stacking layout, video.ts module with idle loop and onended-driven instructional sequence
-- [ ] 03-02-PLAN.md — WebSocket person_entered event trigger, marquee text overlay with Romanian labels
+- [x] 03-01-PLAN.md — CSS z-index stacking layout, video.ts module with idle loop and onended-driven instructional sequence
+- [x] 03-02-PLAN.md — WebSocket person_entered event trigger, marquee text overlay with Romanian labels
 
 ### Phase 4: Audio Pipeline
 **Goal**: Microphone captures speech, backend transcribes in Romanian, and CNP/email extraction works end-to-end
@@ -83,11 +83,11 @@ Plans:
   4. Speaking an email address causes the backend to return it extracted correctly in the `email` field
   5. The operator sees a "Procesare..." loading state during transcription and the result with a confirmation prompt before it is accepted
   6. AudioContext is created inside the "Start System" gesture handler — recording never fails silently due to suspended AudioContext
-**Plans**: TBD
+**Plans:** 2 plans
 
 Plans:
-- [ ] 04-01: audio.ts — getUserMedia, MediaRecorder stop-and-collect, PCM-to-WAV conversion, POST to /api/transcribe
-- [ ] 04-02: Transcription result display, confirmation prompt UI, AudioContext lifecycle guard, mic permission flow validation
+- [ ] 04-01-PLAN.md — audio.ts module with MediaRecorder stop-and-collect, apiTranscribe wrapper, initial_prompt backend extension, F2 mic init
+- [ ] 04-02-PLAN.md — Transcription panel UI with recording/processing/result states, confirmation buttons, Romanian strings
 
 ### Phase 5: Workflow State Machine
 **Goal**: Complete patient interaction cycle runs end-to-end — entry detected, videos play, data captured, system can be started and stopped
@@ -129,7 +129,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 |-------|----------------|--------|-----------|
 | 1. Backend Extensions | 3/3 | Complete | 2026-03-05 |
 | 2. Frontend Foundation | 3/3 | Complete | 2026-03-05 |
-| 3. Video Overlay | 0/2 | Not started | - |
+| 3. Video Overlay | 2/2 | Complete | 2026-03-05 |
 | 4. Audio Pipeline | 0/2 | Not started | - |
 | 5. Workflow State Machine | 0/2 | Not started | - |
 | 6. Kiosk Hardening | 0/2 | Not started | - |
