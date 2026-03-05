@@ -9,7 +9,8 @@
  * Plan 03's ro.ts).
  */
 
-import type { DashboardSnapshot, EventLogEntry } from './types.ts';
+import type { DashboardSnapshot, EventLogEntry, TranscribeResult } from './types.ts';
+import { RO } from './ro.ts';
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -179,4 +180,109 @@ export function updateEntryLog(eventLog: EventLogEntry[], container: HTMLElement
  */
 export function resetEntryLog(): void {
   lastEventCount = 0;
+}
+
+// ---------------------------------------------------------------------------
+// Transcription Panel
+// ---------------------------------------------------------------------------
+
+/**
+ * Show recording state -- pulsing red indicator + "Inregistrare..." text.
+ * Called by workflow when MediaRecorder starts.
+ */
+export function showRecordingState(): void {
+  const panel = document.getElementById('transcription-panel');
+  const indicator = document.getElementById('recording-indicator');
+  const statusText = document.getElementById('status-text');
+  const result = document.getElementById('transcription-result');
+  const actions = document.getElementById('transcription-actions');
+
+  if (panel) panel.classList.add('visible');
+  if (indicator) indicator.classList.add('active');
+  if (statusText) statusText.textContent = RO.RECORDING;
+  if (result) result.classList.remove('visible');
+  if (actions) actions.classList.remove('visible');
+}
+
+/**
+ * Show processing state -- hide recording indicator, show "Procesare..." text.
+ * Called when recording stops and audio is being sent to backend.
+ */
+export function showProcessingState(): void {
+  const indicator = document.getElementById('recording-indicator');
+  const statusText = document.getElementById('status-text');
+
+  if (indicator) indicator.classList.remove('active');
+  if (statusText) statusText.textContent = RO.PROCESSING;
+}
+
+/**
+ * Show transcription result with text, CNP, email and Confirma/Repeta buttons.
+ * The onConfirm and onRetry callbacks are provided by the workflow state machine.
+ */
+export function showTranscriptionResult(
+  data: TranscribeResult,
+  onConfirm: () => void,
+  onRetry: () => void,
+): void {
+  const statusText = document.getElementById('status-text');
+  const result = document.getElementById('transcription-result');
+  const actions = document.getElementById('transcription-actions');
+  const resultText = document.getElementById('result-text');
+  const resultCnp = document.getElementById('result-cnp');
+  const resultEmail = document.getElementById('result-email');
+
+  // Update status line
+  if (statusText) statusText.textContent = RO.CONFIRM_PROMPT;
+
+  // Show result fields
+  if (resultText) resultText.textContent = data.text || RO.TRANSCRIPTION_EMPTY;
+  if (resultCnp) {
+    resultCnp.textContent = data.cnp ? `${RO.CNP_LABEL}: ${data.cnp}` : '';
+    resultCnp.style.display = data.cnp ? 'block' : 'none';
+  }
+  if (resultEmail) {
+    resultEmail.textContent = data.email ? `${RO.EMAIL_LABEL}: ${data.email}` : '';
+    resultEmail.style.display = data.email ? 'block' : 'none';
+  }
+  if (result) result.classList.add('visible');
+
+  // Build action buttons
+  if (actions) {
+    actions.innerHTML = '';
+    const confirmBtn = document.createElement('button');
+    confirmBtn.className = 'btn-confirm';
+    confirmBtn.textContent = RO.CONFIRM_ACCEPT;
+    confirmBtn.addEventListener('click', onConfirm, { once: true });
+
+    const retryBtn = document.createElement('button');
+    retryBtn.className = 'btn-retry';
+    retryBtn.textContent = RO.CONFIRM_RETRY;
+    retryBtn.addEventListener('click', onRetry, { once: true });
+
+    actions.appendChild(confirmBtn);
+    actions.appendChild(retryBtn);
+    actions.classList.add('visible');
+  }
+}
+
+/**
+ * Hide the entire transcription panel. Resets all sub-elements.
+ * Called after confirm/retry or workflow timeout.
+ */
+export function hideTranscriptionPanel(): void {
+  const panel = document.getElementById('transcription-panel');
+  const indicator = document.getElementById('recording-indicator');
+  const statusText = document.getElementById('status-text');
+  const result = document.getElementById('transcription-result');
+  const actions = document.getElementById('transcription-actions');
+
+  if (panel) panel.classList.remove('visible');
+  if (indicator) indicator.classList.remove('active');
+  if (statusText) statusText.textContent = '';
+  if (result) result.classList.remove('visible');
+  if (actions) {
+    actions.classList.remove('visible');
+    actions.innerHTML = '';
+  }
 }
