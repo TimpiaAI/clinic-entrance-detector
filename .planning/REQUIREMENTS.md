@@ -39,7 +39,7 @@ Requirements for the unified web platform release. Each maps to roadmap phases.
 - [x] **STT-02**: Audio is sent to Python backend for Faster Whisper transcription (Romanian language)
 - [x] **STT-03**: Backend extracts CNP (Romanian national ID number) from transcribed speech
 - [x] **STT-04**: Backend extracts email address from transcribed speech
-- [ ] **STT-05**: Transcription results are displayed to operator/patient with confirmation step
+- [x] **STT-05**: Transcription results are displayed to operator/patient with confirmation step
 - [x] **STT-06**: Microphone permission is requested on operator's "Start System" gesture (user interaction required)
 
 ### Workflow State Machine
@@ -151,7 +151,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | STT-02 | Phase 4 | Complete |
 | STT-03 | Phase 4 | Complete |
 | STT-04 | Phase 4 | Complete |
-| STT-05 | Phase 4 | Pending |
+| STT-05 | Phase 4 | Complete |
 | STT-06 | Phase 4 | Complete |
 | WKFL-01 | Phase 5 | Pending |
 | WKFL-02 | Phase 5 | Pending |

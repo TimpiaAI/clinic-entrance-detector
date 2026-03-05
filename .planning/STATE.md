@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: in-progress
-stopped_at: Completed 04-01-PLAN.md (audio capture pipeline)
-last_updated: "2026-03-05T13:26:24Z"
-last_activity: 2026-03-05 — Completed 04-01 audio capture pipeline
+status: executing
+stopped_at: Completed 04-02-PLAN.md (transcription panel UI)
+last_updated: "2026-03-05T13:31:00Z"
+last_activity: 2026-03-05 — Completed 04-02 transcription panel UI
 progress:
   total_phases: 6
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 10
-  completed_plans: 9
-  percent: 100
+  completed_plans: 10
+  percent: 90
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-05)
 
 **Core value:** When activated, the system reliably detects clinic entries, plays instructional videos, and captures patient data — all from a single browser window that never lets the computer sleep.
-**Current focus:** Phase 4 audio pipeline -- mic capture and transcription wiring
+**Current focus:** Phase 4 audio pipeline complete -- ready for Phase 5 workflow
 
 ## Current Position
 
-Phase: 4 of 6 (Audio Pipeline)
-Plan: 1 of 2 in current phase
-Status: In Progress
-Last activity: 2026-03-05 — Completed 04-01 audio capture pipeline
+Phase: 4 of 6 (Audio Pipeline) -- COMPLETE
+Plan: 2 of 2 in current phase
+Status: Phase Complete
+Last activity: 2026-03-05 — Completed 04-02 transcription panel UI
 
-Progress: [█████████░] 90% (9/10 plans done)
+Progress: [██████████] 100% (10/10 plans done)
 
 ## Performance Metrics
 
@@ -59,6 +59,7 @@ Progress: [█████████░] 90% (9/10 plans done)
 | Phase 03 P01 | 2min | 2 tasks | 5 files |
 | Phase 03 P02 | 2min | 1 tasks | 2 files |
 | Phase 04 P01 | 3min | 2 tasks | 6 files |
+| Phase 04 P02 | 1min | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -101,6 +102,9 @@ Recent decisions affecting current work:
 - [Phase 04]: Test stream acquired and immediately released in initAudio -- recordAndTranscribe gets fresh stream each time
 - [Phase 04]: Mic denial is non-blocking: detector still starts, audio fails gracefully when called later
 - [Phase 04]: Backend kwargs dict pattern for optional initial_prompt preserves backward compatibility
+- [Phase 04]: z-index 15 places transcription panel between video overlay (10) and text overlay (20)
+- [Phase 04]: Dynamic button creation with {once: true} listeners prevents stale callback accumulation
+- [Phase 04]: Opacity + pointer-events pattern for transcription panel matches existing overlay convention
 
 ### Pending Todos
 
@@ -115,6 +119,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-05T13:26:24Z
-Stopped at: Completed 04-01-PLAN.md (audio capture pipeline)
+Last session: 2026-03-05T13:31:00Z
+Stopped at: Completed 04-02-PLAN.md (transcription panel UI)
 Resume file: None
