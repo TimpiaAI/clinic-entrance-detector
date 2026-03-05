@@ -18,6 +18,7 @@ from fastapi.templating import Jinja2Templates
 import uvicorn
 
 from api.process_manager import router as process_router
+from api.transcribe import router as transcribe_router
 from detector.zone_config import CalibrationData, EntryZone, Tripwire, ZoneConfigManager
 
 
@@ -255,6 +256,9 @@ def create_dashboard_app(
 
     # Process management endpoints (start/stop/status for detector subprocess)
     app.include_router(process_router)
+
+    # Transcription endpoint (audio -> text + CNP + email extraction)
+    app.include_router(transcribe_router)
 
     return app
 
