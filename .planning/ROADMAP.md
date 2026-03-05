@@ -86,8 +86,8 @@ Plans:
 **Plans:** 2 plans
 
 Plans:
-- [ ] 04-01-PLAN.md — audio.ts module with MediaRecorder stop-and-collect, apiTranscribe wrapper, initial_prompt backend extension, F2 mic init
-- [ ] 04-02-PLAN.md — Transcription panel UI with recording/processing/result states, confirmation buttons, Romanian strings
+- [x] 04-01-PLAN.md — audio.ts module with MediaRecorder stop-and-collect, apiTranscribe wrapper, initial_prompt backend extension, F2 mic init
+- [x] 04-02-PLAN.md — Transcription panel UI with recording/processing/result states, confirmation buttons, Romanian strings
 
 ### Phase 5: Workflow State Machine
 **Goal**: Complete patient interaction cycle runs end-to-end — entry detected, videos play, data captured, system can be started and stopped
@@ -102,7 +102,7 @@ Plans:
 **Plans:** 2 plans
 
 Plans:
-- [ ] 05-01-PLAN.md — Backend webhook relay (--no-dashboard + /trigger), workflow.ts state machine with all states/transitions/timeouts, video.ts single-play API, confirmation summary UI
+- [x] 05-01-PLAN.md — Backend webhook relay (--no-dashboard + /trigger), workflow.ts state machine with all states/transitions/timeouts, video.ts single-play API, confirmation summary UI
 - [ ] 05-02-PLAN.md — system-control.ts start/stop orchestration, crash detection via WebSocket state diff, health monitoring, auto-start on load, F2/Escape rewiring
 
 ### Phase 6: Kiosk Hardening
@@ -130,6 +130,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 | 1. Backend Extensions | 3/3 | Complete | 2026-03-05 |
 | 2. Frontend Foundation | 3/3 | Complete | 2026-03-05 |
 | 3. Video Overlay | 2/2 | Complete | 2026-03-05 |
-| 4. Audio Pipeline | 0/2 | Not started | - |
-| 5. Workflow State Machine | 0/2 | Not started | - |
+| 4. Audio Pipeline | 2/2 | Complete | 2026-03-05 |
+| 5. Workflow State Machine | 1/2 | In Progress | - |
 | 6. Kiosk Hardening | 0/2 | Not started | - |

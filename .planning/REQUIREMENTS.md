@@ -44,11 +44,11 @@ Requirements for the unified web platform release. Each maps to roadmap phases.
 
 ### Workflow State Machine
 
-- [ ] **WKFL-01**: Full patient workflow cycle: idle -> greeting -> ask_name -> record -> show -> ask_cnp -> record -> show -> ask_email -> record -> confirm -> submit -> farewell -> idle
-- [ ] **WKFL-02**: Each workflow state has a timeout that returns to idle if exceeded (patient abandonment)
-- [ ] **WKFL-03**: Captured patient data is cleared on timeout or workflow completion
-- [ ] **WKFL-04**: Workflow submits collected data via webhook on confirmation
-- [ ] **WKFL-05**: Confirmation step shows all captured data and asks patient to verify
+- [x] **WKFL-01**: Full patient workflow cycle: idle -> greeting -> ask_name -> record -> show -> ask_cnp -> record -> show -> ask_email -> record -> confirm -> submit -> farewell -> idle
+- [x] **WKFL-02**: Each workflow state has a timeout that returns to idle if exceeded (patient abandonment)
+- [x] **WKFL-03**: Captured patient data is cleared on timeout or workflow completion
+- [x] **WKFL-04**: Workflow submits collected data via webhook on confirmation
+- [x] **WKFL-05**: Confirmation step shows all captured data and asks patient to verify
 
 ### Keyboard Shortcuts
 
@@ -153,11 +153,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | STT-04 | Phase 4 | Complete |
 | STT-05 | Phase 4 | Complete |
 | STT-06 | Phase 4 | Complete |
-| WKFL-01 | Phase 5 | Pending |
-| WKFL-02 | Phase 5 | Pending |
-| WKFL-03 | Phase 5 | Pending |
-| WKFL-04 | Phase 5 | Pending |
-| WKFL-05 | Phase 5 | Pending |
+| WKFL-01 | Phase 5 | Complete |
+| WKFL-02 | Phase 5 | Complete |
+| WKFL-03 | Phase 5 | Complete |
+| WKFL-04 | Phase 5 | Complete |
+| WKFL-05 | Phase 5 | Complete |
 | CTRL-01 | Phase 5 | Pending |
 | CTRL-02 | Phase 5 | Pending |
 | CTRL-03 | Phase 5 | Pending |

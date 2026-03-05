@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: completed
-stopped_at: Completed 04-02-PLAN.md (transcription panel UI)
-last_updated: "2026-03-05T13:36:26.120Z"
-last_activity: 2026-03-05 — Completed 04-02 transcription panel UI
+status: in_progress
+stopped_at: Completed 05-01-PLAN.md (workflow state machine)
+last_updated: "2026-03-05T14:49:00Z"
+last_activity: 2026-03-05 — Completed 05-01 workflow state machine
 progress:
   total_phases: 6
   completed_phases: 4
-  total_plans: 10
-  completed_plans: 10
-  percent: 100
+  total_plans: 12
+  completed_plans: 11
+  percent: 92
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-05)
 
 **Core value:** When activated, the system reliably detects clinic entries, plays instructional videos, and captures patient data — all from a single browser window that never lets the computer sleep.
-**Current focus:** Phase 4 audio pipeline complete -- ready for Phase 5 workflow
+**Current focus:** Phase 5 workflow state machine -- Plan 01 complete, Plan 02 next
 
 ## Current Position
 
-Phase: 4 of 6 (Audio Pipeline) -- COMPLETE
-Plan: 2 of 2 in current phase
-Status: Phase Complete
-Last activity: 2026-03-05 — Completed 04-02 transcription panel UI
+Phase: 5 of 6 (Workflow State Machine)
+Plan: 1 of 2 in current phase
+Status: In Progress
+Last activity: 2026-03-05 — Completed 05-01 workflow state machine and webhook relay
 
-Progress: [██████████] 100% (10/10 plans done)
+Progress: [███████████] 100% (11/12 plans done)
 
 ## Performance Metrics
 
@@ -60,6 +60,7 @@ Progress: [██████████] 100% (10/10 plans done)
 | Phase 03 P02 | 2min | 1 tasks | 2 files |
 | Phase 04 P01 | 3min | 2 tasks | 6 files |
 | Phase 04 P02 | 1min | 2 tasks | 3 files |
+| Phase 05 P01 | 5min | 2 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -105,6 +106,12 @@ Recent decisions affecting current work:
 - [Phase 04]: z-index 15 places transcription panel between video overlay (10) and text overlay (20)
 - [Phase 04]: Dynamic button creation with {once: true} listeners prevents stale callback accumulation
 - [Phase 04]: Opacity + pointer-events pattern for transcription panel matches existing overlay convention
+- [Phase 05]: Explicit switch/case state machine (no XState) -- 19 linear states don't justify library overhead
+- [Phase 05]: playSingleVideo() with onEnded callback replaces linear instruction sequence for workflow control
+- [Phase 05]: Recording cancellation via flag pattern -- cannot abort MediaRecorder, discard result instead
+- [Phase 05]: show_* states are transient pass-through -- immediately transition to next ask step
+- [Phase 05]: Parent-dashboard mode: subprocess gets --no-dashboard + WEBHOOK_URL, parent relays via /trigger
+- [Phase 05]: v1 patient submission logs to Python logger -- no external webhook target configured
 
 ### Pending Todos
 
@@ -119,6 +126,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-05T13:31:00Z
-Stopped at: Completed 04-02-PLAN.md (transcription panel UI)
+Last session: 2026-03-05T14:44:16Z
+Stopped at: Completed 05-01-PLAN.md (workflow state machine)
 Resume file: None
