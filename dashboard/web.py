@@ -19,7 +19,8 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 import uvicorn
 
-from api.process_manager import router as process_router
+from api.process_manager import detector_status, router as process_router
+from api.sleep_guard import router as sleep_router, wake_lock_status
 from api.transcribe import router as transcribe_router
 from detector.zone_config import CalibrationData, EntryZone, Tripwire, ZoneConfigManager
 
@@ -91,6 +92,8 @@ class DashboardState:
                 "camera_connected": self.camera_connected,
                 "webhook_status": self.webhook_status,
                 "calibration": self.calibration,
+                "detector_running": detector_status()["running"],
+                "wake_lock_active": wake_lock_status()["active"],
             }
 
 
@@ -261,6 +264,9 @@ def create_dashboard_app(
 
     # Transcription endpoint (audio -> text + CNP + email extraction)
     app.include_router(transcribe_router)
+
+    # Sleep guard endpoints (wake-lock activation/deactivation)
+    app.include_router(sleep_router)
 
     # --- Video serving with HTTP 206 range support ---
     _video_dir_env = os.getenv("VIDEO_DIR", "")
