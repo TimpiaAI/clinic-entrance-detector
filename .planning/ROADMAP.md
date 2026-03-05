@@ -99,11 +99,11 @@ Plans:
   3. The confirmation step displays all captured name, CNP, and email — and only submits the webhook after the patient confirms
   4. Pressing Start (F2 / UI button) starts the detector and activates the system; pressing Stop or Escape halts all processes immediately
   5. If the detector process crashes, the operator sees an alert in the UI with a Restart button — no SSH required to recover
-**Plans**: TBD
+**Plans:** 2 plans
 
 Plans:
-- [ ] 05-01: workflow.ts state machine (all states, transitions, timeout handling), person_entered WebSocket trigger
-- [ ] 05-02: CTRL-01 to CTRL-05 — start/stop UI button, process health monitoring, crash recovery alert, F2/Escape bindings wired to process manager
+- [ ] 05-01-PLAN.md — Backend webhook relay (--no-dashboard + /trigger), workflow.ts state machine with all states/transitions/timeouts, video.ts single-play API, confirmation summary UI
+- [ ] 05-02-PLAN.md — system-control.ts start/stop orchestration, crash detection via WebSocket state diff, health monitoring, auto-start on load, F2/Escape rewiring
 
 ### Phase 6: Kiosk Hardening
 **Goal**: System runs reliably in production on Windows 11 Pro — never sleeps, never shows browser chrome, survives 24/7 operation
@@ -123,7 +123,7 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
