@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: in-progress
-stopped_at: Completed 02-01-PLAN.md (Vite scaffold, MJPEG renderer, WebSocket client)
-last_updated: "2026-03-05T09:56:45Z"
+status: executing
+stopped_at: Completed 02-03-PLAN.md (Keyboard shortcuts + Romanian UI strings)
+last_updated: "2026-03-05T10:06:12.201Z"
 last_activity: 2026-03-05 — Completed 02-01 Vite scaffold + MJPEG + WebSocket
 progress:
   total_phases: 6
   completed_phases: 1
-  total_plans: 3
-  completed_plans: 1
+  total_plans: 6
+  completed_plans: 5
   percent: 33
 ---
 
@@ -54,6 +54,7 @@ Progress: [███-------] 33% (Phase 2)
 | Phase 01 P02 | 4min | 2 tasks | 5 files |
 | Phase 01 P03 | 4min | 3 tasks | 6 files |
 | Phase 02 P01 | 4min | 2 tasks | 11 files |
+| Phase 02 P03 | 4min | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -80,6 +81,9 @@ Recent decisions affecting current work:
 - [Phase 02]: ws:// protocol auto-detection in main.ts for HTTPS compatibility in production
 - [Phase 02]: setOnStateUpdate setter function instead of direct export assignment -- works with verbatimModuleSyntax
 - [Phase 02]: Added frontend_dist/ to root .gitignore -- build artifact should not be committed
+- [Phase 02]: event.code (not event.key) for physical key position matching regardless of keyboard layout
+- [Phase 02]: canvas.style.opacity for F3 overlay toggle preserves MJPEG fetch connection (display:none would break it)
+- [Phase 02]: Centralized RO constants object for Romanian UI strings instead of per-file inline text
 
 ### Pending Todos
 
@@ -94,6 +98,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-05T09:56:45Z
-Stopped at: Completed 02-01-PLAN.md (Vite scaffold, MJPEG renderer, WebSocket client)
+Last session: 2026-03-05T10:06:12.199Z
+Stopped at: Completed 02-03-PLAN.md (Keyboard shortcuts + Romanian UI strings)
 Resume file: None
