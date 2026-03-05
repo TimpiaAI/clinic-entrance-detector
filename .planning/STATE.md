@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 01-02-PLAN.md (transcription endpoint)
-last_updated: "2026-03-05T09:21:24Z"
-last_activity: 2026-03-05 — Completed 01-02 transcription endpoint plan
+stopped_at: Completed 01-03-PLAN.md (sleep guard, video serving, snapshot extension)
+last_updated: "2026-03-05T09:29:00Z"
+last_activity: 2026-03-05 — Completed Phase 1 (all 3 plans)
 progress:
   total_phases: 6
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 3
-  completed_plans: 2
-  percent: 67
+  completed_plans: 3
+  percent: 100
 ---
 
 # Project State
@@ -25,12 +25,12 @@ See: .planning/PROJECT.md (updated 2026-03-05)
 
 ## Current Position
 
-Phase: 1 of 6 (Backend Extensions)
-Plan: 2 of 3 in current phase
-Status: Executing
-Last activity: 2026-03-05 — Completed 01-02 transcription endpoint plan
+Phase: 1 of 6 (Backend Extensions) -- COMPLETE
+Plan: 3 of 3 in current phase
+Status: Phase 1 Complete
+Last activity: 2026-03-05 — Completed 01-03 sleep guard, video serving, snapshot extension
 
-Progress: [██████░░░░] 67%
+Progress: [██████████] 100% (Phase 1)
 
 ## Performance Metrics
 
@@ -52,6 +52,7 @@ Progress: [██████░░░░] 67%
 *Updated after each plan completion*
 | Phase 01 P01 | 3min | 2 tasks | 4 files |
 | Phase 01 P02 | 4min | 2 tasks | 5 files |
+| Phase 01 P03 | 4min | 3 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -69,6 +70,11 @@ Recent decisions affecting current work:
 - [Phase 01]: Word boundaries for short at/et/ad regex patterns prevent false matches in Romanian words
 - [Phase 01]: Email extraction uses rfind('@') + last token for mixed-text robustness (improved over controller.py)
 - [Phase 01]: Whisper import deferred inside get_model() to allow tests without faster-whisper loaded
+- [Phase 01]: wakepy keep.presenting() entered/exited programmatically for on-demand sleep prevention
+- [Phase 01]: Custom video endpoint with Range parsing (not StaticFiles) -- Chrome requires 206 for seeking
+- [Phase 01]: ALLOWED_VIDEOS whitelist prevents arbitrary file access via video endpoint
+- [Phase 01]: StaticFiles mount conditional on frontend_dist/ existence -- activates after Phase 2 build
+- [Phase 01]: detector_running and wake_lock_active sourced from module functions in snapshot(), not cached
 
 ### Pending Todos
 
@@ -83,6 +89,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-05T09:21:24Z
-Stopped at: Completed 01-02-PLAN.md (transcription endpoint)
+Last session: 2026-03-05T09:29:00Z
+Stopped at: Completed 01-03-PLAN.md (sleep guard, video serving, snapshot extension) -- Phase 1 complete
 Resume file: None
