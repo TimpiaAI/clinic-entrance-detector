@@ -1,3 +1,19 @@
+---
+gsd_state_version: 1.0
+milestone: v1.0
+milestone_name: milestone
+status: executing
+stopped_at: Completed 01-01-PLAN.md (process manager)
+last_updated: "2026-03-05T09:21:10.916Z"
+last_activity: 2026-03-05 — Completed 01-01 process manager plan
+progress:
+  total_phases: 6
+  completed_phases: 0
+  total_plans: 3
+  completed_plans: 1
+  percent: 33
+---
+
 # Project State
 
 ## Project Reference
@@ -10,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-03-05)
 ## Current Position
 
 Phase: 1 of 6 (Backend Extensions)
-Plan: 0 of 3 in current phase
-Status: Ready to plan
-Last activity: 2026-03-05 — Roadmap created, phases derived from requirements
+Plan: 1 of 3 in current phase
+Status: Executing
+Last activity: 2026-03-05 — Completed 01-01 process manager plan
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [███░░░░░░░] 33%
 
 ## Performance Metrics
 
@@ -34,6 +50,7 @@ Progress: [░░░░░░░░░░] 0%
 - Trend: -
 
 *Updated after each plan completion*
+| Phase 01 P01 | 3min | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -46,6 +63,8 @@ Recent decisions affecting current work:
 - [Init]: HTML5 video replaces VLC — browser-native, no external process, more reliable
 - [Init]: Extend FastAPI backend — preserve working detection pipeline, add process mgmt + transcription
 - [Init]: Fetch-to-canvas for MJPEG (not img tag) — mandatory from day one to prevent 24/7 memory leak
+- [Phase 01]: Followed RESEARCH.md Pattern 2 exactly: module-level _detector_proc singleton with psutil tree kill
+- [Phase 01]: Installed pytest as test framework (was missing from venv)
 
 ### Pending Todos
 
@@ -60,6 +79,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-05
-Stopped at: Roadmap created — 47 requirements mapped to 6 phases; ready to plan Phase 1
+Last session: 2026-03-05T09:21:10.914Z
+Stopped at: Completed 01-01-PLAN.md (process manager)
 Resume file: None

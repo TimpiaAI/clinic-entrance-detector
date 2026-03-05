@@ -70,9 +70,9 @@ Requirements for the unified web platform release. Each maps to roadmap phases.
 ### Backend Extensions
 
 - [ ] **BACK-01**: FastAPI serves Vite-built frontend via StaticFiles mount
-- [ ] **BACK-02**: POST /api/process/start starts the detector subprocess
-- [ ] **BACK-03**: POST /api/process/stop stops the detector subprocess (with psutil tree kill on Windows)
-- [ ] **BACK-04**: GET /api/process/status returns detector process state
+- [x] **BACK-02**: POST /api/process/start starts the detector subprocess
+- [x] **BACK-03**: POST /api/process/stop stops the detector subprocess (with psutil tree kill on Windows)
+- [x] **BACK-04**: GET /api/process/status returns detector process state
 - [ ] **BACK-05**: POST /api/transcribe accepts audio blob (WebM), transcribes with Faster Whisper, returns text + extracted CNP/email
 - [ ] **BACK-06**: GET /api/videos/:id serves instructional video files with HTTP range request support
 - [ ] **BACK-07**: POST /api/system/wake-lock activates wakepy sleep prevention
@@ -120,9 +120,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | BACK-01 | Phase 1 | Pending |
-| BACK-02 | Phase 1 | Pending |
-| BACK-03 | Phase 1 | Pending |
-| BACK-04 | Phase 1 | Pending |
+| BACK-02 | Phase 1 | Complete |
+| BACK-03 | Phase 1 | Complete |
+| BACK-04 | Phase 1 | Complete |
 | BACK-05 | Phase 1 | Pending |
 | BACK-06 | Phase 1 | Pending |
 | BACK-07 | Phase 1 | Pending |
