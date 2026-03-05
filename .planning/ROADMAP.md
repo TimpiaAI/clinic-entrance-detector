@@ -52,9 +52,9 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — Vite scaffold, MJPEG fetch-to-canvas renderer, WebSocket with exponential backoff reconnect
-- [ ] 02-02-PLAN.md — Status panel, entry log table with real-time WebSocket updates, snapshot thumbnails
-- [ ] 02-03-PLAN.md — Keyboard shortcut bindings (F2/F3/F4/Escape), Romanian UI strings, API wrappers
+- [x] 02-01-PLAN.md — Vite scaffold, MJPEG fetch-to-canvas renderer, WebSocket with exponential backoff reconnect
+- [x] 02-02-PLAN.md — Status panel, entry log table with real-time WebSocket updates, snapshot thumbnails
+- [x] 02-03-PLAN.md — Keyboard shortcut bindings (F2/F3/F4/Escape), Romanian UI strings, API wrappers
 
 ### Phase 3: Video Overlay
 **Goal**: Instructional videos play reliably in the browser over the camera feed, with idle loop and text overlays
@@ -128,7 +128,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Backend Extensions | 3/3 | Complete | 2026-03-05 |
-| 2. Frontend Foundation | 1/3 | In Progress | - |
+| 2. Frontend Foundation | 3/3 | Complete | 2026-03-05 |
 | 3. Video Overlay | 0/2 | Not started | - |
 | 4. Audio Pipeline | 0/2 | Not started | - |
 | 5. Workflow State Machine | 0/2 | Not started | - |

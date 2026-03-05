@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 02-03-PLAN.md (Keyboard shortcuts + Romanian UI strings)
-last_updated: "2026-03-05T10:06:12.201Z"
+stopped_at: Completed 02-02-PLAN.md (Status panel, entry log, snapshot thumbnails)
+last_updated: "2026-03-05T10:07:09.704Z"
 last_activity: 2026-03-05 — Completed 02-01 Vite scaffold + MJPEG + WebSocket
 progress:
   total_phases: 6
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 6
-  completed_plans: 5
+  completed_plans: 6
   percent: 33
 ---
 
@@ -55,6 +55,7 @@ Progress: [███-------] 33% (Phase 2)
 | Phase 01 P03 | 4min | 3 tasks | 6 files |
 | Phase 02 P01 | 4min | 2 tasks | 11 files |
 | Phase 02 P03 | 4min | 2 tasks | 6 files |
+| Phase 02 P02 | 5min | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -84,6 +85,8 @@ Recent decisions affecting current work:
 - [Phase 02]: event.code (not event.key) for physical key position matching regardless of keyboard layout
 - [Phase 02]: canvas.style.opacity for F3 overlay toggle preserves MJPEG fetch connection (display:none would break it)
 - [Phase 02]: Centralized RO constants object for Romanian UI strings instead of per-file inline text
+- [Phase 02]: Event log thumbnail at 320px/quality 50 separate from webhook 640/70 to keep WebSocket payload reasonable
+- [Phase 02]: Incremental entry log DOM updates via lastEventCount comparison instead of full table rebuild
 
 ### Pending Todos
 
@@ -98,6 +101,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-05T10:06:12.199Z
-Stopped at: Completed 02-03-PLAN.md (Keyboard shortcuts + Romanian UI strings)
+Last session: 2026-03-05T10:07:09.703Z
+Stopped at: Completed 02-02-PLAN.md (Status panel, entry log, snapshot thumbnails)
 Resume file: None

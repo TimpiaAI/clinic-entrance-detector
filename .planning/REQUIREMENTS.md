@@ -20,10 +20,10 @@ Requirements for the unified web platform release. Each maps to roadmap phases.
 
 - [x] **FEED-01**: Browser displays live MJPEG camera feed with bounding boxes, zones, and tripwire overlays
 - [x] **FEED-02**: Operator can toggle detection overlay visibility on/off via keyboard shortcut
-- [ ] **FEED-03**: Entry log table shows detected entries with timestamp, person ID, confidence score, and snapshot thumbnail
-- [ ] **FEED-04**: Status panel displays real-time metrics: FPS, active tracked people, total entries today, uptime, webhook status
+- [x] **FEED-03**: Entry log table shows detected entries with timestamp, person ID, confidence score, and snapshot thumbnail
+- [x] **FEED-04**: Status panel displays real-time metrics: FPS, active tracked people, total entries today, uptime, webhook status
 - [x] **FEED-05**: Entry log table updates in real-time via WebSocket (no page refresh needed)
-- [ ] **FEED-06**: Manual trigger keyboard shortcut fires a test entry event (for debugging)
+- [x] **FEED-06**: Manual trigger keyboard shortcut fires a test entry event (for debugging)
 
 ### Video Controller
 
@@ -129,10 +129,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | BACK-08 | Phase 1 | Complete |
 | FEED-01 | Phase 2 | Complete |
 | FEED-02 | Phase 2 | Complete |
-| FEED-03 | Phase 2 | Pending |
-| FEED-04 | Phase 2 | Pending |
+| FEED-03 | Phase 2 | Complete |
+| FEED-04 | Phase 2 | Complete |
 | FEED-05 | Phase 2 | Complete |
-| FEED-06 | Phase 2 | Pending |
+| FEED-06 | Phase 2 | Complete |
 | KEYS-01 | Phase 2 | Complete |
 | KEYS-02 | Phase 2 | Complete |
 | KEYS-03 | Phase 2 | Complete |
