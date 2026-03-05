@@ -9,11 +9,11 @@ Requirements for the unified web platform release. Each maps to roadmap phases.
 
 ### System Control
 
-- [ ] **CTRL-01**: Operator can start/stop the entire system (detector + workflow) with a single button click
-- [ ] **CTRL-02**: Operator can emergency-stop everything with a dedicated keyboard shortcut (Escape key)
-- [ ] **CTRL-03**: System auto-starts the detection pipeline when the web app loads
-- [ ] **CTRL-04**: Web app monitors detector process health and shows status (running/stopped/crashed)
-- [ ] **CTRL-05**: If detector process crashes, web app displays alert and offers restart
+- [x] **CTRL-01**: Operator can start/stop the entire system (detector + workflow) with a single button click
+- [x] **CTRL-02**: Operator can emergency-stop everything with a dedicated keyboard shortcut (Escape key)
+- [x] **CTRL-03**: System auto-starts the detection pipeline when the web app loads
+- [x] **CTRL-04**: Web app monitors detector process health and shows status (running/stopped/crashed)
+- [x] **CTRL-05**: If detector process crashes, web app displays alert and offers restart
 - [ ] **CTRL-06**: Computer does not sleep or turn off screen while system is active (Screen Wake Lock + OS-level wakepy)
 
 ### Video Feed & Detection Display
@@ -158,11 +158,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | WKFL-03 | Phase 5 | Complete |
 | WKFL-04 | Phase 5 | Complete |
 | WKFL-05 | Phase 5 | Complete |
-| CTRL-01 | Phase 5 | Pending |
-| CTRL-02 | Phase 5 | Pending |
-| CTRL-03 | Phase 5 | Pending |
-| CTRL-04 | Phase 5 | Pending |
-| CTRL-05 | Phase 5 | Pending |
+| CTRL-01 | Phase 5 | Complete |
+| CTRL-02 | Phase 5 | Complete |
+| CTRL-03 | Phase 5 | Complete |
+| CTRL-04 | Phase 5 | Complete |
+| CTRL-05 | Phase 5 | Complete |
 | CTRL-06 | Phase 6 | Pending |
 | KIOSK-01 | Phase 6 | Pending |
 | KIOSK-05 | Phase 6 | Pending |

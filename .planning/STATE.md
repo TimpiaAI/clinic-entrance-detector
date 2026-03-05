@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: in_progress
-stopped_at: Completed 05-01-PLAN.md (workflow state machine)
-last_updated: "2026-03-05T14:49:00Z"
-last_activity: 2026-03-05 — Completed 05-01 workflow state machine
+stopped_at: Completed 05-02-PLAN.md (system control)
+last_updated: "2026-03-05T14:56:01Z"
+last_activity: 2026-03-05 — Completed 05-02 system control orchestration
 progress:
   total_phases: 6
-  completed_phases: 4
+  completed_phases: 5
   total_plans: 12
-  completed_plans: 11
-  percent: 92
+  completed_plans: 12
+  percent: 100
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-05)
 
 **Core value:** When activated, the system reliably detects clinic entries, plays instructional videos, and captures patient data — all from a single browser window that never lets the computer sleep.
-**Current focus:** Phase 5 workflow state machine -- Plan 01 complete, Plan 02 next
+**Current focus:** Phase 5 complete -- ready for Phase 6 kiosk hardening
 
 ## Current Position
 
 Phase: 5 of 6 (Workflow State Machine)
-Plan: 1 of 2 in current phase
-Status: In Progress
-Last activity: 2026-03-05 — Completed 05-01 workflow state machine and webhook relay
+Plan: 2 of 2 in current phase (COMPLETE)
+Status: Phase 5 Complete
+Last activity: 2026-03-05 — Completed 05-02 system control orchestration
 
-Progress: [███████████] 100% (11/12 plans done)
+Progress: [████████████] 100% (12/12 plans done)
 
 ## Performance Metrics
 
@@ -61,6 +61,7 @@ Progress: [███████████] 100% (11/12 plans done)
 | Phase 04 P01 | 3min | 2 tasks | 6 files |
 | Phase 04 P02 | 1min | 2 tasks | 3 files |
 | Phase 05 P01 | 5min | 2 tasks | 8 files |
+| Phase 05 P02 | 3min | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -112,6 +113,10 @@ Recent decisions affecting current work:
 - [Phase 05]: show_* states are transient pass-through -- immediately transition to next ask step
 - [Phase 05]: Parent-dashboard mode: subprocess gets --no-dashboard + WEBHOOK_URL, parent relays via /trigger
 - [Phase 05]: v1 patient submission logs to Python logger -- no external webhook target configured
+- [Phase 05]: autoStart() starts detector + wake-lock + health monitor but NOT workflow -- F2 required for interaction cycle
+- [Phase 05]: Dual crash detection: 5s HTTP polling + WebSocket state diffing for fastest detection
+- [Phase 05]: emergencyStop() uses fire-and-forget API calls for immediate UI response
+- [Phase 05]: Person-entered events routed by workflow state: workflow when active, Phase 3 fallback when stopped
 
 ### Pending Todos
 
@@ -126,6 +131,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-05T14:44:16Z
-Stopped at: Completed 05-01-PLAN.md (workflow state machine)
+Last session: 2026-03-05T14:52:28Z
+Stopped at: Completed 05-02-PLAN.md (system control) -- Phase 5 complete
 Resume file: None
