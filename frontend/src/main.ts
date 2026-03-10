@@ -3,7 +3,7 @@
  * system control, and keyboard shortcuts together.
  */
 
-import { apiTestWebhook } from './api.ts';
+import { apiTestWebhook, apiSimulateEntry } from './api.ts';
 import { startMjpegCanvas } from './feed.ts';
 import { registerShortcut, initShortcuts } from './shortcuts.ts';
 import { updateState, setOnStateUpdate } from './state.ts';
@@ -34,6 +34,15 @@ document.addEventListener('DOMContentLoaded', () => {
   initVideo();
   initWorkflow();
   initSystemControl();
+
+  // --- Unmute video on first user interaction (click or keypress) ---
+  const unmuteOnce = () => {
+    onUserGesture();
+    document.removeEventListener('click', unmuteOnce);
+    document.removeEventListener('keydown', unmuteOnce);
+  };
+  document.addEventListener('click', unmuteOnce);
+  document.addEventListener('keydown', unmuteOnce);
 
   // --- Entry log container ---
   const logBody = document.getElementById('log-body') as HTMLTableSectionElement | null;
@@ -95,6 +104,14 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   initShortcuts();
+
+  // --- Trigger entry button ---
+  const triggerBtn = document.getElementById('trigger-entry-btn') as HTMLButtonElement | null;
+  if (triggerBtn) {
+    triggerBtn.addEventListener('click', async () => {
+      await apiSimulateEntry();
+    });
+  }
 
   // --- Auto-start detection pipeline on page load (CTRL-03) ---
   autoStart();

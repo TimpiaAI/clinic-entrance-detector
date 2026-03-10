@@ -1,12 +1,11 @@
 /**
- * Browser audio capture module.
+ * Browser audio capture with Deepgram real-time streaming transcription.
  *
- * Provides mic initialization (inside user gesture), MediaRecorder
- * stop-and-collect recording, and transcription via backend API.
+ * Streams mic audio via WebSocket to backend proxy -> Deepgram.
+ * Receives interim + final results live. Deepgram's utterance_end
+ * detection signals when the speaker has stopped.
  *
- * AudioContext is created once on first initAudio() call and reused.
- * MediaStream tracks are released after every recording to avoid
- * lingering mic indicator.
+ * Falls back to batch upload if streaming fails.
  */
 
 import { apiTranscribe } from './api.ts';
@@ -21,46 +20,41 @@ export type { TranscribeResult };
 let audioCtx: AudioContext | null = null;
 let micPermissionGranted = false;
 
-const RECORD_DURATION_MS = 10_000;
+/** Safety cap for streaming recording (ms). */
+const MAX_STREAM_MS = 20_000;
+
+// ---------------------------------------------------------------------------
+// Callback for live interim text updates
+// ---------------------------------------------------------------------------
+
+type InterimCallback = (text: string) => void;
+let _onInterim: InterimCallback | null = null;
+
+/**
+ * Register a callback to receive live interim transcription text.
+ * Called from workflow.ts to update UI in real-time as user speaks.
+ */
+export function onInterimTranscript(cb: InterimCallback): void {
+  _onInterim = cb;
+}
 
 // ---------------------------------------------------------------------------
 // Public API
 // ---------------------------------------------------------------------------
 
-/**
- * Check whether the browser supports getUserMedia (secure context guard).
- * Returns false on insecure origins or older browsers.
- */
 export function checkMicAvailability(): boolean {
   return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
 }
 
-/**
- * Create/resume AudioContext and request mic permission.
- *
- * MUST be called inside a user gesture handler (keydown, click) so that
- * AudioContext creation succeeds and the browser mic prompt appears.
- *
- * Requests a test getUserMedia stream and immediately releases it --
- * the actual recording stream is acquired in recordAndTranscribe().
- *
- * Returns true if mic permission was granted, false otherwise.
- */
 export async function initAudio(): Promise<boolean> {
-  // Create AudioContext once (user gesture required)
   if (!audioCtx) {
     audioCtx = new AudioContext();
   }
-
-  // Resume if suspended (browser policy)
   if (audioCtx.state === 'suspended') {
     await audioCtx.resume();
   }
-
-  // Request mic permission with a test stream
   try {
     const testStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    // Immediately release -- we only wanted the permission grant
     testStream.getTracks().forEach((t) => t.stop());
     micPermissionGranted = true;
     return true;
@@ -71,66 +65,220 @@ export async function initAudio(): Promise<boolean> {
   }
 }
 
-/**
- * Returns whether mic permission has been granted via initAudio().
- */
 export function isMicReady(): boolean {
   return micPermissionGranted;
 }
 
 /**
- * Record audio from the microphone and transcribe via backend.
+ * Record and transcribe using Deepgram real-time streaming.
  *
- * Uses the MediaRecorder stop-and-collect pattern:
- * 1. getUserMedia to get a fresh stream
- * 2. MediaRecorder.start() with no timeslice
- * 3. Wait for durationMs
- * 4. Stop recorder, collect blob from ondataavailable chunks
- * 5. Release mic tracks (no lingering indicator)
- * 6. POST blob to /api/transcribe via apiTranscribe
- *
- * @param durationMs  Recording duration in milliseconds (default 10s)
- * @param initialPrompt  Optional Whisper initial_prompt for improved accuracy
- * @returns Transcription result with text, cnp, email
+ * Opens a WebSocket to /ws/transcribe, streams PCM16 audio from mic,
+ * receives interim results (shown live) and waits for utterance_end
+ * to finalize. Returns the final transcript.
  */
 export async function recordAndTranscribe(
-  durationMs: number = RECORD_DURATION_MS,
-  initialPrompt?: string,
+  _durationMs?: number,
+  _initialPrompt?: string,
 ): Promise<TranscribeResult> {
-  // 1. Acquire mic stream
+  // Ensure AudioContext
+  if (!audioCtx) {
+    audioCtx = new AudioContext();
+  }
+  if (audioCtx.state === 'suspended') {
+    await audioCtx.resume();
+  }
+
+  // Acquire mic
   const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
-  // 2. Determine supported MIME type
+  try {
+    return await streamTranscribe(stream);
+  } catch (err) {
+    console.warn('audio: streaming failed, falling back to batch', err);
+    return batchTranscribe(stream, _initialPrompt);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Streaming implementation
+// ---------------------------------------------------------------------------
+
+function streamTranscribe(stream: MediaStream): Promise<TranscribeResult> {
+  return new Promise((resolve, reject) => {
+    const wsProto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const wsUrl = `${wsProto}//${window.location.host}/ws/transcribe`;
+    const ws = new WebSocket(wsUrl);
+    ws.binaryType = 'arraybuffer';
+
+    let finalText = '';
+    let lastInterim = '';
+    let resolved = false;
+    let speechHeard = false;
+
+    // AudioContext for resampling to 16kHz PCM16
+    const ctx = new AudioContext({ sampleRate: 16000 });
+    const source = ctx.createMediaStreamSource(stream);
+
+    // ScriptProcessor to capture raw PCM (4096 samples per chunk)
+    const processor = ctx.createScriptProcessor(4096, 1, 1);
+
+    function cleanup() {
+      try { processor.disconnect(); } catch {}
+      try { source.disconnect(); } catch {}
+      try { ctx.close(); } catch {}
+      stream.getTracks().forEach((t) => t.stop());
+      if (ws.readyState === WebSocket.OPEN) {
+        ws.close();
+      }
+    }
+
+    // Safety timeout
+    const timeout = setTimeout(() => {
+      if (!resolved) {
+        resolved = true;
+        cleanup();
+        resolve(buildResult(finalText || lastInterim));
+      }
+    }, MAX_STREAM_MS);
+
+    ws.onopen = () => {
+      console.log('audio: streaming WS connected');
+      source.connect(processor);
+      processor.connect(ctx.destination);
+
+      // Send PCM16 audio chunks
+      processor.onaudioprocess = (e) => {
+        if (ws.readyState !== WebSocket.OPEN) return;
+        const float32 = e.inputBuffer.getChannelData(0);
+        const int16 = new Int16Array(float32.length);
+        for (let i = 0; i < float32.length; i++) {
+          const s = Math.max(-1, Math.min(1, float32[i]));
+          int16[i] = s < 0 ? s * 0x8000 : s * 0x7FFF;
+        }
+        ws.send(int16.buffer);
+      };
+    };
+
+    ws.onmessage = (event) => {
+      try {
+        const msg = JSON.parse(event.data);
+
+        if (msg.type === 'transcript') {
+          const text = msg.text || '';
+
+          if (msg.is_final && text) {
+            finalText += (finalText ? ' ' : '') + text;
+            speechHeard = true;
+            if (_onInterim) _onInterim(finalText);
+          } else if (text) {
+            lastInterim = text;
+            speechHeard = true;
+            if (_onInterim) _onInterim(finalText + (finalText ? ' ' : '') + text);
+          }
+        }
+
+        if (msg.type === 'utterance_end' && speechHeard) {
+          // Speaker stopped — finalize
+          if (!resolved) {
+            resolved = true;
+            clearTimeout(timeout);
+            cleanup();
+            resolve(buildResult(finalText || lastInterim));
+          }
+        }
+      } catch {}
+    };
+
+    ws.onerror = (err) => {
+      console.error('audio: streaming WS error', err);
+      if (!resolved) {
+        resolved = true;
+        clearTimeout(timeout);
+        cleanup();
+        reject(err);
+      }
+    };
+
+    ws.onclose = () => {
+      if (!resolved) {
+        resolved = true;
+        clearTimeout(timeout);
+        cleanup();
+        resolve(buildResult(finalText || lastInterim));
+      }
+    };
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Batch fallback (old approach)
+// ---------------------------------------------------------------------------
+
+async function batchTranscribe(
+  stream: MediaStream,
+  initialPrompt?: string,
+): Promise<TranscribeResult> {
   const preferredMime = 'audio/webm;codecs=opus';
   const mimeType = MediaRecorder.isTypeSupported(preferredMime)
     ? preferredMime
     : 'audio/webm';
 
-  // 3. Create recorder (stop-and-collect -- no timeslice)
   const recorder = new MediaRecorder(stream, { mimeType });
   const chunks: Blob[] = [];
 
   recorder.ondataavailable = (e: BlobEvent) => {
-    if (e.data.size > 0) {
-      chunks.push(e.data);
-    }
+    if (e.data.size > 0) chunks.push(e.data);
   };
 
   recorder.start();
 
-  // 4. Wait for recording duration
-  await new Promise<void>((resolve) => setTimeout(resolve, durationMs));
+  // Simple 8-second recording for fallback
+  await new Promise<void>((resolve) => setTimeout(resolve, 8000));
 
-  // 5. Stop recorder and wait for onstop (collects final chunk)
   const blob = await new Promise<Blob>((resolve) => {
     recorder.onstop = () => {
-      // CRITICAL: Release mic tracks to remove lingering mic indicator
       stream.getTracks().forEach((t) => t.stop());
       resolve(new Blob(chunks, { type: mimeType }));
     };
     recorder.stop();
   });
 
-  // 6. Transcribe via backend
   return apiTranscribe(blob, initialPrompt);
+}
+
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+function buildResult(text: string): TranscribeResult {
+  return {
+    text,
+    cnp: extractCnp(text),
+    email: extractEmail(text),
+  };
+}
+
+function extractCnp(text: string): string | null {
+  const digits = text.replace(/[^0-9]/g, '');
+  if (digits.length >= 13) return digits.slice(0, 13);
+  if (digits.length >= 10) return digits;
+  return null;
+}
+
+function extractEmail(text: string): string | null {
+  let attempt = text.toLowerCase();
+  attempt = attempt.replace(/\s*(punct|dot|\.)\s*(com|ro|net|org|gmail|yahoo)/g, '.$2');
+  attempt = attempt.replace(/\s*(a rung|a run|arond|arong|aroon|arun|arung|@)\s*/g, '@');
+  attempt = attempt.replace(/\b(at|et|ad)\b/g, '@');
+
+  if (!attempt.includes('@')) return null;
+  const lastAt = attempt.lastIndexOf('@');
+  const domain = attempt.slice(lastAt + 1).replace(/\s/g, '').replace(/^\./, '');
+  if (!domain.includes('.')) return null;
+
+  const localTokens = attempt.slice(0, lastAt).trim().split(/\s+/);
+  const local = (localTokens[localTokens.length - 1] || '').replace(/\s/g, '').replace(/\.$/, '');
+  if (!local || !domain) return null;
+
+  return (local + '@' + domain).replace(/[^a-z0-9@._\-]/g, '') || null;
 }

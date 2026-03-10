@@ -205,6 +205,72 @@ export function showRecordingState(): void {
 }
 
 /**
+ * Update the recording status text with live interim transcription.
+ */
+export function updateRecordingInterim(text: string): void {
+  const statusText = document.getElementById('status-text');
+  if (statusText) statusText.textContent = text || RO.RECORDING;
+}
+
+/**
+ * Show editable input field for CNP or email during recording.
+ * The field updates live from voice and can be edited by keyboard.
+ */
+export function showEditableField(label: string, value?: string): void {
+  const container = document.getElementById('editable-field-container');
+  const labelEl = document.getElementById('editable-field-label');
+  const input = document.getElementById('editable-field-input') as HTMLInputElement | null;
+  const statusBar = document.getElementById('transcription-status');
+
+  // Hide the "Inregistrare..." bar for editable fields
+  if (statusBar) statusBar.style.display = 'none';
+
+  if (container) container.classList.add('visible');
+  if (labelEl) labelEl.textContent = label;
+  if (input) {
+    input.value = value || '';
+    input.classList.add('recording');
+    input.focus();
+  }
+}
+
+/**
+ * Update the editable field value (from live transcription).
+ * Only updates if the user hasn't manually edited (field still has recording class).
+ */
+export function updateEditableField(value: string): void {
+  const input = document.getElementById('editable-field-input') as HTMLInputElement | null;
+  if (input && input.classList.contains('recording')) {
+    input.value = value;
+  }
+}
+
+/**
+ * Get the current editable field value (may have been manually edited).
+ */
+export function getEditableFieldValue(): string {
+  const input = document.getElementById('editable-field-input') as HTMLInputElement | null;
+  return input?.value || '';
+}
+
+/**
+ * Hide the editable field and remove recording state.
+ */
+export function hideEditableField(): void {
+  const container = document.getElementById('editable-field-container');
+  const input = document.getElementById('editable-field-input') as HTMLInputElement | null;
+  const statusBar = document.getElementById('transcription-status');
+
+  if (container) container.classList.remove('visible');
+  if (input) {
+    input.classList.remove('recording');
+    input.value = '';
+  }
+  // Restore the status bar
+  if (statusBar) statusBar.style.display = '';
+}
+
+/**
  * Show processing state -- hide recording indicator, show "Procesare..." text.
  * Called when recording stops and audio is being sent to backend.
  */

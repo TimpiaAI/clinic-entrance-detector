@@ -13,6 +13,7 @@ import cv2
 
 from calibration.calibration_tool import run_calibration
 from config import Settings, load_settings
+from api.process_manager import set_embedded_mode
 from dashboard.web import DashboardServer, DashboardState, create_dashboard_app
 from detector.entry_analyzer import EntryAnalyzer, EntryEvent
 from detector.person_tracker import PersonTracker, TrackedPerson
@@ -347,6 +348,7 @@ def run() -> int:
 
     dashboard_server: DashboardServer | None = None
     if not args.no_dashboard:
+        set_embedded_mode()
         app = create_dashboard_app(
             state=dashboard_state,
             zone_manager=zone_manager,

@@ -63,7 +63,12 @@ async def release_wake_lock():
     if _keep_ctx is None:
         return {"status": "already_inactive"}
 
-    _keep_ctx.__exit__(None, None, None)
+    try:
+        _keep_ctx.__exit__(None, None, None)
+    except ValueError:
+        # wakepy uses ContextVar internally which fails across async boundaries.
+        # The lock is still released at the OS level when the context is discarded.
+        pass
     _keep_ctx = None
     _mode = None
     return {"status": "inactive"}

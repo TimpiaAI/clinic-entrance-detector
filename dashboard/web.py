@@ -136,7 +136,6 @@ def _templates() -> Jinja2Templates:
 def _stream_generator(state: DashboardState):
     boundary = b"--frame\r\n"
     while True:
-        snap = state.snapshot()
         frame_jpeg = state.frame_jpeg
         if frame_jpeg is None:
             time.sleep(0.1)
@@ -159,15 +158,18 @@ def create_dashboard_app(
     app.state.webhook_sender = webhook_sender
     app.state.analyzer = analyzer
 
-    @app.get("/", response_class=HTMLResponse)
-    async def index(request: Request) -> HTMLResponse:
-        return templates.TemplateResponse(
-            "index.html",
-            {
-                "request": request,
-                "dashboard_port": request.url.port,
-            },
-        )
+    # Only serve old Jinja templates when built frontend is missing (dev fallback)
+    frontend_dist = Path(__file__).resolve().parent.parent / "frontend_dist"
+    if not frontend_dist.is_dir():
+        @app.get("/", response_class=HTMLResponse)
+        async def index(request: Request) -> HTMLResponse:
+            return templates.TemplateResponse(
+                "index.html",
+                {
+                    "request": request,
+                    "dashboard_port": request.url.port,
+                },
+            )
 
     @app.get("/calibrate", response_class=HTMLResponse)
     async def calibrate_page(request: Request) -> HTMLResponse:
@@ -258,6 +260,19 @@ def create_dashboard_app(
         if not queued:
             raise HTTPException(status_code=429, detail="Webhook test rejected by cooldown or sender state")
         return JSONResponse(content={"status": "queued", "payload": payload})
+
+    # --- Simulate entry (direct dashboard injection, no external webhook) ---
+    @app.post("/api/simulate-entry")
+    async def simulate_entry() -> JSONResponse:
+        """Inject a fake person_entered event directly into dashboard state."""
+        state.push_event({
+            "event": "person_entered",
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "person_id": -1,
+            "confidence": 0.99,
+            "snapshot": "",
+        })
+        return JSONResponse(content={"status": "ok"})
 
     # --- Webhook relay for detector subprocess ---
     @app.post("/trigger")
@@ -350,6 +365,84 @@ def create_dashboard_app(
                 "Content-Length": str(length),
             },
         )
+
+    # --- Deepgram WebSocket proxy (streams mic audio to Deepgram, relays results back) ---
+    @app.websocket("/ws/transcribe")
+    async def ws_transcribe_proxy(ws: WebSocket):
+        """Proxy browser mic audio to Deepgram streaming API, relay results back."""
+        import websockets
+        import json
+        import logging
+        log = logging.getLogger("clinic_detector")
+
+        await ws.accept()
+
+        dg_key = os.getenv("DEEPGRAM_API_KEY", "")
+        dg_model = os.getenv("DEEPGRAM_MODEL", "nova-3")
+        dg_lang = os.getenv("DEEPGRAM_LANGUAGE", "ro")
+        dg_url = (
+            f"wss://api.deepgram.com/v1/listen"
+            f"?model={dg_model}&language={dg_lang}"
+            f"&punctuate=true&smart_format=true"
+            f"&interim_results=true&utterance_end_ms=1500"
+            f"&encoding=linear16&sample_rate=16000&channels=1"
+        )
+        headers = {"Authorization": f"Token {dg_key}"}
+
+        try:
+            async with websockets.connect(dg_url, additional_headers=headers) as dg_ws:
+                log.info("Deepgram streaming: connected")
+
+                async def forward_audio():
+                    """Forward audio chunks from browser to Deepgram."""
+                    try:
+                        while True:
+                            data = await ws.receive_bytes()
+                            await dg_ws.send(data)
+                    except Exception:
+                        # Client disconnected or done - send close to Deepgram
+                        await dg_ws.send(json.dumps({"type": "CloseStream"}))
+
+                async def forward_results():
+                    """Forward Deepgram results back to browser."""
+                    try:
+                        async for msg in dg_ws:
+                            parsed = json.loads(msg)
+                            msg_type = parsed.get("type", "")
+
+                            if msg_type == "Results":
+                                channel = parsed.get("channel", {})
+                                alts = channel.get("alternatives", [])
+                                if alts:
+                                    transcript = alts[0].get("transcript", "")
+                                    confidence = alts[0].get("confidence", 0)
+                                    is_final = parsed.get("is_final", False)
+                                    if transcript:
+                                        log.info("Deepgram stream: text=%r final=%s conf=%.3f",
+                                                 transcript, is_final, confidence)
+                                    await ws.send_json({
+                                        "type": "transcript",
+                                        "text": transcript,
+                                        "confidence": confidence,
+                                        "is_final": is_final,
+                                    })
+
+                            elif msg_type == "UtteranceEnd":
+                                log.info("Deepgram stream: utterance_end")
+                                await ws.send_json({"type": "utterance_end"})
+
+                    except Exception:
+                        pass
+
+                await asyncio.gather(forward_audio(), forward_results())
+
+        except Exception as e:
+            log.error("Deepgram streaming error: %s", e)
+        finally:
+            try:
+                await ws.close()
+            except Exception:
+                pass
 
     # --- StaticFiles mount for Vite frontend (BACK-01) ---
     # CRITICAL: Mount AFTER all API routes (first-match routing)

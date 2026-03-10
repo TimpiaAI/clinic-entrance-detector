@@ -34,7 +34,7 @@ export const RO = {
   SNAPSHOT: 'Captura',
 
   // Keyboard shortcuts hint
-  SHORTCUTS_HINT: 'F2: Start/Stop | F3: Overlay | F4: Test | Esc: Oprire urgenta',
+  SHORTCUTS_HINT: 'F2: Pornire/Oprire | F3: Suprapunere | F4: Testare | Esc: Oprire urgenta',
 
   // Connection status
   WS_CONNECTING: 'Se conecteaza...',
@@ -82,8 +82,8 @@ export const RO = {
   WORKFLOW_CONFIRM_CANCEL: 'Anuleaza',
 
   // System control
-  SYSTEM_START: 'Start',
-  SYSTEM_STOP: 'Stop',
+  SYSTEM_START: 'Pornire',
+  SYSTEM_STOP: 'Oprire',
   SYSTEM_STARTING: 'Se porneste...',
   SYSTEM_STOPPING: 'Se opreste...',
   CRASH_ALERT: 'Detectorul s-a oprit neasteptat!',

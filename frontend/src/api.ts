@@ -70,6 +70,10 @@ export function apiTestWebhook(): Promise<WebhookResponse> {
   return post<WebhookResponse>('/api/test-webhook');
 }
 
+export function apiSimulateEntry(): Promise<{ status: string }> {
+  return post<{ status: string }>('/api/simulate-entry');
+}
+
 export function apiWakeLockActivate(): Promise<WakeLockResponse> {
   return post<WakeLockResponse>('/api/system/wake-lock');
 }

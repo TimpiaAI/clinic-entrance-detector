@@ -326,6 +326,59 @@ body {
   margin-bottom: 6px;
 }
 
+/* Editable input field for CNP / email */
+/* Editable input field for CNP / email */
+.editable-field-container {
+  display: none;
+  margin-top: 12px;
+  width: 400px;
+  max-width: 90vw;
+}
+
+.editable-field-container.visible {
+  display: block;
+}
+
+.editable-field-label {
+  display: block;
+  font-size: 14px;
+  color: #aaa;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-align: center;
+}
+
+.editable-field-input {
+  width: 100%;
+  padding: 14px 20px;
+  font-size: 28px;
+  font-weight: 600;
+  font-family: monospace;
+  letter-spacing: 0.15em;
+  text-align: center;
+  border: 2px solid #444;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #4ade80;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.editable-field-input:focus {
+  border-color: #4ade80;
+}
+
+.editable-field-input.recording {
+  border-color: #ef4444;
+  animation: pulse-border 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-border {
+  0%, 100% { border-color: #ef4444; }
+  50% { border-color: #991b1b; }
+}
+
 .transcription-actions {
   display: none;
   margin-top: 12px;
@@ -409,7 +462,7 @@ body {
    ----------------------------------------------------------------------- */
 .system-toggle-btn {
   position: fixed;
-  bottom: 40px;
+  bottom: 76px;
   right: 12px;
   width: 276px;
   padding: 0.5rem 1.5rem;
@@ -425,6 +478,32 @@ body {
 .system-toggle-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+/* -----------------------------------------------------------------------
+   Trigger entry button
+   ----------------------------------------------------------------------- */
+.trigger-entry-btn {
+  position: fixed;
+  bottom: 40px;
+  right: 12px;
+  width: 276px;
+  padding: 0.5rem 1.5rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #e67e22;
+  color: white;
+  z-index: 31;
+}
+
+.trigger-entry-btn:hover {
+  background: #d35400;
+}
+
+.trigger-entry-btn:active {
+  background: #ba4a00;
 }
 
 /* -----------------------------------------------------------------------

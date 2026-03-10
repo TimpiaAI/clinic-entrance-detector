@@ -20,6 +20,10 @@
           <span id="recording-indicator" class="recording-indicator"></span>
           <span id="status-text"></span>
         </div>
+        <div id="editable-field-container" class="editable-field-container">
+          <label id="editable-field-label" class="editable-field-label"></label>
+          <input id="editable-field-input" class="editable-field-input" type="text" autocomplete="off" />
+        </div>
         <div id="transcription-result" class="transcription-result">
           <p id="result-text" class="result-text"></p>
           <p id="result-cnp" class="result-field"></p>
@@ -86,9 +90,10 @@
         </div>
       </div>
 
-      <button id="system-toggle-btn" class="system-toggle-btn">Start</button>
+      <button id="system-toggle-btn" class="system-toggle-btn">Pornire</button>
+      <button id="trigger-entry-btn" class="trigger-entry-btn">Simulare intrare</button>
 
-      <div id="shortcuts-hint">F2: Start/Stop | F3: Overlay | F4: Test | Esc: Oprire urgenta</div>
+      <div id="shortcuts-hint">F2: Pornire/Oprire | F3: Suprapunere | F4: Testare | Esc: Oprire urgenta</div>
     </div>
     <script type="module" src="/src/main.ts"></script>
   </body>

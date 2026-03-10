@@ -14,7 +14,7 @@
  */
 
 import { apiSubmitPatient } from './api.ts';
-import { recordAndTranscribe } from './audio.ts';
+import { recordAndTranscribe, onInterimTranscript } from './audio.ts';
 import type { EventLogEntry, PatientData, TranscribeResult, WorkflowState } from './types.ts';
 import {
   hideTranscriptionPanel,
@@ -22,6 +22,11 @@ import {
   showProcessingState,
   showRecordingState,
   showTranscriptionResult,
+  updateRecordingInterim,
+  showEditableField,
+  updateEditableField,
+  getEditableFieldValue,
+  hideEditableField,
 } from './ui.ts';
 import { hideVideo, playSingleVideo, showMarquee, hideMarquee, startIdleLoop } from './video.ts';
 import { RO } from './ro.ts';
@@ -34,16 +39,16 @@ import { RO } from './ro.ts';
 const STATE_TIMEOUTS: Partial<Record<WorkflowState, number>> = {
   greeting: 60_000,
   ask_name: 60_000,
-  recording_name: 25_000,       // 10s record + 15s buffer for transcription
+  recording_name: 50_000,       // 30s max record + 20s buffer for transcription
   show_name: 30_000,
   ask_question: 60_000,
-  recording_question: 25_000,
+  recording_question: 50_000,
   show_question: 30_000,
   ask_cnp: 60_000,
-  recording_cnp: 25_000,
+  recording_cnp: 50_000,
   show_cnp: 30_000,
   ask_email: 60_000,
-  recording_email: 25_000,
+  recording_email: 50_000,
   show_email: 30_000,
   confirm_all: 60_000,
   submitting: 30_000,
@@ -286,6 +291,27 @@ function executeRecordingState(state: WorkflowState): void {
   recordingCancelled = false;
   recordingActive = true;
 
+  // For CNP and email: show editable input field
+  const isEditable = state === 'recording_cnp' || state === 'recording_email';
+  if (isEditable) {
+    const label = state === 'recording_cnp' ? RO.CNP_LABEL : RO.EMAIL_LABEL;
+    showEditableField(label);
+  }
+
+  // Show live interim text as user speaks
+  onInterimTranscript((text) => {
+    updateRecordingInterim(text);
+    if (isEditable) {
+      // Extract digits for CNP, or clean email attempt
+      if (state === 'recording_cnp') {
+        const digits = text.replace(/[^0-9]/g, '');
+        if (digits) updateEditableField(digits);
+      } else {
+        updateEditableField(text);
+      }
+    }
+  });
+
   recordAndTranscribe(10_000, prompt)
     .then((result: TranscribeResult) => {
       recordingActive = false;
@@ -293,11 +319,28 @@ function executeRecordingState(state: WorkflowState): void {
       // Check if recording was cancelled (timeout or emergency stop)
       if (recordingCancelled) {
         recordingCancelled = false;
+        hideEditableField();
         return;
       }
 
       // Check we are still in the expected state (guard against race)
-      if (currentState !== state) return;
+      if (currentState !== state) {
+        hideEditableField();
+        return;
+      }
+
+      // For editable fields, override result with field value
+      if (isEditable) {
+        const fieldValue = getEditableFieldValue();
+        if (fieldValue) {
+          if (state === 'recording_cnp') {
+            result = { ...result, text: fieldValue, cnp: fieldValue };
+          } else {
+            result = { ...result, text: fieldValue, email: fieldValue };
+          }
+        }
+        hideEditableField();
+      }
 
       showProcessingState();
 
@@ -318,6 +361,7 @@ function executeRecordingState(state: WorkflowState): void {
     })
     .catch((err: unknown) => {
       recordingActive = false;
+      hideEditableField();
       console.error('workflow: recording failed', err);
 
       // On error, show empty result with retry option

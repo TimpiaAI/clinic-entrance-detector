@@ -205,6 +205,13 @@ export async function autoStart(): Promise<void> {
   try {
     await apiStartDetector();
     await apiWakeLockActivate();
+
+    // Initialize audio if not already ready
+    if (!isMicReady()) {
+      await initAudio();
+    }
+
+    startWorkflow(); // Start workflow so person_entered events trigger the flow
     startHealthMonitor();
     systemRunning = true;
     wasDetectorRunning = true;

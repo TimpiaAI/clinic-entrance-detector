@@ -17,8 +17,19 @@ from fastapi import APIRouter
 
 _detector_proc: subprocess.Popen | None = None
 _project_root = Path(__file__).resolve().parent.parent
+_embedded_mode: bool = False
 
 router = APIRouter(prefix="/api/process", tags=["process"])
+
+
+def set_embedded_mode() -> None:
+    """Mark the process manager as running inside main.py.
+
+    When embedded, main.py owns the camera and detection loop.
+    Start/stop become no-ops and status always reports running.
+    """
+    global _embedded_mode
+    _embedded_mode = True
 
 
 def start_detector() -> dict[str, Any]:
@@ -26,7 +37,11 @@ def start_detector() -> dict[str, Any]:
 
     Returns {"status": "started", "pid": int} on success,
     or {"status": "already_running", "pid": int} if already active.
+    In embedded mode, returns immediately since main.py is the detector.
     """
+    if _embedded_mode:
+        return {"status": "already_running", "pid": os.getpid()}
+
     global _detector_proc
     if _detector_proc is not None and _detector_proc.poll() is None:
         return {"status": "already_running", "pid": _detector_proc.pid}
@@ -47,7 +62,11 @@ def stop_detector() -> dict[str, Any]:
 
     Uses psutil to enumerate and terminate all child processes
     before the parent, then force-kills any survivors after timeout.
+    In embedded mode, returns a no-op since the detector is in-process.
     """
+    if _embedded_mode:
+        return {"status": "embedded_no_op"}
+
     global _detector_proc
     if _detector_proc is None or _detector_proc.poll() is not None:
         _detector_proc = None
@@ -74,7 +93,11 @@ def detector_status() -> dict[str, Any]:
     """Return current detector process state.
 
     Returns running status, PID, and exit code (if process has exited).
+    In embedded mode, always reports running with the current process PID.
     """
+    if _embedded_mode:
+        return {"running": True, "pid": os.getpid(), "exit_code": None}
+
     if _detector_proc is None:
         return {"running": False, "pid": None, "exit_code": None}
 
