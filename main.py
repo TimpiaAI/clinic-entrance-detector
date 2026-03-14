@@ -495,8 +495,7 @@ def run() -> int:
                     "snapshot": event_snapshot,
                 }
 
-                # Log person entry in signin system (does NOT trigger kiosk workflow)
-                # Kiosk workflow is triggered only by receptionist via /api/call-patient
+                # Log person entry in signin system
                 if signin_integrator is not None:
                     try:
                         signin_event = signin_integrator.on_person_entered(

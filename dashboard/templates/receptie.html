@@ -15,10 +15,8 @@
       position: fixed; inset: 0;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      gap: 30px;
-      background: #0a0a0a;
+      gap: 30px; background: #0a0a0a;
     }
-
     .call-btn {
       padding: 50px 100px;
       font-size: 48px; font-weight: 800;
@@ -45,15 +43,10 @@
       0%, 100% { box-shadow: 0 8px 40px rgba(255,143,0,0.4); }
       50% { box-shadow: 0 12px 60px rgba(255,143,0,0.6); }
     }
-
-    .status {
-      font-size: 18px; color: #666;
-      text-align: center;
-    }
+    .status { font-size: 18px; color: #666; text-align: center; }
     .status.busy { color: #ff8f00; }
     .status.connected { color: #4caf50; }
     .status.error { color: #f44336; }
-
     @media (max-width: 600px) {
       .call-btn { padding: 35px 60px; font-size: 28px; }
     }
@@ -69,33 +62,66 @@
     const btn = document.getElementById('call-btn');
     const status = document.getElementById('status');
 
-    let kioskBusy = false;
+    let busy = false;
     let queued = false;
+    // Timestamp of the call_patient event we sent, to track when kiosk processes it
+    let lastCallTimestamp = null;
 
-    // Monitor kiosk state via WebSocket
-    const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+    function resetToReady() {
+      busy = false;
+      queued = false;
+      lastCallTimestamp = null;
+      btn.textContent = 'Cheama Pacient';
+      btn.className = 'call-btn';
+      status.textContent = 'Sistem activ - apasati butonul';
+      status.className = 'status connected';
+    }
+
+    function showBusy() {
+      status.textContent = 'Pacient chemat - se proceseaza';
+      status.className = 'status busy';
+    }
+
+    function showQueued() {
+      btn.textContent = 'In asteptare...';
+      btn.className = 'call-btn waiting';
+      status.textContent = 'Pacient curent in curs - urmatorul va fi chemat automat';
+      status.className = 'status busy';
+    }
+
+    // WebSocket: monitor event log to detect when workflow finishes
     function connectWs() {
-      const ws = new WebSocket(`${proto}//${location.host}/ws`);
+      const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+      const ws = new WebSocket(proto + '//' + location.host + '/ws');
+
       ws.onopen = () => {
-        status.textContent = 'Sistem activ - apasati butonul';
-        status.className = 'status connected';
+        if (!busy) resetToReady();
       };
+
       ws.onmessage = (e) => {
         try {
           const data = JSON.parse(e.data);
-          // Check event log for workflow state
-          if (data.event_log && data.event_log.length > 0) {
-            const latest = data.event_log[0];
-            // If workflow started (greeting/recording), mark as busy
-            if (latest.event === 'call_patient' || latest.event === 'person_entered' || latest.event === 'signin_started') {
-              if (!kioskBusy) {
-                kioskBusy = true;
-                updateUI();
-              }
+          if (!data.event_log || !busy) return;
+
+          // Check: is the last call_patient event still the most recent?
+          // If a newer non-call event appeared AND enough time passed, workflow finished
+          const events = data.event_log;
+          const lastCall = events.find(ev => ev.event === 'call_patient');
+
+          if (lastCall && lastCallTimestamp && lastCall.timestamp === lastCallTimestamp) {
+            // Our call is still the latest call_patient event
+            // Check if enough time has passed (workflow greeting video ~10-30s)
+            const callTime = new Date(lastCallTimestamp).getTime();
+            const now = Date.now();
+            // After 30 seconds, assume the greeting played and workflow moved on
+            // The kiosk will handle the queue automatically
+            if (now - callTime > 30000) {
+              resetToReady();
             }
           }
         } catch(err) {}
       };
+
       ws.onclose = () => {
         status.textContent = 'Deconectat - se reconecteaza...';
         status.className = 'status error';
@@ -105,45 +131,43 @@
     }
     connectWs();
 
-    function updateUI() {
-      if (kioskBusy && queued) {
-        btn.textContent = 'In asteptare...';
-        btn.className = 'call-btn waiting';
-        status.textContent = 'Pacient curent in curs - urmatorul va fi chemat automat';
-        status.className = 'status busy';
-      } else if (kioskBusy) {
-        status.textContent = 'Pacient in curs de procesare';
-        status.className = 'status busy';
-      } else {
-        btn.textContent = 'Cheama Pacient';
-        btn.className = 'call-btn';
-        status.textContent = 'Sistem activ - apasati butonul';
-        status.className = 'status connected';
-      }
-    }
-
     btn.addEventListener('click', async () => {
+      if (busy && queued) return; // Already queued, ignore
+
       try {
         const res = await fetch('/api/call-patient', { method: 'POST' });
         const data = await res.json();
-        if (data.status === 'queued') {
-          if (kioskBusy) {
-            queued = true;
-          } else {
-            kioskBusy = true;
-          }
-          updateUI();
 
-          // Reset after timeout (workflow typically takes ~2-3 min max)
-          setTimeout(() => {
-            kioskBusy = false;
-            queued = false;
-            updateUI();
-          }, 180000);
+        if (data.status === 'queued') {
+          if (busy) {
+            queued = true;
+            showQueued();
+          } else {
+            busy = true;
+            lastCallTimestamp = new Date().toISOString();
+            showBusy();
+            // Auto-reset after 30s (greeting video duration)
+            setTimeout(() => {
+              if (queued) {
+                // There was a queued call - it will auto-play on kiosk
+                // Reset after another 30s
+                queued = false;
+                busy = true;
+                lastCallTimestamp = new Date().toISOString();
+                btn.textContent = 'Cheama Pacient';
+                btn.className = 'call-btn';
+                showBusy();
+                setTimeout(resetToReady, 30000);
+              } else {
+                resetToReady();
+              }
+            }, 30000);
+          }
         }
       } catch(err) {
         status.textContent = 'Eroare conexiune!';
         status.className = 'status error';
+        setTimeout(resetToReady, 3000);
       }
     });
   </script>

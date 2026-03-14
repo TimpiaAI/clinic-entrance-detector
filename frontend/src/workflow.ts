@@ -652,15 +652,36 @@ export function checkForCallPatient(eventLog: EventLogEntry[]): void {
 
   if (currentState === 'idle') {
     transition('greeting');
-  } else if (currentState !== 'stopped') {
+  } else if (currentState === 'stopped') {
+    // Auto-start workflow and trigger greeting
+    currentState = 'idle';
+    transition('greeting');
+  } else {
+    // Busy with current patient - queue it
     callPatientQueue++;
     console.log(`workflow: call_patient queued (queue=${callPatientQueue})`);
   }
 }
 
 /**
- * Detection-based triggering disabled — receptionist button only.
+ * Also check for person_entered + signin_started events (simulate entry).
  */
-export function checkForPersonEnteredWorkflow(_eventLog: EventLogEntry[]): void {
-  // no-op: workflow triggered only by call_patient from receptionist
+export function checkForPersonEnteredWorkflow(eventLog: EventLogEntry[]): void {
+  const latest = eventLog.find((e) => e.event === 'person_entered' || e.event === 'signin_started');
+  if (!latest) return;
+  if (latest.timestamp === lastCallPatientTimestamp) return;
+
+  // Treat person_entered same as call_patient
+  lastCallPatientTimestamp = latest.timestamp;
+
+  if (currentState === 'idle') {
+    transition('greeting');
+  } else if (currentState === 'stopped') {
+    currentState = 'idle';
+    transition('greeting');
+  } else {
+    callPatientQueue++;
+    console.log(`workflow: person_entered queued (queue=${callPatientQueue})`);
+  }
 }
+
