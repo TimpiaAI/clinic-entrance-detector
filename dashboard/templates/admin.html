@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clinic Admin</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #1a1a2e; color: #e0e0e0; padding: 20px; }
+  h1 { margin-bottom: 20px; color: #fff; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 1000px; }
+  .card { background: #16213e; border-radius: 12px; padding: 20px; }
+  .card h2 { font-size: 1.1em; color: #9ca3af; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; }
+  .stat { font-size: 1.4em; margin-bottom: 8px; }
+  .stat .label { color: #9ca3af; font-size: 0.7em; }
+  .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; }
+  .dot.green { background: #4ade80; }
+  .dot.red { background: #f87171; }
+  .dot.yellow { background: #facc15; }
+  .links { margin-top: 20px; display: flex; gap: 12px; flex-wrap: wrap; }
+  .links a {
+    display: inline-block; padding: 10px 20px; background: #0f3460; color: #e0e0e0;
+    text-decoration: none; border-radius: 8px; font-size: 0.95em;
+  }
+  .links a:hover { background: #1a4a8a; }
+  .btn { padding: 8px 18px; border: none; border-radius: 6px; cursor: pointer; font-size: 0.95em; margin-right: 8px; margin-top: 8px; }
+  .btn-trigger { background: #e94560; color: #fff; }
+  .btn-trigger:hover { background: #ff6b81; }
+</style>
+</head>
+<body>
+<h1>Clinic Entrance System — Admin</h1>
+<div class="grid">
+  <div class="card">
+    <h2>Detector</h2>
+    <div class="stat"><span class="dot" id="det-dot"></span><span id="det-status">—</span></div>
+    <div class="stat"><span class="label">FPS</span> <span id="det-fps">—</span></div>
+    <div class="stat"><span class="label">People</span> <span id="det-people">—</span></div>
+    <div class="stat"><span class="label">Entries today</span> <span id="det-entries">—</span></div>
+    <div class="stat"><span class="label">Uptime</span> <span id="det-uptime">—</span></div>
+  </div>
+  <div class="card">
+    <h2>Controller</h2>
+    <div class="stat"><span class="dot" id="ctrl-dot"></span><span id="ctrl-status">—</span></div>
+    <div class="stat"><span class="label">Video</span> <span id="ctrl-video">—</span></div>
+    <div class="stat"><span class="label">Workflow</span> <span id="ctrl-workflow">—</span></div>
+    <div class="stat"><span class="label">Player</span> <span id="ctrl-player">—</span></div>
+    <button class="btn btn-trigger" onclick="manualTrigger()">Manual Trigger</button>
+  </div>
+</div>
+<div class="links">
+  <a href="/">Dashboard</a>
+  <a href="/player" target="_blank">Player (fullscreen)</a>
+  <a href="/calibrate">Calibration</a>
+</div>
+<script>
+function formatUptime(s) {
+  if (!s && s !== 0) return '—';
+  var h = Math.floor(s / 3600);
+  var m = Math.floor((s % 3600) / 60);
+  var sec = Math.floor(s % 60);
+  return h + 'h ' + m + 'm ' + sec + 's';
+}
+
+function refresh() {
+  fetch('/api/admin/status').then(function(r) { return r.json(); }).then(function(data) {
+    var d = data.detector;
+    document.getElementById('det-dot').className = 'dot ' + (d.camera_connected ? 'green' : 'red');
+    document.getElementById('det-status').textContent = d.camera_connected ? 'Running' : 'Disconnected';
+    document.getElementById('det-fps').textContent = d.fps.toFixed(1);
+    document.getElementById('det-people').textContent = d.current_people;
+    document.getElementById('det-entries').textContent = d.entries_today;
+    document.getElementById('det-uptime').textContent = formatUptime(d.uptime_seconds);
+
+    var c = data.controller;
+    if (c) {
+      document.getElementById('ctrl-dot').className = 'dot ' + (c.running ? 'green' : 'yellow');
+      document.getElementById('ctrl-status').textContent = c.running ? 'Running' : 'Stopped';
+      document.getElementById('ctrl-video').textContent = c.current_video || '—';
+      document.getElementById('ctrl-workflow').textContent = c.workflow_status || '—';
+      document.getElementById('ctrl-player').textContent = c.player_connected ? 'Connected' : 'Disconnected';
+    } else {
+      document.getElementById('ctrl-dot').className = 'dot red';
+      document.getElementById('ctrl-status').textContent = 'Not enabled';
+      document.getElementById('ctrl-video').textContent = '—';
+      document.getElementById('ctrl-workflow').textContent = '—';
+      document.getElementById('ctrl-player').textContent = '—';
+    }
+  }).catch(function() {});
+}
+
+function manualTrigger() {
+  fetch('/api/trigger', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: '{}'})
+    .then(function(r) { return r.json(); })
+    .then(function(d) { alert('Trigger: ' + d.status); })
+    .catch(function(e) { alert('Error: ' + e); });
+}
+
+refresh();
+setInterval(refresh, 2000);
+</script>
+</body>
+</html>

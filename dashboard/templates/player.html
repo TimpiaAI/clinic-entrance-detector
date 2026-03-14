@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clinic Player</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; overflow: hidden; background: #000; cursor: none; }
+  #video-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #000;
+  }
+  #overlay {
+    position: absolute;
+    bottom: 8%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 3vw;
+    color: #fff;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    padding: 0.5em 1em;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    max-width: 90%;
+    word-wrap: break-word;
+  }
+  #overlay.visible { opacity: 1; }
+  #status {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #f44;
+  }
+  #status.connected { background: #4f4; }
+</style>
+</head>
+<body>
+<div id="video-container">
+  <video id="player" playsinline></video>
+  <div id="overlay"></div>
+  <div id="status"></div>
+</div>
+<script>
+(function() {
+  const player = document.getElementById('player');
+  const overlay = document.getElementById('overlay');
+  const statusDot = document.getElementById('status');
+  let ws = null;
+  let overlayTimer = null;
+
+  function connect() {
+    const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+    ws = new WebSocket(proto + '//' + location.host + '/ws/player');
+
+    ws.onopen = function() {
+      statusDot.classList.add('connected');
+      ws.send(JSON.stringify({event: 'player_ready'}));
+    };
+
+    ws.onclose = function() {
+      statusDot.classList.remove('connected');
+      setTimeout(connect, 2000);
+    };
+
+    ws.onerror = function() {
+      ws.close();
+    };
+
+    ws.onmessage = function(e) {
+      let msg;
+      try { msg = JSON.parse(e.data); } catch { return; }
+      handleCommand(msg);
+    };
+  }
+
+  function handleCommand(msg) {
+    if (msg.cmd === 'play') {
+      player.src = '/videos/' + msg.video;
+      player.loop = !!msg.loop;
+      player.play().catch(function(err) {
+        console.warn('Autoplay blocked, retrying muted:', err);
+        player.muted = true;
+        player.play();
+      });
+    } else if (msg.cmd === 'overlay') {
+      if (overlayTimer) { clearTimeout(overlayTimer); overlayTimer = null; }
+      overlay.textContent = msg.text || '';
+      overlay.classList.add('visible');
+      if (msg.duration_ms && msg.duration_ms > 0) {
+        overlayTimer = setTimeout(function() {
+          overlay.classList.remove('visible');
+        }, msg.duration_ms);
+      }
+    } else if (msg.cmd === 'overlay_hide') {
+      if (overlayTimer) { clearTimeout(overlayTimer); overlayTimer = null; }
+      overlay.classList.remove('visible');
+    }
+  }
+
+  player.addEventListener('ended', function() {
+    if (!player.loop && ws && ws.readyState === WebSocket.OPEN) {
+      ws.send(JSON.stringify({event: 'video_ended'}));
+    }
+  });
+
+  // Click to unmute (for browsers that block autoplay with sound)
+  document.body.addEventListener('click', function() {
+    if (player.muted) {
+      player.muted = false;
+    }
+  }, {once: true});
+
+  connect();
+})();
+</script>
+</body>
+</html>

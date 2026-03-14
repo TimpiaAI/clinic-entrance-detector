@@ -71,12 +71,12 @@ const RECORDING_PROMPTS: Record<string, string | undefined> = {
 
 /** Video filenames for each state. */
 const STATE_VIDEOS: Partial<Record<WorkflowState, string>> = {
-  greeting: 'video2.mp4',
+  greeting: 'CHEAMAPACIENT.mp4',
   ask_name: 'video3.mp4',
   ask_question: 'video6.mp4',
   ask_cnp: 'video7.mp4',
-  ask_phone: 'video7.mp4',
-  ask_email: 'video8.mp4',
+  ask_phone: 'NUMARTELEFON.mp4',
+  ask_email: 'ADRESADEMAIL.mp4',
   farewell: 'video4.mp4',
   final: 'video5.mp4',
 };
