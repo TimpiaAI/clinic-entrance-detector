@@ -71,7 +71,7 @@ const RECORDING_PROMPTS: Record<string, string | undefined> = {
 
 /** Video filenames for each state. */
 const STATE_VIDEOS: Partial<Record<WorkflowState, string>> = {
-  greeting: 'CHEAMAPACIENT.mp4',
+  greeting: 'video2.mp4',
   ask_name: 'video3.mp4',
   ask_question: 'video6.mp4',
   ask_cnp: 'video7.mp4',
@@ -536,10 +536,15 @@ function executeSubmitting(): void {
 // ---------------------------------------------------------------------------
 
 function executeFarewellIdle(): void {
-  // Open signature URL on tablet if available
+  // Push sign URL to backend so receptie page can open it on the tablet
   if (signUrl) {
-    console.log('workflow: opening sign URL on tablet:', signUrl);
-    window.open(signUrl, '_blank');
+    console.log('workflow: sign_url ready for receptie:', signUrl);
+    // Post to backend so receptie page picks it up via WebSocket
+    fetch('/api/sign-ready', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sign_url: signUrl }),
+    }).catch(() => {});
     signUrl = null;
   }
   hideMarquee();
@@ -643,6 +648,10 @@ let lastCallPatientTimestamp: string | null = null;
  * If workflow is idle -> start greeting immediately.
  * If workflow is busy -> queue it; auto-triggers when workflow returns to idle.
  */
+/**
+ * Receptionist "Cheama Pacient" button → just play CHEAMAPACIENT.mp4, nothing else.
+ * Does NOT start the recording workflow.
+ */
 export function checkForCallPatient(eventLog: EventLogEntry[]): void {
   const latest = eventLog.find((e) => e.event === 'call_patient');
   if (!latest) return;
@@ -650,29 +659,30 @@ export function checkForCallPatient(eventLog: EventLogEntry[]): void {
 
   lastCallPatientTimestamp = latest.timestamp;
 
-  if (currentState === 'idle') {
-    transition('greeting');
-  } else if (currentState === 'stopped') {
-    // Auto-start workflow and trigger greeting
-    currentState = 'idle';
-    transition('greeting');
-  } else {
-    // Busy with current patient - queue it
-    callPatientQueue++;
-    console.log(`workflow: call_patient queued (queue=${callPatientQueue})`);
+  // Only play video if not busy with a patient workflow
+  if (currentState === 'idle' || currentState === 'stopped') {
+    console.log('workflow: playing CHEAMAPACIENT video (call_patient)');
+    currentState = 'greeting'; // Block other triggers while video plays
+    playSingleVideo('CHEAMAPACIENT.mp4', () => {
+      // Video ended → back to idle loop, no workflow started
+      currentState = 'idle';
+      startIdleLoop();
+    });
   }
 }
 
+/** Timestamp of the last person_entered event processed. */
+let lastPersonEnteredTimestamp: string | null = null;
+
 /**
- * Also check for person_entered + signin_started events (simulate entry).
+ * Person detected entering → start full workflow (greeting → name → CNP → phone → email → etc).
  */
 export function checkForPersonEnteredWorkflow(eventLog: EventLogEntry[]): void {
   const latest = eventLog.find((e) => e.event === 'person_entered' || e.event === 'signin_started');
   if (!latest) return;
-  if (latest.timestamp === lastCallPatientTimestamp) return;
+  if (latest.timestamp === lastPersonEnteredTimestamp) return;
 
-  // Treat person_entered same as call_patient
-  lastCallPatientTimestamp = latest.timestamp;
+  lastPersonEnteredTimestamp = latest.timestamp;
 
   if (currentState === 'idle') {
     transition('greeting');

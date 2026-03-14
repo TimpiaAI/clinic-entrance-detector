@@ -64,8 +64,8 @@
 
     let busy = false;
     let queued = false;
-    // Timestamp of the call_patient event we sent, to track when kiosk processes it
     let lastCallTimestamp = null;
+    let lastSignTimestamp = null;
 
     function resetToReady() {
       busy = false;
@@ -101,21 +101,22 @@
       ws.onmessage = (e) => {
         try {
           const data = JSON.parse(e.data);
-          if (!data.event_log || !busy) return;
+          if (!data.event_log) return;
 
-          // Check: is the last call_patient event still the most recent?
-          // If a newer non-call event appeared AND enough time passed, workflow finished
           const events = data.event_log;
-          const lastCall = events.find(ev => ev.event === 'call_patient');
 
-          if (lastCall && lastCallTimestamp && lastCall.timestamp === lastCallTimestamp) {
-            // Our call is still the latest call_patient event
-            // Check if enough time has passed (workflow greeting video ~10-30s)
+          // Check for sign_ready event → open signature URL on this PC (tablet connected here)
+          const signEvent = events.find(ev => ev.event === 'sign_ready');
+          if (signEvent && signEvent.sign_url && signEvent.timestamp !== lastSignTimestamp) {
+            lastSignTimestamp = signEvent.timestamp;
+            console.log('Opening sign URL:', signEvent.sign_url);
+            window.open(signEvent.sign_url, '_blank');
+          }
+
+          // Auto-reset button after call video finishes (~30s)
+          if (busy && lastCallTimestamp) {
             const callTime = new Date(lastCallTimestamp).getTime();
-            const now = Date.now();
-            // After 30 seconds, assume the greeting played and workflow moved on
-            // The kiosk will handle the queue automatically
-            if (now - callTime > 30000) {
+            if (Date.now() - callTime > 30000) {
               resetToReady();
             }
           }

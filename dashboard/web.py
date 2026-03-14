@@ -180,6 +180,21 @@ def create_dashboard_app(
     async def receptie_page(request: Request) -> HTMLResponse:
         return templates.TemplateResponse("receptie.html", {"request": request})
 
+    @app.post("/api/sign-ready")
+    async def sign_ready(request: Request) -> JSONResponse:
+        """Kiosk notifies that patient data was submitted and sign URL is ready."""
+        data = await request.json()
+        sign_url = data.get("sign_url", "")
+        if sign_url:
+            state.push_event({
+                "event": "sign_ready",
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "person_id": -1,
+                "confidence": 1.0,
+                "sign_url": sign_url,
+            })
+        return JSONResponse(content={"status": "ok"})
+
     @app.post("/api/call-patient")
     async def call_patient() -> JSONResponse:
         """Receptionist triggers patient call. Pushed via WebSocket to kiosk."""

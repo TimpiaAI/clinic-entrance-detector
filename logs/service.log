@@ -1,0 +1,1394 @@
+{"timestamp": "2026-03-14T16:16:21.260930+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Loaded YOLO model", "model": "yolo11n.pt"}
+{"timestamp": "2026-03-14T16:16:22.252807+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Fetched 2 doctors"}
+{"timestamp": "2026-03-14T16:16:22.252807+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Signin: using configured doctors", "doctor_ids": [2, 3]}
+{"timestamp": "2026-03-14T16:16:22.397740+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Fetched 2 appointments for medic 2"}
+{"timestamp": "2026-03-14T16:16:22.509470+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Fetched 0 appointments for medic 3"}
+{"timestamp": "2026-03-14T16:16:22.509470+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Synced 2 appointments across 2 doctors"}
+{"timestamp": "2026-03-14T16:16:22.509470+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Signin system initialized", "doctors_count": 2, "appointments_count": 2, "last_sync": "2026-03-14T16:16:22.509470+00:00", "active_sessions": 0}
+{"timestamp": "2026-03-14T16:16:22.546411+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Dashboard started", "url": "http://0.0.0.0:8080", "calibration_url": "http://0.0.0.0:8080/calibrate"}
+INFO:     Started server process [10672]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+INFO:     192.168.0.191:61943 - "WebSocket /ws" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:61316 - "GET /api/signin/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61321 - "POST /api/call-patient HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61323 - "POST /api/simulate-entry HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61325 - "GET /receptie HTTP/1.1" 200 OK
+INFO:     192.168.0.195:61326 - "GET /receptie HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61331 - "POST /api/system/wake-lock HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59176 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59176 - "GET /assets/index-Boj9B0dr.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60249 - "GET /assets/index-B6L9jvYa.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60249 - "POST /api/process/start HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59176 - "GET /video_feed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60249 - "POST /api/system/wake-lock HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60960 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58017 - "WebSocket /ws" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:60960 - "GET /api/videos/CHEAMAPACIENT.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:60960 - "GET /api/videos/CHEAMAPACIENT.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:60960 - "GET /api/videos/CHEAMAPACIENT.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:60960 - "GET /api/videos/CHEAMAPACIENT.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:60960 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60960 - "GET /api/videos/video3.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:60249 - "GET /api/videos/video3.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:60249 - "GET /api/videos/video3.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:60249 - "GET /api/videos/video3.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:60249 - "POST /api/process/start HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60249 - "POST /api/system/wake-lock HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60249 - "GET /api/videos/video1.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:54159 - "GET / HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:54159 - "GET /api/videos/video1.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:64730 - "GET /video_feed HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     127.0.0.1:52596 - "POST /api/process/start HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59543 - "WebSocket /ws" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:52596 - "POST /api/system/wake-lock HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52596 - "GET /api/videos/CHEAMAPACIENT.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:52596 - "GET /api/videos/CHEAMAPACIENT.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:52596 - "GET /api/videos/CHEAMAPACIENT.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:52596 - "POST /api/process/start HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52596 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:52596 - "POST /api/system/wake-lock HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52596 - "POST /api/simulate-entry HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52596 - "POST /api/process/stop HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52596 - "POST /api/system/wake-lock/release HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52596 - "POST /api/process/start HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52596 - "POST /api/system/wake-lock HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52596 - "GET /api/videos/video1.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:52596 - "GET /api/videos/video1.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:52596 - "GET /api/videos/video1.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:52596 - "GET /api/videos/CHEAMAPACIENT.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:52596 - "GET /api/videos/CHEAMAPACIENT.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:52596 - "GET /api/videos/video3.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50239 - "GET /api/videos/video3.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50239 - "GET /api/videos/video3.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50239 - "GET /api/videos/video3.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:50239 - "GET /api/process/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50239 - "GET /api/videos/video1.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:58504 - "GET /api/videos/video1.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:58504 - "GET /api/videos/video1.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:58504 - "GET /api/videos/video1.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:63947 - "WebSocket /ws/transcribe" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:58504 - "GET /api/process/status HTTP/1.1" 200 OK
+{"timestamp": "2026-03-14T16:18:51.103312+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Deepgram streaming: connected"}
+INFO:     127.0.0.1:58504 - "GET /api/process/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49682 - "GET /api/process/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49682 - "GET /api/process/status HTTP/1.1" 200 OK
+WARNING not enough matching points
+INFO:     connection closed
+INFO:     127.0.0.1:49512 - "GET /api/process/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49512 - "GET /api/process/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49514 - "GET /api/state HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64227 - "GET /api/process/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64227 - "GET /api/process/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63480 - "GET /api/process/status HTTP/1.1" 200 OK
+{"timestamp": "2026-03-14T16:19:32.707909+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Entry detected (dual-zone)", "person_id": 22, "confidence": 0.632, "zone_a_seen": true, "zone_b_frames": 54, "tripwire_crossed": false, "details": {"bbox_growth_ratio": 1.4633, "y_movement_pixels": 8.0, "dwell_time_seconds": 14.7, "entry_zone_time": 14.7, "velocity_consistency": 0.333, "track_age": 14.92, "direction_scores": {"bbox_size": 0.25, "y_movement": 0.032, "dwell_time": 0.1, "tripwire": 0.0, "zone_cross": 0.25, "velocity": 0.0}}}
+{"timestamp": "2026-03-14T16:19:32.719068+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Person detected - waiting for name transcription", "person_id": 22, "confidence": 0.632}
+INFO:     127.0.0.1:63480 - "GET /api/process/status HTTP/1.1" 200 OK
+{"timestamp": "2026-03-14T16:19:37.735554+00:00", "level": "ERROR", "logger": "clinic_detector", "message": "Webhook exception", "person_id": 22, "error": "", "attempt": 1}
+INFO:     127.0.0.1:63480 - "GET /api/videos/CHEAMAPACIENT.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:55661 - "GET /api/videos/CHEAMAPACIENT.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:55661 - "GET /api/videos/CHEAMAPACIENT.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:55661 - "GET /api/videos/CHEAMAPACIENT.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:55661 - "GET /api/process/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55661 - "GET /api/videos/video3.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:55661 - "GET /api/videos/video3.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:55661 - "GET /api/videos/video3.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:55661 - "GET /api/videos/video3.mp4 HTTP/1.1" 206 Partial Content
+{"timestamp": "2026-03-14T16:19:44.750487+00:00", "level": "ERROR", "logger": "clinic_detector", "message": "Webhook exception", "person_id": 22, "error": "", "attempt": 2}
+INFO:     127.0.0.1:55661 - "GET /api/process/status HTTP/1.1" 200 OK
+{"timestamp": "2026-03-14T16:19:46.284349+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Entry detected (dual-zone)", "person_id": 23, "confidence": 0.7005, "zone_a_seen": true, "zone_b_frames": 5, "tripwire_crossed": false, "details": {"bbox_growth_ratio": 1.4528, "y_movement_pixels": 11.0, "dwell_time_seconds": 1.1, "entry_zone_time": 1.1, "velocity_consistency": 0.75, "track_age": 1.1, "direction_scores": {"bbox_size": 0.25, "y_movement": 0.044, "dwell_time": 0.0731, "tripwire": 0.0, "zone_cross": 0.25, "velocity": 0.0833}}}
+{"timestamp": "2026-03-14T16:19:46.298894+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Person detected - waiting for name transcription", "person_id": 23, "confidence": 0.7005}
+INFO:     127.0.0.1:55661 - "GET /api/videos/video1.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:57213 - "GET /api/videos/video1.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:57213 - "GET /api/videos/video1.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:58210 - "WebSocket /ws/transcribe" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:57213 - "GET /api/videos/video1.mp4 HTTP/1.1" 206 Partial Content
+{"timestamp": "2026-03-14T16:19:49.442997+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Deepgram streaming: connected"}
+{"timestamp": "2026-03-14T16:19:49.759969+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Deepgram stream: text='Bani.' final=True conf=0.858"}
+INFO:     127.0.0.1:57213 - "GET /api/process/status HTTP/1.1" 200 OK
+{"timestamp": "2026-03-14T16:19:51.254924+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Deepgram stream: utterance_end"}
+INFO:     connection closed
+{"timestamp": "2026-03-14T16:19:53.804139+00:00", "level": "ERROR", "logger": "clinic_detector", "message": "Webhook exception", "person_id": 22, "error": "", "attempt": 3}
+INFO:     127.0.0.1:64172 - "WebSocket /ws/transcribe" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:57213 - "GET /api/process/status HTTP/1.1" 200 OK
+{"timestamp": "2026-03-14T16:19:56.256021+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Deepgram streaming: connected"}
+{"timestamp": "2026-03-14T16:19:56.743534+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Deepgram stream: text='Voi chema.' final=True conf=0.819"}
+{"timestamp": "2026-03-14T16:19:57.560200+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Deepgram stream: text='Bun\u0103!' final=True conf=0.581"}
+{"timestamp": "2026-03-14T16:19:59.637195+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Deepgram stream: text='Rezar' final=False conf=0.203"}
+{"timestamp": "2026-03-14T16:19:59.648820+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Deepgram stream: utterance_end"}
+INFO:     connection closed
+{"timestamp": "2026-03-14T16:19:59.799304+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Deepgram stream: text='Rezar' final=True conf=0.203"}
+INFO:     127.0.0.1:57213 - "GET /api/videos/video6.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:57213 - "GET /api/videos/video6.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:57213 - "GET /api/videos/video6.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:57213 - "GET /api/videos/video6.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:57213 - "GET /api/process/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53338 - "GET /api/videos/video6.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:53338 - "GET /api/videos/video6.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:53338 - "GET /api/videos/video6.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:53338 - "GET /api/process/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53338 - "GET /api/videos/video1.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:51996 - "GET /api/videos/video1.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:51996 - "GET /api/videos/video1.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:60213 - "WebSocket /ws/transcribe" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:51996 - "GET /api/videos/video1.mp4 HTTP/1.1" 206 Partial Content
+{"timestamp": "2026-03-14T16:20:06.833417+00:00", "level": "ERROR", "logger": "clinic_detector", "message": "Webhook exception", "person_id": 22, "error": "", "attempt": 4}
+{"timestamp": "2026-03-14T16:20:07.548559+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Deepgram streaming: connected"}
+{"timestamp": "2026-03-14T16:20:08.217349+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Deepgram stream: text='La venit repede' final=False conf=0.826"}
+{"timestamp": "2026-03-14T16:20:09.957483+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Deepgram stream: text='Adresa unul.' final=False conf=0.485"}
+{"timestamp": "2026-03-14T16:20:10.262463+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Deepgram stream: text='Adresa unul.' final=True conf=0.486"}
+INFO:     127.0.0.1:51996 - "GET /api/process/status HTTP/1.1" 200 OK
+{"timestamp": "2026-03-14T16:20:12.052516+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Deepgram stream: utterance_end"}
+INFO:     connection closed
+{"timestamp": "2026-03-14T16:20:12.885265+00:00", "level": "ERROR", "logger": "clinic_detector", "message": "Webhook exception", "person_id": 23, "error": "", "attempt": 1}
+INFO:     127.0.0.1:51996 - "GET /api/videos/video7.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:51996 - "GET /api/videos/video7.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:51996 - "GET /api/videos/video7.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:51996 - "GET /api/videos/video7.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:51996 - "GET /api/videos/video7.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:51996 - "GET /api/videos/video7.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:51996 - "GET /api/videos/video7.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:51996 - "GET /api/videos/video7.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:51996 - "GET /api/videos/video7.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:51996 - "GET /api/videos/video7.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:51996 - "GET /api/videos/video7.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:51996 - "GET /api/videos/video7.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:51996 - "GET /api/videos/video7.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:51996 - "GET /api/videos/video7.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:51996 - "GET /api/videos/video7.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:51996 - "GET /api/videos/video7.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:51996 - "GET /api/videos/video7.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:51996 - "GET /api/videos/video7.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:51996 - "GET /api/videos/video7.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:51996 - "GET /api/process/status HTTP/1.1" 200 OK
+{"timestamp": "2026-03-14T16:20:19.926012+00:00", "level": "ERROR", "logger": "clinic_detector", "message": "Webhook exception", "person_id": 23, "error": "", "attempt": 2}
+INFO:     127.0.0.1:51996 - "GET /api/process/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51996 - "GET /api/videos/video1.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:53261 - "GET /api/videos/video1.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:53261 - "GET /api/videos/video1.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:62340 - "WebSocket /ws/transcribe" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:53261 - "GET /api/videos/video1.mp4 HTTP/1.1" 206 Partial Content
+{"timestamp": "2026-03-14T16:20:23.122941+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Deepgram streaming: connected"}
+INFO:     127.0.0.1:53261 - "GET /api/process/status HTTP/1.1" 200 OK
+{"timestamp": "2026-03-14T16:20:27.064519+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Deepgram stream: text='Nu putem deschide \u015fi aici programul \u0103sta.' final=False conf=0.503"}
+{"timestamp": "2026-03-14T16:20:29.060152+00:00", "level": "ERROR", "logger": "clinic_detector", "message": "Webhook exception", "person_id": 23, "error": "", "attempt": 3}
+INFO:     127.0.0.1:61807 - "GET /api/process/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61807 - "GET /api/process/status HTTP/1.1" 200 OK
+{"timestamp": "2026-03-14T16:20:40.962702+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Entry detected (dual-zone)", "person_id": 26, "confidence": 0.6, "zone_a_seen": true, "zone_b_frames": 7, "tripwire_crossed": false, "details": {"bbox_growth_ratio": 1.4894, "y_movement_pixels": -35.0, "dwell_time_seconds": 3.15, "entry_zone_time": 3.15, "velocity_consistency": 0.333, "track_age": 4.25, "direction_scores": {"bbox_size": 0.25, "y_movement": 0.0, "dwell_time": 0.1, "tripwire": 0.0, "zone_cross": 0.25, "velocity": 0.0}}}
+{"timestamp": "2026-03-14T16:20:40.972246+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Person detected - waiting for name transcription", "person_id": 26, "confidence": 0.6}
+INFO:     127.0.0.1:65526 - "GET /api/process/status HTTP/1.1" 200 OK
+INFO:     connection closed
+{"timestamp": "2026-03-14T16:20:42.083861+00:00", "level": "ERROR", "logger": "clinic_detector", "message": "Webhook exception", "person_id": 23, "error": "", "attempt": 4}
+INFO:     127.0.0.1:65526 - "GET /api/process/status HTTP/1.1" 200 OK
+{"timestamp": "2026-03-14T16:20:48.114251+00:00", "level": "ERROR", "logger": "clinic_detector", "message": "Webhook exception", "person_id": 26, "error": "", "attempt": 1}
+INFO:     127.0.0.1:65526 - "GET /api/process/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65526 - "GET /api/videos/NUMARTELEFON.mp4 HTTP/1.1" 206 Partial Content
+{"timestamp": "2026-03-14T16:20:55.138633+00:00", "level": "ERROR", "logger": "clinic_detector", "message": "Webhook exception", "person_id": 26, "error": "", "attempt": 2}
+INFO:     127.0.0.1:65526 - "GET /api/process/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65526 - "GET /api/videos/video1.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:62305 - "GET /api/videos/video1.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:62305 - "GET /api/videos/video1.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:62852 - "WebSocket /ws/transcribe" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:62305 - "GET /api/videos/video1.mp4 HTTP/1.1" 206 Partial Content
+{"timestamp": "2026-03-14T16:20:59.453506+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Deepgram streaming: connected"}
+INFO:     127.0.0.1:62305 - "GET /api/process/status HTTP/1.1" 200 OK
+{"timestamp": "2026-03-14T16:21:04.201366+00:00", "level": "ERROR", "logger": "clinic_detector", "message": "Webhook exception", "person_id": 26, "error": "", "attempt": 3}
+INFO:     127.0.0.1:62305 - "GET /api/process/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62305 - "GET /api/process/status HTTP/1.1" 200 OK
+{"timestamp": "2026-03-14T16:21:14.958733+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Deepgram stream: text='Deci,' final=True conf=0.648"}
+INFO:     127.0.0.1:61090 - "GET /api/process/status HTTP/1.1" 200 OK
+{"timestamp": "2026-03-14T16:21:16.724035+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Deepgram stream: utterance_end"}
+INFO:     connection closed
+{"timestamp": "2026-03-14T16:21:17.221562+00:00", "level": "ERROR", "logger": "clinic_detector", "message": "Webhook exception", "person_id": 26, "error": "", "attempt": 4}
+INFO:     127.0.0.1:61090 - "GET /api/process/status HTTP/1.1" 200 OK
+{"timestamp": "2026-03-14T16:21:22.643661+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Fetched 2 appointments for medic 2"}
+{"timestamp": "2026-03-14T16:21:22.693691+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Fetched 0 appointments for medic 3"}
+{"timestamp": "2026-03-14T16:21:22.693691+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Synced 2 appointments across 2 doctors"}
+{"timestamp": "2026-03-14T16:21:22.693691+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Appointments refreshed", "doctors_count": 2, "appointments_count": 2, "last_sync": "2026-03-14T16:21:22.693691+00:00", "active_sessions": 0}
+INFO:     127.0.0.1:62888 - "GET /api/process/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62888 - "GET /api/process/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55456 - "GET /api/process/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55456 - "GET /api/process/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61455 - "GET /api/process/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61455 - "GET /api/videos/video1.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:61455 - "GET /api/videos/video1.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:61455 - "GET /api/videos/video1.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:61455 - "GET /api/videos/CHEAMAPACIENT.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:61455 - "GET /api/videos/CHEAMAPACIENT.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:61455 - "GET /api/videos/CHEAMAPACIENT.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:61455 - "GET /api/videos/CHEAMAPACIENT.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:61455 - "GET /api/process/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61455 - "GET /api/videos/video3.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:61455 - "GET /api/videos/video3.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:61455 - "GET /api/videos/video3.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:61455 - "GET /api/videos/video3.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:61455 - "GET /api/process/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61455 - "GET /api/videos/video1.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:61455 - "GET /api/videos/video1.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:61455 - "GET /api/videos/video1.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:61455 - "GET /api/videos/video1.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:57616 - "WebSocket /ws/transcribe" [accepted]
+INFO:     connection open
+{"timestamp": "2026-03-14T16:21:59.335103+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Deepgram streaming: connected"}
+INFO:     127.0.0.1:61455 - "GET / HTTP/1.1" 304 Not Modified
+INFO:     connection closed
+INFO:     connection closed
+INFO:     127.0.0.1:61455 - "GET /assets/index-Boj9B0dr.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:61455 - "GET /assets/index-B6L9jvYa.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:61455 - "GET /video_feed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57042 - "POST /api/process/start HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57042 - "POST /api/system/wake-lock HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60463 - "WebSocket /ws" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:57042 - "GET /api/videos/CHEAMAPACIENT.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:54291 - "GET /api/videos/CHEAMAPACIENT.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:54291 - "GET /api/videos/CHEAMAPACIENT.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:54291 - "GET /api/videos/CHEAMAPACIENT.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:54291 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54291 - "POST /api/process/start HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54291 - "POST /api/system/wake-lock HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54291 - "POST /api/process/stop HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54291 - "POST /api/system/wake-lock/release HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54291 - "POST /api/process/start HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54291 - "POST /api/system/wake-lock HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54291 - "POST /api/process/stop HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54291 - "POST /api/system/wake-lock/release HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54291 - "POST /api/process/start HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54291 - "POST /api/system/wake-lock HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54291 - "POST /api/process/stop HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54291 - "POST /api/system/wake-lock/release HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54291 - "POST /api/process/start HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54291 - "POST /api/system/wake-lock HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54291 - "POST /api/simulate-entry HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54291 - "GET /api/videos/video3.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:64771 - "GET /api/videos/video3.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:64771 - "GET /api/videos/video3.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:64771 - "GET /api/videos/video3.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:64771 - "GET /api/process/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64771 - "GET /api/videos/video1.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:52431 - "GET /api/videos/video1.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:52431 - "GET /api/videos/video1.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:64015 - "WebSocket /ws/transcribe" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:52431 - "GET /api/videos/video1.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:52431 - "GET /api/process/status HTTP/1.1" 200 OK
+{"timestamp": "2026-03-14T16:22:19.367034+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Deepgram streaming: connected"}
+{"timestamp": "2026-03-14T16:22:21.833611+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Deepgram stream: text='M\u0103 rog de opri.' final=False conf=0.573"}
+INFO:     127.0.0.1:52431 - "GET /api/process/status HTTP/1.1" 200 OK
+WARNING not enough matching points
+INFO:     127.0.0.1:52431 - "GET /api/process/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55923 - "GET /api/process/status HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     127.0.0.1:55923 - "GET /api/process/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55923 - "GET /api/process/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55923 - "GET /api/process/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58416 - "GET /api/process/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58416 - "GET /api/process/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62183 - "GET /api/process/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62183 - "GET /api/videos/CHEAMAPACIENT.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:62183 - "GET /api/videos/CHEAMAPACIENT.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:62183 - "GET /api/videos/CHEAMAPACIENT.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:62183 - "GET /api/videos/CHEAMAPACIENT.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:62183 - "GET /api/process/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62183 - "GET /api/videos/video3.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:58903 - "GET /api/videos/video3.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:58903 - "GET /api/videos/video3.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:58903 - "GET /api/videos/video3.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:58903 - "GET /api/process/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58903 - "GET /api/videos/video1.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:58903 - "GET /api/videos/video1.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:58903 - "GET /api/videos/video1.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:58903 - "GET /api/videos/video1.mp4 HTTP/1.1" 206 Partial Content
+INFO:     127.0.0.1:62455 - "WebSocket /ws/transcribe" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:58903 - "GET /api/process/status HTTP/1.1" 200 OK
+{"timestamp": "2026-03-14T16:23:22.021654+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Deepgram streaming: connected"}
+INFO:     127.0.0.1:58903 - "GET /api/process/status HTTP/1.1" 200 OK
+{"timestamp": "2026-03-14T16:23:24.540084+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Deepgram stream: text='Facem o' final=False conf=0.818"}
+{"timestamp": "2026-03-14T16:23:25.339107+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Deepgram stream: text='Facem o stimulare dac\u0103 am acordat' final=False conf=0.923"}
+{"timestamp": "2026-03-14T16:23:25.815391+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Deepgram stream: text='Facem o stimulare dac\u0103 am acordat sau' final=True conf=0.923"}
+{"timestamp": "2026-03-14T16:23:25.856456+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Entry detected (dual-zone)", "person_id": 49, "confidence": 0.6, "zone_a_seen": true, "zone_b_frames": 6, "tripwire_crossed": false, "details": {"bbox_growth_ratio": 1.8624, "y_movement_pixels": -5.0, "dwell_time_seconds": 1.7, "entry_zone_time": 1.7, "velocity_consistency": 0.4, "track_age": 1.7, "direction_scores": {"bbox_size": 0.25, "y_movement": 0.0, "dwell_time": 0.1, "tripwire": 0.0, "zone_cross": 0.25, "velocity": 0.0}}}
+{"timestamp": "2026-03-14T16:23:25.870127+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Person detected - waiting for name transcription", "person_id": 49, "confidence": 0.6}
+{"timestamp": "2026-03-14T16:23:27.451102+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Deepgram stream: utterance_end"}
+INFO:     connection closed
+INFO:     127.0.0.1:52713 - "GET /api/process/status HTTP/1.1" 200 OK
+{"timestamp": "2026-03-14T16:23:30.877450+00:00", "level": "ERROR", "logger": "clinic_detector", "message": "Webhook exception", "person_id": 49, "error": "", "attempt": 1}
+INFO:     127.0.0.1:52713 - "GET /api/process/status HTTP/1.1" 200 OK
+{"timestamp": "2026-03-14T16:23:37.910844+00:00", "level": "ERROR", "logger": "clinic_detector", "message": "Webhook exception", "person_id": 49, "error": "", "attempt": 2}
+INFO:     127.0.0.1:52713 - "GET /api/process/status HTTP/1.1" 200 OK
+WARNING not enough matching points
+INFO:     127.0.0.1:50589 - "GET /api/process/status HTTP/1.1" 200 OK
+{"timestamp": "2026-03-14T16:23:46.940005+00:00", "level": "ERROR", "logger": "clinic_detector", "message": "Webhook exception", "person_id": 49, "error": "", "attempt": 3}
+INFO:     127.0.0.1:50589 - "GET /api/process/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50589 - "GET /api/process/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49393 - "GET /api/process/status HTTP/1.1" 200 OK
+{"timestamp": "2026-03-14T16:23:59.964738+00:00", "level": "ERROR", "logger": "clinic_detector", "message": "Webhook exception", "person_id": 49, "error": "", "attempt": 4}
+INFO:     127.0.0.1:49393 - "GET /api/process/status HTTP/1.1" 200 OK
+[Sat 03/14/2026 18:24:06.35] Detector stopped, restarting in 5 seconds... 
+[ WARN:0@119.952] global cap_msmf.cpp:477 `anonymous-namespace'::SourceReaderCB::OnReadSample videoio(MSMF): OnReadSample() is called with error status: -1072875772
+[ WARN:0@119.954] global cap_msmf.cpp:488 `anonymous-namespace'::SourceReaderCB::OnReadSample videoio(MSMF): async ReadSample() call is failed with error status: -1072875772
+[ WARN:1@119.954] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@120.004] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@120.055] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@120.105] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@120.156] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@120.208] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@120.260] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@120.313] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@120.374] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@120.572] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@120.623] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@120.675] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@120.726] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@121.021] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@121.130] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@121.181] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@121.232] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@121.295] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@121.346] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@121.396] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@121.446] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@121.501] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@121.551] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@121.602] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@121.706] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@121.757] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@121.812] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@121.981] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@122.116] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@122.167] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@122.232] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@122.284] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@122.335] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@122.386] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@122.437] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@122.488] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@122.554] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@122.615] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@122.667] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@122.717] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@122.768] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@122.897] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@122.947] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@122.998] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@123.049] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@123.105] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@123.158] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@123.212] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@123.263] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@123.330] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@123.381] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@123.432] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@123.483] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@123.534] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@123.584] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@123.635] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@123.686] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@123.737] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@123.796] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@124.135] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@124.188] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@124.238] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@124.289] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@124.339] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@124.390] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@124.442] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@124.544] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@124.671] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@124.723] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@124.827] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@124.878] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@124.936] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@124.998] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@125.049] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@125.100] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@125.151] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@125.201] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@125.252] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@125.304] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@125.359] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@125.418] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@125.470] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@125.555] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@125.626] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@125.839] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@125.897] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@125.949] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@126.000] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@126.059] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@126.136] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@126.194] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@126.266] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@126.336] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@126.469] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@126.534] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@126.620] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@126.677] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@126.728] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@126.778] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@126.829] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@126.887] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@127.155] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@127.208] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@127.265] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@127.316] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@127.367] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@127.417] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@127.468] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@127.519] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@127.569] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@127.620] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@127.670] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@127.721] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@127.772] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@127.822] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@127.877] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@127.928] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@127.982] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@128.033] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@128.084] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@128.146] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@128.197] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@128.280] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@128.375] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@128.437] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@128.503] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@128.554] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@128.606] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@128.656] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@128.707] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@128.757] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@128.808] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@128.871] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@128.932] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@128.994] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@129.051] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@129.104] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@129.155] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@129.206] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@129.264] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@129.316] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@129.368] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@129.426] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@129.482] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@129.533] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@129.583] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@129.633] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@129.686] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@129.738] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@129.788] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@129.839] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@129.961] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@130.034] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@130.088] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@130.144] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@130.205] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@130.258] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@130.319] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@130.370] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@130.421] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@130.472] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@130.523] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@130.576] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@130.626] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@130.678] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@130.730] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@130.782] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@130.846] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@130.902] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@130.966] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@131.029] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@131.202] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@131.272] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@131.339] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@131.390] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@131.442] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@131.493] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@131.544] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@131.594] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@131.645] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@131.696] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@131.750] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@131.811] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@131.862] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@131.914] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@131.972] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@132.031] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@132.084] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@132.136] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@132.205] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@132.267] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@132.330] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@132.387] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@132.442] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@132.493] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@132.544] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@132.594] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@132.644] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+{"timestamp": "2026-03-14T16:26:20.202615+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Loaded YOLO model", "model": "yolo11n.pt"}
+[ WARN:1@132.696] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@132.751] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@132.830] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@133.223] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@133.282] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@133.336] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@133.387] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@133.440] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@133.495] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@133.547] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@133.600] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@133.654] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@133.706] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@133.757] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@133.808] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@133.862] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@133.913] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@133.965] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@134.015] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@134.066] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@134.118] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@134.170] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@134.220] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@134.272] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@134.322] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@134.372] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@134.423] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@134.473] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@134.523] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@134.574] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@134.624] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@134.675] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@134.725] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@134.777] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@134.828] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@134.878] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@134.929] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@134.980] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@135.030] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@135.081] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@135.131] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@135.181] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@135.232] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@135.282] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@135.333] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@135.383] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@135.434] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@135.484] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@135.535] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@135.587] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@135.638] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@135.691] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@135.742] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@135.792] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@135.842] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@135.900] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@135.958] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@136.178] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@136.228] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@136.279] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@136.329] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@136.380] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@136.430] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@136.481] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@136.532] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@136.583] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@136.634] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@136.684] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@136.735] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@136.786] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@136.836] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@136.887] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@136.937] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@136.988] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@137.039] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@137.089] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@137.140] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@137.191] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@137.242] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@137.292] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@137.343] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@137.394] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@137.444] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@137.494] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@137.545] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@137.596] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@137.646] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@137.696] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@137.747] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@137.797] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@137.853] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@137.903] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@137.954] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@138.004] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@138.055] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@138.107] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@138.157] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@138.208] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@138.258] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@138.309] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@138.359] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+{"timestamp": "2026-03-14T16:26:25.901373+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Fetched 2 doctors"}
+{"timestamp": "2026-03-14T16:26:25.905731+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Signin: using configured doctors", "doctor_ids": [2, 3]}
+[ WARN:1@138.409] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@138.462] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+{"timestamp": "2026-03-14T16:26:25.977525+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Fetched 2 appointments for medic 2"}
+[ WARN:1@138.513] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@138.563] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@138.614] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@138.664] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+{"timestamp": "2026-03-14T16:26:26.174033+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Fetched 0 appointments for medic 3"}
+{"timestamp": "2026-03-14T16:26:26.174033+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Synced 2 appointments across 2 doctors"}
+{"timestamp": "2026-03-14T16:26:26.174033+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Signin system initialized", "doctors_count": 2, "appointments_count": 2, "last_sync": "2026-03-14T16:26:26.174033+00:00", "active_sessions": 0}
+[ WARN:1@138.723] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+{"timestamp": "2026-03-14T16:26:26.235957+00:00", "level": "INFO", "logger": "clinic_detector", "message": "Dashboard started", "url": "http://0.0.0.0:8080", "calibration_url": "http://0.0.0.0:8080/calibrate"}
+[ WARN:1@138.775] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+INFO:     Started server process [4192]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    [Errno 10048] error while attempting to bind on address ('0.0.0.0', 8080): only one usage of each socket address (protocol/network address/port) is normally permitted
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+[ WARN:1@138.826] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@138.878] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@138.938] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@139.008] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@139.081] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@139.148] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@139.199] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@139.249] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@139.302] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@139.353] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@139.404] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@139.454] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@139.505] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@139.555] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@139.606] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@139.657] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@139.707] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@139.758] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@139.808] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@139.859] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@139.910] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@139.961] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@140.011] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@140.062] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@140.112] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@140.163] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@140.214] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@140.264] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@140.315] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@140.365] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@140.416] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@140.466] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@140.517] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@140.568] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@140.618] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@140.669] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@140.719] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@140.770] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@140.820] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@140.871] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@140.922] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@140.973] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@141.023] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@141.073] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@141.124] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@141.175] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@141.225] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@141.276] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@141.326] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@141.377] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@141.427] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@141.477] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@141.528] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@141.578] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@141.629] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@141.680] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@141.730] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@141.780] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@141.831] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@141.886] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@141.938] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@141.989] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@142.048] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@142.110] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@142.166] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@142.217] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@142.386] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@142.436] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@142.487] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@142.537] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@142.588] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@142.638] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@142.688] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@142.739] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@142.789] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@142.841] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@142.891] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@142.942] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@142.992] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@143.043] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@143.094] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@143.144] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@143.195] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@143.245] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@143.296] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@143.347] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@143.397] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@143.448] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@143.498] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@143.549] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@143.599] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@143.650] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@143.700] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@143.750] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@143.801] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@143.851] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@143.903] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@143.954] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@144.004] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@144.055] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@144.105] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@144.156] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@144.206] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@144.256] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@144.307] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@144.357] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@144.407] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@144.458] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@144.508] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@144.559] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@144.609] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@144.660] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@144.710] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@144.761] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@144.811] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@144.863] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@144.961] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@145.030] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@145.083] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@145.137] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@145.188] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@145.238] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@145.289] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@145.340] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@145.390] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@145.441] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@145.491] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@145.542] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@145.592] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@145.643] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@145.693] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@145.745] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@145.795] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@145.846] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@145.897] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@145.947] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@145.998] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@146.049] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@146.099] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@146.150] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@146.200] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@146.251] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@146.301] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@146.352] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@146.402] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@146.453] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@146.503] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@146.554] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@146.605] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@146.655] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@146.706] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@146.756] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@146.806] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@146.857] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@146.907] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@146.958] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@147.009] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@147.059] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@147.110] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@147.160] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@147.211] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@147.261] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@147.312] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@147.362] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@147.412] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@147.464] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@147.514] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@147.565] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@147.616] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@147.666] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@147.717] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@147.767] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@147.818] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@147.869] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@147.975] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@148.032] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@148.083] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@148.153] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@148.205] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@148.255] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@148.305] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@148.356] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@148.406] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@148.457] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@148.507] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@148.558] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@148.608] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@148.659] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@148.709] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@148.761] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@148.812] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@148.863] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@148.913] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@148.964] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@149.014] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@149.065] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@149.115] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@149.166] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@149.216] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@149.267] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@149.317] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@149.368] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@149.418] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@149.470] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@149.520] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@149.570] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@149.621] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@149.671] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@149.722] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@149.772] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@149.823] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@149.873] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@149.924] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@149.974] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@150.025] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@150.075] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@150.125] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@150.176] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@150.227] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@150.277] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@150.328] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@150.378] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@150.429] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@150.480] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@150.531] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@150.581] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@150.632] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@150.683] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@150.733] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@150.784] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@150.834] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@150.885] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@150.960] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@151.013] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@151.064] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@151.119] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@151.180] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@151.232] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@151.284] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@151.336] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@151.387] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@151.442] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@151.492] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@151.543] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@151.593] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@151.664] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@151.723] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@151.818] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@151.899] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@152.089] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@152.146] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@152.199] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@152.252] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@152.302] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@152.359] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@152.409] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@152.460] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@152.512] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@152.571] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@152.628] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@152.680] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@152.733] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@152.823] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@152.881] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@152.932] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@152.982] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@153.033] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@153.083] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@153.133] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@153.183] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@153.238] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@153.289] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@153.339] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@153.401] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@153.453] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@153.504] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@153.555] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@153.606] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@153.810] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@153.865] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@153.970] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@154.029] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@154.098] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@154.152] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@154.203] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@154.255] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@154.306] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@154.356] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@154.407] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@154.457] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@154.508] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@154.559] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@154.609] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@154.660] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@154.711] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@154.762] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@154.812] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@154.863] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@154.913] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@154.964] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@155.015] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@155.065] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@155.116] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@155.166] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@155.217] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@155.267] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@155.318] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@155.368] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@155.418] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@155.469] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@155.520] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@155.570] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@155.621] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@155.671] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@155.722] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@155.772] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@155.823] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@155.874] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@155.924] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@155.978] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@156.029] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@156.080] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@156.130] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@156.180] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@156.231] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@156.282] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@156.332] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@156.383] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@156.433] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@156.484] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@156.534] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@156.584] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@156.635] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@156.686] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@156.736] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@156.786] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@156.837] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@156.905] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@156.983] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@157.041] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@157.094] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@157.149] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@157.205] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@157.256] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@157.306] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@157.357] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@157.407] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@157.458] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@157.509] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@157.559] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@157.609] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@157.660] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@157.711] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@157.764] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@157.827] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@157.936] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@158.053] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@158.166] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@158.220] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@158.271] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@158.322] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@158.373] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@158.424] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@158.474] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@158.524] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@158.575] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@158.625] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@158.677] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@158.728] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@158.778] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@158.828] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@158.879] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@158.930] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@159.032] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@159.109] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@159.164] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@159.214] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@159.265] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@159.315] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@159.366] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@159.428] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@159.479] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@159.529] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@159.580] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@159.630] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@159.681] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@159.732] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@159.783] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@159.833] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@159.941] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@160.021] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@160.102] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@160.172] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@160.226] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@160.277] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@160.327] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@160.378] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@160.428] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@160.479] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@160.529] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@160.580] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@160.630] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@160.681] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@160.731] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@160.781] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@160.832] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@160.882] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@160.933] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@160.983] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@161.034] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@161.084] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@161.135] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@161.185] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@161.236] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@161.286] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@161.336] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@161.387] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@161.438] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@161.488] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@161.538] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@161.589] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@161.639] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@161.690] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@161.740] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@161.791] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@161.841] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@161.891] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@161.942] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@161.992] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@162.043] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@162.093] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@162.144] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@162.194] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@162.245] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@162.295] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@162.346] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@162.396] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@162.447] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@162.497] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@162.548] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@162.598] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@162.648] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@162.699] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@162.749] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@162.800] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@162.852] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@162.903] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@162.964] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@163.271] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@163.321] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@163.372] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@163.423] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@163.474] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@163.524] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@163.574] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@163.625] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@163.675] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@163.726] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@163.776] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@163.827] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@163.877] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@163.928] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@163.978] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@164.028] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@164.079] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@164.130] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@164.180] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@164.231] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@164.281] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@164.332] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@164.382] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@164.432] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@164.483] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@164.533] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@164.583] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@164.634] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@164.685] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@164.735] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@164.786] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@164.836] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@164.887] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@164.938] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@164.988] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@165.038] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@165.089] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@165.140] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@165.191] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@165.242] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@165.292] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@165.342] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@165.393] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@165.443] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@165.494] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@165.544] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@165.595] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@165.645] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@165.696] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@165.746] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@165.796] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@165.852] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@165.906] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@166.032] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@166.083] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@166.164] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@166.222] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@166.272] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@166.322] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@166.373] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@166.423] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@166.474] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@166.524] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@166.575] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@166.625] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@166.676] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@166.726] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@166.777] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@166.827] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@166.878] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@166.928] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@166.979] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@167.030] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@167.081] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@167.132] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@167.182] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@167.232] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@167.283] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@167.333] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@167.384] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@167.434] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@167.485] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@167.535] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@167.586] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@167.637] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@167.687] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@167.737] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@167.788] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@167.838] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@167.889] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@167.939] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@167.990] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@168.041] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@168.091] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@168.143] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@168.194] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@168.244] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@168.294] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@168.345] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@168.395] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@168.446] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@168.496] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@168.547] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@168.597] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@168.647] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@168.698] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@168.748] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@168.799] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@168.849] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@168.902] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@168.959] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@169.011] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@169.068] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@169.170] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@169.221] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@169.271] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@169.322] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@169.372] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@169.423] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@169.473] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@169.524] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@169.575] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@169.625] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@169.676] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@169.726] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@169.777] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@169.828] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@169.878] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@169.929] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@169.981] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@170.031] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@170.083] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@170.134] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@170.184] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@170.234] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@170.284] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@170.335] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@170.386] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@170.437] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@170.488] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@170.539] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@170.589] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@170.639] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@170.690] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@170.740] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@170.790] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@170.842] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@170.893] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@170.943] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@170.993] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@171.044] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@171.094] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@171.145] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@171.195] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@171.245] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@171.296] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@171.346] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@171.529] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@171.601] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@171.651] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@171.702] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@171.752] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@171.803] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@171.860] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@171.917] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@171.993] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@172.273] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@172.323] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@172.374] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@172.427] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@172.478] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@172.528] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@172.579] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@172.629] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@172.680] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@172.730] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@172.780] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@172.831] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@172.882] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@172.932] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@172.982] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@173.033] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@173.083] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@173.134] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@173.184] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@173.235] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@173.286] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@173.336] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@173.386] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@173.437] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@173.488] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@173.538] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@173.589] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@173.639] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@173.690] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@173.740] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@173.790] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@173.841] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@173.891] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@173.943] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@173.993] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@174.044] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@174.094] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@174.145] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@174.195] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@174.246] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@174.297] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@174.347] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@174.398] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@174.448] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@174.499] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@174.549] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@174.600] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@174.650] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@174.700] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@174.751] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@174.801] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@174.851] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@174.903] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@174.956] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@175.010] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@175.105] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@175.161] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@175.212] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@175.262] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@175.312] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@175.363] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@175.413] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@175.463] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@175.514] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@175.564] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@175.614] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@175.665] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@175.716] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@175.766] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@175.816] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@175.867] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@175.917] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@175.967] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@176.018] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@176.068] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@176.119] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@176.169] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@176.219] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@176.270] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@176.320] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@176.371] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@176.421] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@176.472] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@176.522] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@176.574] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@176.624] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@176.675] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@176.726] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@176.906] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@176.960] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@177.011] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@177.066] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@177.118] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@177.168] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@177.370] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@177.482] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@177.623] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@177.673] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@177.739] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@177.789] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@177.840] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@178.213] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@178.264] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@178.314] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@178.367] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@178.427] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@178.478] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@179.059] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@179.115] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@179.170] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@179.251] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@179.319] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@179.411] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@179.461] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@179.521] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@179.575] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@179.634] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@179.695] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772
+[ WARN:1@179.746] global cap_msmf.cpp:1815 CvCapture_MSMF::grabFrame videoio(MSMF): can't grab frame. Error: -1072875772

@@ -120,15 +120,15 @@ class FunctieAPIClient:
             pass
 
     def _find_latest_presentation(self, first_name: str, last_name: str) -> int | None:
-        """Scrape the web interface to find the latest presentation ID for a patient.
+        """Scrape the web interface to find the latest presentation ID.
 
         Used as fallback when createPresentation API returns 500 but still creates
-        the presentation in the database.
+        the presentation in the database. Gets ALL latest presentations and
+        returns the highest ID (most recently created).
         """
         import re
         try:
             web = httpx.Client(follow_redirects=True, timeout=10.0)
-            # Login
             login_page = web.get("https://citobiomed.consultadoctor.ro/accounts/login/")
             csrf_match = re.search(r'csrfmiddlewaretoken" value="([^"]+)', login_page.text)
             if not csrf_match:
@@ -140,18 +140,15 @@ class FunctieAPIClient:
                 headers={"Referer": "https://citobiomed.consultadoctor.ro/accounts/login/"},
                 follow_redirects=False,
             )
-            # Search for the patient
-            search_name = f"{first_name} {last_name}".strip()
-            sr = web.get(f"https://citobiomed.consultadoctor.ro/ambulatory/presentations/search?name={first_name}")
+            # Get ALL latest presentations (no name filter) and return highest ID
+            sr = web.get("https://citobiomed.consultadoctor.ro/ambulatory/presentations/search")
             pres_ids = re.findall(r'/ambulatory/presentations/(\d+)', sr.text)
+            web.close()
             if pres_ids:
-                # Return the highest (latest) presentation ID
                 latest = max(int(pid) for pid in pres_ids)
                 if self.logger:
-                    self.logger.info(f"Found presentation {latest} for {search_name} via web search")
-                web.close()
+                    self.logger.info(f"Found latest presentation {latest} via web search")
                 return latest
-            web.close()
         except Exception as e:
             if self.logger:
                 self.logger.warning(f"Web search for presentation failed: {e}")
