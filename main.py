@@ -495,7 +495,8 @@ def run() -> int:
                     "snapshot": event_snapshot,
                 }
 
-                # If signin system is active, trigger signin workflow
+                # Log person entry in signin system (does NOT trigger kiosk workflow)
+                # Kiosk workflow is triggered only by receptionist via /api/call-patient
                 if signin_integrator is not None:
                     try:
                         signin_event = signin_integrator.on_person_entered(
@@ -504,7 +505,6 @@ def run() -> int:
                             frame_number=frame_number,
                             total_entries_today=analyzer.total_entries_today,
                         )
-                        event_data["event"] = "signin_started"
                         event_data["signin_status"] = signin_event.status
                     except Exception as e:
                         logger.warning(f"Signin trigger failed: {e}")

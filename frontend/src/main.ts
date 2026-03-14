@@ -12,7 +12,7 @@ import type { DashboardSnapshot } from './types.ts';
 import { updateStatusPanel, updateEntryLog, updateWsBadge, resetEntryLog } from './ui.ts';
 import { initVideo, onUserGesture, checkForPersonEntered } from './video.ts';
 import { createWsClient } from './ws.ts';
-import { initWorkflow, checkForPersonEnteredWorkflow, getWorkflowState } from './workflow.ts';
+import { initWorkflow, checkForPersonEnteredWorkflow, checkForCallPatient, getWorkflowState } from './workflow.ts';
 import {
   initSystemControl,
   toggleSystem,
@@ -76,7 +76,9 @@ document.addEventListener('DOMContentLoaded', () => {
       // Phase 3 behavior: linear instruction sequence for F4 testing
       checkForPersonEntered(state.event_log);
     }
-    // Workflow handles person_entered via its own event log diffing
+    // Workflow triggered by receptionist button (call_patient event)
+    checkForCallPatient(state.event_log);
+    // Detection-based disabled (kept for compatibility)
     checkForPersonEnteredWorkflow(state.event_log);
   });
 

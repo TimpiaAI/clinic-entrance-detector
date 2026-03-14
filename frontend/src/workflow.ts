@@ -188,6 +188,16 @@ function executeStateEntry(state: WorkflowState): void {
       hideTranscriptionPanel();
       hideMarquee();
       startIdleLoop();
+      // Check queue — if receptionist queued a call, auto-trigger after short delay
+      if (callPatientQueue > 0) {
+        callPatientQueue--;
+        console.log(`workflow: draining queue (remaining=${callPatientQueue})`);
+        setTimeout(() => {
+          if (currentState === 'idle') {
+            transition('greeting');
+          }
+        }, 2000);
+      }
       break;
 
     case 'greeting':
@@ -619,24 +629,38 @@ export function onPersonEntered(): void {
 }
 
 // ---------------------------------------------------------------------------
-//  Person-entered detection (event log diffing for workflow)
+//  Call-patient queue (triggered by receptionist via /api/call-patient)
 // ---------------------------------------------------------------------------
 
-/** Timestamp of the last person_entered event processed by the workflow. */
-let lastWorkflowPersonTimestamp: string | null = null;
+/** Number of queued call_patient requests waiting for workflow to finish. */
+let callPatientQueue = 0;
+
+/** Timestamp of the last call_patient event processed. */
+let lastCallPatientTimestamp: string | null = null;
 
 /**
- * Check the event log for a new person_entered event and call onPersonEntered().
- * Mirrors the timestamp-diffing pattern from video.ts but routes to the workflow
- * state machine instead of the linear instruction sequence.
- *
- * Called from main.ts setOnStateUpdate callback on every WebSocket snapshot.
+ * Check the event log for a new call_patient event from receptionist.
+ * If workflow is idle -> start greeting immediately.
+ * If workflow is busy -> queue it; auto-triggers when workflow returns to idle.
  */
-export function checkForPersonEnteredWorkflow(eventLog: EventLogEntry[]): void {
-  const latest = eventLog.find((e) => e.event === 'person_entered');
+export function checkForCallPatient(eventLog: EventLogEntry[]): void {
+  const latest = eventLog.find((e) => e.event === 'call_patient');
   if (!latest) return;
-  if (latest.timestamp === lastWorkflowPersonTimestamp) return;
+  if (latest.timestamp === lastCallPatientTimestamp) return;
 
-  lastWorkflowPersonTimestamp = latest.timestamp;
-  onPersonEntered(); // Guards internally: only acts if workflow is in 'idle' state
+  lastCallPatientTimestamp = latest.timestamp;
+
+  if (currentState === 'idle') {
+    transition('greeting');
+  } else if (currentState !== 'stopped') {
+    callPatientQueue++;
+    console.log(`workflow: call_patient queued (queue=${callPatientQueue})`);
+  }
+}
+
+/**
+ * Detection-based triggering disabled — receptionist button only.
+ */
+export function checkForPersonEnteredWorkflow(_eventLog: EventLogEntry[]): void {
+  // no-op: workflow triggered only by call_patient from receptionist
 }

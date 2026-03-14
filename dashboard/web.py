@@ -180,6 +180,17 @@ def create_dashboard_app(
     async def receptie_page(request: Request) -> HTMLResponse:
         return templates.TemplateResponse("receptie.html", {"request": request})
 
+    @app.post("/api/call-patient")
+    async def call_patient() -> JSONResponse:
+        """Receptionist triggers patient call. Pushed via WebSocket to kiosk."""
+        state.push_event({
+            "event": "call_patient",
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "person_id": -1,
+            "confidence": 1.0,
+        })
+        return JSONResponse(content={"status": "queued"})
+
     @app.get("/video_feed")
     async def video_feed() -> StreamingResponse:
         return StreamingResponse(

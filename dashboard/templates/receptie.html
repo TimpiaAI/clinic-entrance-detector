@@ -11,15 +11,14 @@
       background: #0a0a0a; color: #e0e0e0;
       font-family: system-ui, -apple-system, sans-serif;
     }
-
-    /* Main container */
     #app {
       position: fixed; inset: 0;
-      display: flex; align-items: center; justify-content: center;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 30px;
       background: #0a0a0a;
     }
 
-    /* Big red button */
     .call-btn {
       padding: 50px 100px;
       font-size: 48px; font-weight: 800;
@@ -31,139 +30,122 @@
       box-shadow: 0 8px 40px rgba(229,57,53,0.4), 0 0 80px rgba(229,57,53,0.15);
       transition: all 0.2s ease;
       user-select: none;
-      z-index: 5;
     }
     .call-btn:hover {
       transform: scale(1.03);
       box-shadow: 0 12px 50px rgba(229,57,53,0.5), 0 0 100px rgba(229,57,53,0.2);
     }
     .call-btn:active { transform: scale(0.97); }
-    .call-btn.disabled {
-      background: linear-gradient(145deg, #555, #333);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-      cursor: not-allowed;
+    .call-btn.waiting {
+      background: linear-gradient(145deg, #ff8f00, #e65100);
+      box-shadow: 0 8px 40px rgba(255,143,0,0.4);
+      animation: pulse-wait 2s ease-in-out infinite;
     }
-    .call-btn.hidden { display: none; }
-
-    /* Fullscreen video */
-    #video-player {
-      position: fixed; top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      object-fit: cover; background: #000;
-      z-index: 10; display: none;
-    }
-    #video-player.active { display: block; }
-
-    /* Queue badge */
-    .queue-badge {
-      position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%);
-      display: none; align-items: center; gap: 12px;
-      padding: 16px 32px;
-      background: rgba(255,152,0,0.9); color: #000;
-      font-size: 20px; font-weight: 700;
-      border-radius: 12px; z-index: 35;
-    }
-    .queue-badge.visible { display: flex; }
-    .queue-dot {
-      width: 14px; height: 14px; border-radius: 50%;
-      background: #e65100;
-      animation: pulse-q 1.2s ease-in-out infinite;
-    }
-    @keyframes pulse-q {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(0.8); }
+    @keyframes pulse-wait {
+      0%, 100% { box-shadow: 0 8px 40px rgba(255,143,0,0.4); }
+      50% { box-shadow: 0 12px 60px rgba(255,143,0,0.6); }
     }
 
-    /* Status text under button */
-    .status-text {
-      position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
-      font-size: 14px; color: #555; z-index: 5;
+    .status {
+      font-size: 18px; color: #666;
+      text-align: center;
     }
+    .status.busy { color: #ff8f00; }
+    .status.connected { color: #4caf50; }
+    .status.error { color: #f44336; }
 
     @media (max-width: 600px) {
-      .call-btn { padding: 35px 60px; font-size: 28px; border-radius: 16px; }
+      .call-btn { padding: 35px 60px; font-size: 28px; }
     }
   </style>
 </head>
 <body>
   <div id="app">
     <button id="call-btn" class="call-btn">Cheama Pacient</button>
-    <video id="video-player" playsinline preload="metadata"></video>
-    <div id="queue-badge" class="queue-badge">
-      <span class="queue-dot"></span>
-      Pacient in asteptare...
-    </div>
-    <div id="status-text" class="status-text">Conectare...</div>
+    <div id="status" class="status">Conectare...</div>
   </div>
 
   <script>
     const btn = document.getElementById('call-btn');
-    const video = document.getElementById('video-player');
-    const queueBadge = document.getElementById('queue-badge');
-    const statusText = document.getElementById('status-text');
+    const status = document.getElementById('status');
 
-    let busy = false;
+    let kioskBusy = false;
     let queued = false;
-    let ws = null;
 
-    // --- WebSocket for monitoring workflow state ---
+    // Monitor kiosk state via WebSocket
+    const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
     function connectWs() {
-      const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
-      ws = new WebSocket(`${proto}//${location.host}/ws`);
-      ws.onopen = () => { statusText.textContent = 'Sistem activ'; };
+      const ws = new WebSocket(`${proto}//${location.host}/ws`);
+      ws.onopen = () => {
+        status.textContent = 'Sistem activ - apasati butonul';
+        status.className = 'status connected';
+      };
+      ws.onmessage = (e) => {
+        try {
+          const data = JSON.parse(e.data);
+          // Check event log for workflow state
+          if (data.event_log && data.event_log.length > 0) {
+            const latest = data.event_log[0];
+            // If workflow started (greeting/recording), mark as busy
+            if (latest.event === 'call_patient' || latest.event === 'person_entered' || latest.event === 'signin_started') {
+              if (!kioskBusy) {
+                kioskBusy = true;
+                updateUI();
+              }
+            }
+          }
+        } catch(err) {}
+      };
       ws.onclose = () => {
-        statusText.textContent = 'Deconectat - se reconecteaza...';
+        status.textContent = 'Deconectat - se reconecteaza...';
+        status.className = 'status error';
         setTimeout(connectWs, 3000);
       };
       ws.onerror = () => ws.close();
     }
     connectWs();
 
-    // --- Play greeting video ---
-    function playGreeting() {
-      busy = true;
-      btn.classList.add('hidden');
-
-      video.src = '/api/videos/video2.mp4';
-      video.muted = false;
-      video.classList.add('active');
-      video.load();
-      video.play().catch(() => {
-        // Autoplay blocked - try muted
-        video.muted = true;
-        video.play();
-      });
-
-      video.onended = () => {
-        video.classList.remove('active');
-        video.pause();
-        busy = false;
-        btn.classList.remove('hidden');
-
-        // If someone is queued, auto-trigger after brief pause
-        if (queued) {
-          queued = false;
-          queueBadge.classList.remove('visible');
-          setTimeout(playGreeting, 1500);
-        }
-      };
+    function updateUI() {
+      if (kioskBusy && queued) {
+        btn.textContent = 'In asteptare...';
+        btn.className = 'call-btn waiting';
+        status.textContent = 'Pacient curent in curs - urmatorul va fi chemat automat';
+        status.className = 'status busy';
+      } else if (kioskBusy) {
+        status.textContent = 'Pacient in curs de procesare';
+        status.className = 'status busy';
+      } else {
+        btn.textContent = 'Cheama Pacient';
+        btn.className = 'call-btn';
+        status.textContent = 'Sistem activ - apasati butonul';
+        status.className = 'status connected';
+      }
     }
 
-    // --- Button click ---
-    btn.addEventListener('click', () => {
-      if (busy) {
-        // Already playing - queue the next one
-        if (!queued) {
-          queued = true;
-          queueBadge.classList.add('visible');
-        }
-        return;
-      }
-      playGreeting();
-    });
+    btn.addEventListener('click', async () => {
+      try {
+        const res = await fetch('/api/call-patient', { method: 'POST' });
+        const data = await res.json();
+        if (data.status === 'queued') {
+          if (kioskBusy) {
+            queued = true;
+          } else {
+            kioskBusy = true;
+          }
+          updateUI();
 
-    // --- Also trigger via API endpoint for external calls ---
-    // POST /api/call-patient from detector or other systems
+          // Reset after timeout (workflow typically takes ~2-3 min max)
+          setTimeout(() => {
+            kioskBusy = false;
+            queued = false;
+            updateUI();
+          }, 180000);
+        }
+      } catch(err) {
+        status.textContent = 'Eroare conexiune!';
+        status.className = 'status error';
+      }
+    });
   </script>
 </body>
 </html>
