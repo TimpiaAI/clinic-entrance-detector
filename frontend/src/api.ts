@@ -82,14 +82,21 @@ export function apiWakeLockRelease(): Promise<WakeLockResponse> {
   return post<WakeLockResponse>('/api/system/wake-lock/release');
 }
 
-export async function apiSubmitPatient(data: PatientData): Promise<{ status: string }> {
+export interface SubmitResponse {
+  status: string;
+  presentation_id?: number;
+  patient_id?: number;
+  sign_url?: string;
+}
+
+export async function apiSubmitPatient(data: PatientData): Promise<SubmitResponse> {
   try {
     const res = await fetch('/api/submit-patient', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
-    return (await res.json()) as { status: string };
+    return (await res.json()) as SubmitResponse;
   } catch (err) {
     console.error('api: POST /api/submit-patient failed', err);
     throw err;

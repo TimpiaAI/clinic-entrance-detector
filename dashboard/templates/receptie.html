@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Citobiomed - Receptie</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100%; height: 100%; overflow: hidden;
+      background: #0a0a0a; color: #e0e0e0;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    /* Main container */
+    #app {
+      position: fixed; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: #0a0a0a;
+    }
+
+    /* Big red button */
+    .call-btn {
+      padding: 50px 100px;
+      font-size: 48px; font-weight: 800;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      color: #fff;
+      background: linear-gradient(145deg, #e53935, #b71c1c);
+      border: none; border-radius: 24px;
+      cursor: pointer;
+      box-shadow: 0 8px 40px rgba(229,57,53,0.4), 0 0 80px rgba(229,57,53,0.15);
+      transition: all 0.2s ease;
+      user-select: none;
+      z-index: 5;
+    }
+    .call-btn:hover {
+      transform: scale(1.03);
+      box-shadow: 0 12px 50px rgba(229,57,53,0.5), 0 0 100px rgba(229,57,53,0.2);
+    }
+    .call-btn:active { transform: scale(0.97); }
+    .call-btn.disabled {
+      background: linear-gradient(145deg, #555, #333);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      cursor: not-allowed;
+    }
+    .call-btn.hidden { display: none; }
+
+    /* Fullscreen video */
+    #video-player {
+      position: fixed; top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      object-fit: cover; background: #000;
+      z-index: 10; display: none;
+    }
+    #video-player.active { display: block; }
+
+    /* Queue badge */
+    .queue-badge {
+      position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%);
+      display: none; align-items: center; gap: 12px;
+      padding: 16px 32px;
+      background: rgba(255,152,0,0.9); color: #000;
+      font-size: 20px; font-weight: 700;
+      border-radius: 12px; z-index: 35;
+    }
+    .queue-badge.visible { display: flex; }
+    .queue-dot {
+      width: 14px; height: 14px; border-radius: 50%;
+      background: #e65100;
+      animation: pulse-q 1.2s ease-in-out infinite;
+    }
+    @keyframes pulse-q {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    /* Status text under button */
+    .status-text {
+      position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+      font-size: 14px; color: #555; z-index: 5;
+    }
+
+    @media (max-width: 600px) {
+      .call-btn { padding: 35px 60px; font-size: 28px; border-radius: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <button id="call-btn" class="call-btn">Cheama Pacient</button>
+    <video id="video-player" playsinline preload="metadata"></video>
+    <div id="queue-badge" class="queue-badge">
+      <span class="queue-dot"></span>
+      Pacient in asteptare...
+    </div>
+    <div id="status-text" class="status-text">Conectare...</div>
+  </div>
+
+  <script>
+    const btn = document.getElementById('call-btn');
+    const video = document.getElementById('video-player');
+    const queueBadge = document.getElementById('queue-badge');
+    const statusText = document.getElementById('status-text');
+
+    let busy = false;
+    let queued = false;
+    let ws = null;
+
+    // --- WebSocket for monitoring workflow state ---
+    function connectWs() {
+      const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+      ws = new WebSocket(`${proto}//${location.host}/ws`);
+      ws.onopen = () => { statusText.textContent = 'Sistem activ'; };
+      ws.onclose = () => {
+        statusText.textContent = 'Deconectat - se reconecteaza...';
+        setTimeout(connectWs, 3000);
+      };
+      ws.onerror = () => ws.close();
+    }
+    connectWs();
+
+    // --- Play greeting video ---
+    function playGreeting() {
+      busy = true;
+      btn.classList.add('hidden');
+
+      video.src = '/api/videos/video2.mp4';
+      video.muted = false;
+      video.classList.add('active');
+      video.load();
+      video.play().catch(() => {
+        // Autoplay blocked - try muted
+        video.muted = true;
+        video.play();
+      });
+
+      video.onended = () => {
+        video.classList.remove('active');
+        video.pause();
+        busy = false;
+        btn.classList.remove('hidden');
+
+        // If someone is queued, auto-trigger after brief pause
+        if (queued) {
+          queued = false;
+          queueBadge.classList.remove('visible');
+          setTimeout(playGreeting, 1500);
+        }
+      };
+    }
+
+    // --- Button click ---
+    btn.addEventListener('click', () => {
+      if (busy) {
+        // Already playing - queue the next one
+        if (!queued) {
+          queued = true;
+          queueBadge.classList.add('visible');
+        }
+        return;
+      }
+      playGreeting();
+    });
+
+    // --- Also trigger via API endpoint for external calls ---
+    // POST /api/call-patient from detector or other systems
+  </script>
+</body>
+</html>

@@ -49,6 +49,9 @@ export type WorkflowState =
   | 'ask_cnp'
   | 'recording_cnp'
   | 'show_cnp'
+  | 'ask_phone'
+  | 'recording_phone'
+  | 'show_phone'
   | 'ask_email'
   | 'recording_email'
   | 'show_email'
@@ -62,5 +65,6 @@ export interface PatientData {
   name: string | null;
   question: string | null;
   cnp: string | null;
+  phone: string | null;
   email: string | null;
 }

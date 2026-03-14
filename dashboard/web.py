@@ -149,6 +149,7 @@ def create_dashboard_app(
     zone_manager: ZoneConfigManager,
     webhook_sender: Any | None = None,
     analyzer: Any | None = None,
+    signin_integrator: Any | None = None,
 ) -> FastAPI:
     templates = _templates()
     app = FastAPI(title="Clinic Entrance Detector Dashboard")
@@ -174,6 +175,10 @@ def create_dashboard_app(
     @app.get("/calibrate", response_class=HTMLResponse)
     async def calibrate_page(request: Request) -> HTMLResponse:
         return templates.TemplateResponse("calibrate.html", {"request": request})
+
+    @app.get("/receptie", response_class=HTMLResponse)
+    async def receptie_page(request: Request) -> HTMLResponse:
+        return templates.TemplateResponse("receptie.html", {"request": request})
 
     @app.get("/video_feed")
     async def video_feed() -> StreamingResponse:
@@ -293,16 +298,122 @@ def create_dashboard_app(
     # --- Patient data submission ---
     @app.post("/api/submit-patient")
     async def submit_patient(request: Request) -> JSONResponse:
-        """Receive confirmed patient data from frontend workflow."""
+        """Receive confirmed patient data from frontend workflow.
+
+        Flow:
+        1. Refresh today's appointments
+        2. Fuzzy match transcribed name against appointments to find patient_id
+        3. Determine doctor from CNP gender (1/5→Alexandru, 2/6→Ana)
+        4. Create presentation via Functie API
+        5. Return sign_url for tablet signature
+        """
         import logging
+        log = logging.getLogger("clinic")
         data = await request.json()
-        logging.getLogger("clinic").info(
-            "Patient data submitted: name=%s, cnp=%s, email=%s",
-            data.get("name"),
-            "***" if data.get("cnp") else None,
-            data.get("email"),
+        name = data.get("name", "")
+        cnp = data.get("cnp", "")
+        phone = data.get("phone", "")
+        email = data.get("email", "noemail@clinic.local")
+
+        log.info(
+            "Patient data submitted: name=%s, cnp=%s, phone=%s",
+            name, "***" if cnp else None, phone[:4] + "***" if phone else None,
         )
-        return JSONResponse(content={"status": "submitted"})
+
+        if signin_integrator is None:
+            return JSONResponse(content={"status": "error", "error": "Signin system not initialized"})
+
+        try:
+            from api.functie_client import parse_cnp, get_medic_id_from_cnp
+
+            manager = signin_integrator.signin
+
+            # Step 1: Refresh appointments to get latest schedule
+            manager.refresh_appointments()
+            log.info("Refreshed appointments: %d total", len(manager.all_appointments))
+
+            # Step 2: Fuzzy match transcribed name to find the appointment
+            matched_appointment = None
+            appointment_id = None
+            patient_id_from_appt = None
+            if name and manager.all_appointments:
+                matches = manager.find_fuzzy_matches(name, threshold=50, top_n=1)
+                if matches:
+                    matched_appointment = matches[0].appointment
+                    appointment_id = matched_appointment.id
+                    patient_id_from_appt = matched_appointment.patient_id
+                    log.info(
+                        "Fuzzy matched: '%s' -> '%s' (score=%.1f, appt_id=%d, patient_id=%d)",
+                        name, matched_appointment.full_name, matches[0].score,
+                        appointment_id, patient_id_from_appt,
+                    )
+
+            # Step 3: Determine doctor from CNP gender, or from explicit gender field
+            gender_val = None
+            medic_id = 0
+            if cnp:
+                medic_id = get_medic_id_from_cnp(cnp) or 0
+                parsed_cnp = parse_cnp(cnp)
+                if parsed_cnp:
+                    gender_val = parsed_cnp["gender"]
+            if not gender_val:
+                # Foreign patient - use explicit gender from form (1=M, 2=F)
+                explicit_gender = data.get("gender")
+                if explicit_gender in (1, 2, "1", "2", "M", "F", "m", "f"):
+                    g = str(explicit_gender).upper()
+                    gender_val = 1 if g in ("1", "M") else 2
+                    from api.functie_client import MALE_DOCTOR_ID, FEMALE_DOCTOR_ID
+                    medic_id = MALE_DOCTOR_ID if gender_val == 1 else FEMALE_DOCTOR_ID
+            if not medic_id:
+                # Fallback: use the matched appointment's doctor
+                if matched_appointment:
+                    medic_id = matched_appointment.medic_id
+                elif manager.doctors:
+                    medic_id = manager.doctors[0].id
+
+            # Use matched appointment names if available (more accurate than transcription)
+            if matched_appointment:
+                first_name = matched_appointment.first_name
+                last_name = matched_appointment.last_name
+            else:
+                parts = name.strip().split(maxsplit=1) if name else ["", ""]
+                first_name = parts[0] if len(parts) > 0 else ""
+                last_name = parts[1] if len(parts) > 1 else ""
+
+            # Step 4: Create presentation via Functie API
+            response, error = manager.functie.create_presentation(
+                medic_id=medic_id,
+                first_name=first_name,
+                last_name=last_name,
+                phone=phone or "0000000000",
+                email=email or "noemail@clinic.local",
+                appointment_id=appointment_id,
+                cnp=cnp or None,
+                gender=gender_val,
+            )
+            if error:
+                log.error("Presentation creation failed: %s", error)
+                return JSONResponse(content={"status": "error", "error": error})
+
+            # Step 5: Build sign URL (uses presentation_id, not patient_id)
+            patient_id = response.get("patient_id") if response else patient_id_from_appt
+            presentation_id_val = response.get("presentation_id") if response else None
+            sign_url = f"https://citobiomed.consultadoctor.ro/gdpr/sign/{presentation_id_val}#" if presentation_id_val else None
+            log.info("Presentation created: id=%s, patient=%s, sign_url=%s",
+                     response.get("presentation_id") if response else None, patient_id, sign_url)
+
+            return JSONResponse(content={
+                "status": "submitted",
+                "presentation_id": response.get("presentation_id") if response else None,
+                "patient_id": patient_id,
+                "medic_id": medic_id,
+                "matched_name": matched_appointment.full_name if matched_appointment else name,
+                "appointment_id": appointment_id,
+                "sign_url": sign_url,
+            })
+        except Exception as e:
+            log.error("Submit patient error: %s", e)
+            return JSONResponse(content={"status": "error", "error": str(e)})
 
     # Process management endpoints (start/stop/status for detector subprocess)
     app.include_router(process_router)
@@ -312,6 +423,12 @@ def create_dashboard_app(
 
     # Sleep guard endpoints (wake-lock activation/deactivation)
     app.include_router(sleep_router)
+
+    # Signin API routes (fuzzy matching, appointment confirm, presentation create)
+    if signin_integrator is not None:
+        from api.signin_api import create_signin_api_routes
+        signin_router = create_signin_api_routes(signin_integrator)
+        app.include_router(signin_router)
 
     # --- Video serving with HTTP 206 range support ---
     _video_dir_env = os.getenv("VIDEO_DIR", "")

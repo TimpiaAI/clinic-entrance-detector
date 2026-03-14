@@ -47,6 +47,9 @@ const STATE_TIMEOUTS: Partial<Record<WorkflowState, number>> = {
   ask_cnp: 60_000,
   recording_cnp: 50_000,
   show_cnp: 30_000,
+  ask_phone: 60_000,
+  recording_phone: 50_000,
+  show_phone: 30_000,
   ask_email: 60_000,
   recording_email: 50_000,
   show_email: 30_000,
@@ -62,6 +65,7 @@ const RECORDING_PROMPTS: Record<string, string | undefined> = {
   recording_name: undefined,
   recording_question: undefined,
   recording_cnp: '1 2 3 4 5 6 7 8 9 1 2 3 4',
+  recording_phone: '0 7 1 2 3 4 5 6 7 8',
   recording_email: 'tudor.trocaru arond gmail punct com, radu.popescu arond yahoo punct com, ion.ionescu arond gmail punct com',
 };
 
@@ -71,6 +75,7 @@ const STATE_VIDEOS: Partial<Record<WorkflowState, string>> = {
   ask_name: 'video3.mp4',
   ask_question: 'video6.mp4',
   ask_cnp: 'video7.mp4',
+  ask_phone: 'video7.mp4',
   ask_email: 'video8.mp4',
   farewell: 'video4.mp4',
   final: 'video5.mp4',
@@ -82,6 +87,7 @@ const STATE_MARQUEES: Partial<Record<WorkflowState, string>> = {
   ask_name: RO.VIDEO_ASK_NAME,
   ask_question: RO.VIDEO_ASK_QUESTION,
   ask_cnp: RO.VIDEO_ASK_CNP,
+  ask_phone: RO.VIDEO_ASK_PHONE,
   ask_email: RO.VIDEO_ASK_EMAIL,
   farewell: RO.VIDEO_FAREWELL,
   final: RO.VIDEO_FINAL,
@@ -92,7 +98,7 @@ const STATE_MARQUEES: Partial<Record<WorkflowState, string>> = {
 // ---------------------------------------------------------------------------
 
 let currentState: WorkflowState = 'stopped';
-let patientData: PatientData = { name: null, question: null, cnp: null, email: null };
+let patientData: PatientData = { name: null, question: null, cnp: null, phone: null, email: null };
 let stateTimeout: ReturnType<typeof setTimeout> | null = null;
 
 /**
@@ -100,6 +106,9 @@ let stateTimeout: ReturnType<typeof setTimeout> | null = null;
  * results are discarded after the Promise resolves. We cannot truly abort
  * a MediaRecorder from outside, but we can ignore the result.
  */
+/** URL for tablet digital signature (populated after successful submit). */
+let signUrl: string | null = null;
+
 let recordingCancelled = false;
 
 /** Flag indicating a recording is in progress (for abort/timeout). */
@@ -158,7 +167,8 @@ function handleTimeout(): void {
 
 /** Reset patient data to empty. */
 function resetPatientData(): void {
-  patientData = { name: null, question: null, cnp: null, email: null };
+  patientData = { name: null, question: null, cnp: null, phone: null, email: null };
+  signUrl = null;
 }
 
 // ---------------------------------------------------------------------------
@@ -184,6 +194,7 @@ function executeStateEntry(state: WorkflowState): void {
     case 'ask_name':
     case 'ask_question':
     case 'ask_cnp':
+    case 'ask_phone':
     case 'ask_email':
     case 'farewell':
     case 'final':
@@ -193,6 +204,7 @@ function executeStateEntry(state: WorkflowState): void {
     case 'recording_name':
     case 'recording_question':
     case 'recording_cnp':
+    case 'recording_phone':
     case 'recording_email':
       executeRecordingState(state);
       break;
@@ -200,6 +212,7 @@ function executeStateEntry(state: WorkflowState): void {
     case 'show_name':
     case 'show_question':
     case 'show_cnp':
+    case 'show_phone':
     case 'show_email':
       // show_* states immediately advance to the next ask/confirm step
       executeShowStateTransition(state);
@@ -260,6 +273,9 @@ function transitionAfterVideo(state: WorkflowState): void {
     case 'ask_cnp':
       transition('recording_cnp');
       break;
+    case 'ask_phone':
+      transition('recording_phone');
+      break;
     case 'ask_email':
       transition('recording_email');
       break;
@@ -291,10 +307,10 @@ function executeRecordingState(state: WorkflowState): void {
   recordingCancelled = false;
   recordingActive = true;
 
-  // For CNP and email: show editable input field
-  const isEditable = state === 'recording_cnp' || state === 'recording_email';
+  // For CNP, phone, and email: show editable input field
+  const isEditable = state === 'recording_cnp' || state === 'recording_phone' || state === 'recording_email';
   if (isEditable) {
-    const label = state === 'recording_cnp' ? RO.CNP_LABEL : RO.EMAIL_LABEL;
+    const label = state === 'recording_cnp' ? RO.CNP_LABEL : state === 'recording_phone' ? RO.PHONE_LABEL : RO.EMAIL_LABEL;
     showEditableField(label);
   }
 
@@ -302,8 +318,8 @@ function executeRecordingState(state: WorkflowState): void {
   onInterimTranscript((text) => {
     updateRecordingInterim(text);
     if (isEditable) {
-      // Extract digits for CNP, or clean email attempt
-      if (state === 'recording_cnp') {
+      // Extract digits for CNP/phone, or clean email attempt
+      if (state === 'recording_cnp' || state === 'recording_phone') {
         const digits = text.replace(/[^0-9]/g, '');
         if (digits) updateEditableField(digits);
       } else {
@@ -335,6 +351,8 @@ function executeRecordingState(state: WorkflowState): void {
         if (fieldValue) {
           if (state === 'recording_cnp') {
             result = { ...result, text: fieldValue, cnp: fieldValue };
+          } else if (state === 'recording_phone') {
+            result = { ...result, text: fieldValue };
           } else {
             result = { ...result, text: fieldValue, email: fieldValue };
           }
@@ -397,6 +415,8 @@ function recordingStateMapping(state: WorkflowState): {
       return { showState: 'show_question', dataField: 'question' };
     case 'recording_cnp':
       return { showState: 'show_cnp', dataField: 'cnp' };
+    case 'recording_phone':
+      return { showState: 'show_phone', dataField: 'phone' };
     case 'recording_email':
       return { showState: 'show_email', dataField: 'email' };
     default:
@@ -417,6 +437,9 @@ function storeRecordingResult(field: keyof PatientData, result: TranscribeResult
       break;
     case 'cnp':
       patientData.cnp = result.cnp || result.text || null;
+      break;
+    case 'phone':
+      patientData.phone = result.text ? result.text.replace(/[^0-9+]/g, '') : null;
       break;
     case 'email':
       patientData.email = result.email || result.text || null;
@@ -441,6 +464,9 @@ function executeShowStateTransition(state: WorkflowState): void {
       transition('ask_cnp');
       break;
     case 'show_cnp':
+      transition('ask_phone');
+      break;
+    case 'show_phone':
       transition('ask_email');
       break;
     case 'show_email':
@@ -478,8 +504,13 @@ function executeConfirmAll(): void {
  */
 function executeSubmitting(): void {
   apiSubmitPatient(patientData)
-    .then(() => {
+    .then((response) => {
       if (currentState !== 'submitting') return;
+      // Store sign URL for tablet signature
+      if (response.sign_url) {
+        signUrl = response.sign_url;
+        console.log('workflow: sign_url =', signUrl);
+      }
       transition('farewell');
     })
     .catch((err: unknown) => {
@@ -495,6 +526,12 @@ function executeSubmitting(): void {
 // ---------------------------------------------------------------------------
 
 function executeFarewellIdle(): void {
+  // Open signature URL on tablet if available
+  if (signUrl) {
+    console.log('workflow: opening sign URL on tablet:', signUrl);
+    window.open(signUrl, '_blank');
+    signUrl = null;
+  }
   hideMarquee();
   startIdleLoop();
   // The state timeout (6s) will fire and we transition manually to final

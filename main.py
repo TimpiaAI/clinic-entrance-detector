@@ -23,6 +23,9 @@ from training.trainer import TrainerConfig, run_training
 from utils.logger import setup_logger
 from utils.snapshot import encode_snapshot_base64
 from utils.video_stream import VideoSourceConfig, VideoStream
+from api.functie_client import FunctieAPIClient
+from api.signin_manager import SigninManager
+from api.signin_integrator import SigninIntegrator
 from webhook.sender import WebhookSender
 
 
@@ -343,6 +346,55 @@ def run() -> int:
     webhook_sender = WebhookSender(settings=settings, logger=logger)
     webhook_sender.start()
 
+    # --- Signin system (Functie API integration) ---
+    signin_integrator: SigninIntegrator | None = None
+    if settings.FUNCTIE_API_KEY:
+        functie_client = FunctieAPIClient(api_key=settings.FUNCTIE_API_KEY, logger=logger)
+        signin_manager = SigninManager(functie_client=functie_client, logger=logger)
+
+        # If doctor IDs are configured, only use those; otherwise fetch all
+        if settings.FUNCTIE_DOCTOR_IDS:
+            from api.functie_client import Doctor
+            signin_manager.doctors = [
+                Doctor(id=did, first_name="", last_name="", specialities=[], medical_units=[])
+                for did in settings.FUNCTIE_DOCTOR_IDS
+            ]
+            # Fetch actual doctor info
+            all_doctors, err = functie_client.get_doctors()
+            if not err and all_doctors:
+                doctor_map = {d.id: d for d in all_doctors}
+                signin_manager.doctors = [
+                    doctor_map[did] for did in settings.FUNCTIE_DOCTOR_IDS if did in doctor_map
+                ]
+            logger.info("Signin: using configured doctors", extra={"extra": {"doctor_ids": settings.FUNCTIE_DOCTOR_IDS}})
+        else:
+            ok, err = signin_manager.initialize()
+            if not ok:
+                logger.warning("Signin init failed, continuing without signin", extra={"extra": {"error": err}})
+
+        # Fetch today's appointments
+        signin_manager.refresh_appointments()
+        signin_integrator = SigninIntegrator(signin_manager=signin_manager, logger=logger)
+        logger.info("Signin system initialized", extra={"extra": signin_manager.get_status()})
+
+        # Periodic appointment refresh thread (every 5 minutes)
+        _refresh_active = True
+
+        def _appointment_refresh_loop():
+            while _refresh_active:
+                time.sleep(300)
+                try:
+                    signin_manager.refresh_appointments()
+                    logger.info("Appointments refreshed", extra={"extra": signin_manager.get_status()})
+                except Exception as e:
+                    logger.warning(f"Appointment refresh failed: {e}")
+
+        import threading
+        refresh_thread = threading.Thread(target=_appointment_refresh_loop, daemon=True)
+        refresh_thread.start()
+    else:
+        logger.warning("FUNCTIE_API_KEY not set - signin system disabled")
+
     dashboard_state = DashboardState()
     dashboard_state.set_calibration(calibration)
 
@@ -354,6 +406,7 @@ def run() -> int:
             zone_manager=zone_manager,
             webhook_sender=webhook_sender,
             analyzer=analyzer,
+            signin_integrator=signin_integrator,
         )
         dashboard_server = DashboardServer(app, host=settings.DASHBOARD_HOST, port=settings.DASHBOARD_PORT)
         dashboard_server.start()
@@ -433,16 +486,30 @@ def run() -> int:
                 if settings.WEBHOOK_INCLUDE_SNAPSHOT:
                     event_snapshot = encode_snapshot_base64(frame, bbox=event.bbox, target_width=320, jpeg_quality=50)
 
-                dashboard_state.push_event(
-                    {
-                        "event": event.event,
-                        "timestamp": event.timestamp,
-                        "person_id": event.person_id,
-                        "confidence": event.confidence,
-                        "queued": queued,
-                        "snapshot": event_snapshot,
-                    }
-                )
+                event_data = {
+                    "event": event.event,
+                    "timestamp": event.timestamp,
+                    "person_id": event.person_id,
+                    "confidence": event.confidence,
+                    "queued": queued,
+                    "snapshot": event_snapshot,
+                }
+
+                # If signin system is active, trigger signin workflow
+                if signin_integrator is not None:
+                    try:
+                        signin_event = signin_integrator.on_person_entered(
+                            event=event,
+                            snapshot_b64=event_snapshot,
+                            frame_number=frame_number,
+                            total_entries_today=analyzer.total_entries_today,
+                        )
+                        event_data["event"] = "signin_started"
+                        event_data["signin_status"] = signin_event.status
+                    except Exception as e:
+                        logger.warning(f"Signin trigger failed: {e}")
+
+                dashboard_state.push_event(event_data)
 
             current_perf = time.perf_counter()
             instant_fps = 1.0 / max(1e-6, current_perf - last_perf)

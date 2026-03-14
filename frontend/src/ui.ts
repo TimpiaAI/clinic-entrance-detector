@@ -358,6 +358,7 @@ export function showConfirmationSummary(
   const lines: string[] = [];
   if (data.name) lines.push(`${RO.WORKFLOW_NAME_LABEL}: ${data.name}`);
   if (data.question) lines.push(`${RO.WORKFLOW_QUESTION_LABEL}: ${data.question}`);
+  if (data.phone) lines.push(`${RO.WORKFLOW_PHONE_LABEL}: ${data.phone}`);
   if (resultText) resultText.textContent = lines.join('\n');
 
   if (resultCnp) {

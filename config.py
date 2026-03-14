@@ -98,6 +98,10 @@ class Settings:
     # === Calibration ===
     CALIBRATION_FILE: str = "calibration.json"
 
+    # === Functie API ===
+    FUNCTIE_API_KEY: str = ""
+    FUNCTIE_DOCTOR_IDS: list[int] = field(default_factory=list)
+
     # === Video Serving ===
     VIDEO_DIR: str = ""
 
@@ -129,6 +133,17 @@ def load_settings(env_path: str | Path | None = None) -> Settings:
     source = _env_str("VIDEO_SOURCE", "webcam").strip().lower()
     if source not in {"webcam", "rtsp", "file"}:
         source = "webcam"
+
+    doctor_ids_raw = _env_str("FUNCTIE_DOCTOR_IDS", "")
+    doctor_ids = []
+    for v in doctor_ids_raw.split(","):
+        v = v.strip()
+        if not v:
+            continue
+        try:
+            doctor_ids.append(int(v))
+        except ValueError:
+            continue
 
     return Settings(
         VIDEO_SOURCE=source,  # type: ignore[arg-type]
@@ -165,6 +180,8 @@ def load_settings(env_path: str | Path | None = None) -> Settings:
         ENTRY_LOG_SIZE=_env_int("ENTRY_LOG_SIZE", 100),
         DASHBOARD_PORT=_env_int("DASHBOARD_PORT", 8080),
         DASHBOARD_HOST=_env_str("DASHBOARD_HOST", "0.0.0.0"),
+        FUNCTIE_API_KEY=_env_str("FUNCTIE_API_KEY", ""),
+        FUNCTIE_DOCTOR_IDS=doctor_ids,
         CALIBRATION_FILE=_env_str("CALIBRATION_FILE", "calibration.json"),
         VIDEO_DIR=_env_str("VIDEO_DIR", ""),
         CAMERA_ID=_env_str("CAMERA_ID", "clinic_entrance_01"),
