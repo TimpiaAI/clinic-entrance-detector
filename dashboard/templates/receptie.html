@@ -28,6 +28,8 @@
       background: rgba(15, 23, 42, 0.6);
       border: 1px solid rgba(51, 65, 85, 0.3);
       border-radius: 10px;
+      opacity: 0;
+      transition: opacity 0.3s;
     }
     .status-dot {
       width: 10px; height: 10px; border-radius: 50%;
@@ -176,24 +178,13 @@
 
     // ---- Bottom status bar update ----
     function updateStatusBar() {
-      if (!connected) {
-        dotState.className = 'status-dot off';
-        txtState.textContent = 'Deconectat de la server';
-      } else if (kioskState === 'form') {
+      const bar = document.getElementById('bottom-status');
+      if (kioskState === 'form' || kioskState === 'thank_you') {
+        bar.style.opacity = '1';
         dotState.className = 'status-dot busy';
-        txtState.textContent = 'Pacient completeaza formularul';
-      } else if (kioskState === 'thank_you') {
-        dotState.className = 'status-dot busy';
-        txtState.textContent = 'Mesaj multumire afisat';
-      } else if (kioskState === 'calling') {
-        dotState.className = 'status-dot active';
-        txtState.textContent = 'Video de chemare ruleaza';
-      } else if (kioskState === 'idle') {
-        dotState.className = 'status-dot on';
-        txtState.textContent = 'Kiosk liber — detectare activa';
+        txtState.textContent = 'A intrat o persoana si completeaza formularul';
       } else {
-        dotState.className = 'status-dot';
-        txtState.textContent = 'Conectare...';
+        bar.style.opacity = '0';
       }
     }
 
@@ -231,24 +222,18 @@
         } else {
           btnSub.textContent = 'Va rula automat cand kiosk-ul e liber';
         }
-      } else if (kioskState === 'form') {
+      } else if (kioskState === 'form' || kioskState === 'thank_you') {
         btn.disabled = true;
         btn.textContent = 'Cheama Pacient';
         btn.className = 'call-btn';
         btn.style.opacity = '0.35';
-        btnSub.textContent = 'Un pacient completeaza formularul — asteptati sa termine';
-      } else if (kioskState === 'thank_you') {
-        btn.disabled = true;
-        btn.textContent = 'Cheama Pacient';
-        btn.className = 'call-btn';
-        btn.style.opacity = '0.35';
-        btnSub.textContent = 'Mesajul de multumire e afisat — asteptati';
+        btnSub.textContent = '';
       } else {
         btn.disabled = false;
         btn.textContent = 'Cheama Pacient';
         btn.className = 'call-btn';
         btn.style.opacity = '';
-        btnSub.textContent = 'Kiosk-ul e liber — apasati pentru a chema pacientul';
+        btnSub.textContent = '';
       }
     }
 
