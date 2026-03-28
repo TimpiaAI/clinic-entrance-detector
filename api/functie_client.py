@@ -246,6 +246,7 @@ class FunctieAPIClient:
         email: str,
         address: str = "",
         appointment_id: int | None = None,
+        patient_id: int | None = None,
         cnp: str | None = None,
         birth_date: str | None = None,
         gender: int | None = None,
@@ -288,6 +289,8 @@ class FunctieAPIClient:
                 body["gender"] = gender
             if appointment_id:
                 body["appointment_id"] = appointment_id
+            if patient_id:
+                body["patient_id"] = patient_id
 
             response = self._http.post(url, params=params, json=body)
 

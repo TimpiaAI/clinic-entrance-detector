@@ -236,6 +236,7 @@ class SigninManager:
                 email=email,
                 address=address,
                 appointment_id=appt.id,
+                patient_id=appt.patient_id,
                 cnp=session.cnp,
             )
 

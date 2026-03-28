@@ -15,3 +15,5 @@ build/
 .DS_Store
 frontend_dist/
 node_modules/
+logs/
+*.log

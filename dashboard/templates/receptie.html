@@ -105,12 +105,16 @@
 
           const events = data.event_log;
 
-          // Check for sign_ready event → open signature URL on this PC (tablet connected here)
+          // Check for sign_ready event → open local signature page with Sig100 pad
           const signEvent = events.find(ev => ev.event === 'sign_ready');
           if (signEvent && signEvent.sign_url && signEvent.timestamp !== lastSignTimestamp) {
             lastSignTimestamp = signEvent.timestamp;
-            console.log('Opening sign URL:', signEvent.sign_url);
-            window.open(signEvent.sign_url, '_blank');
+            // Extract presentation_id from sign_url
+            const pidMatch = signEvent.sign_url.match(/\/sign\/(\d+)/);
+            const pid = pidMatch ? pidMatch[1] : '';
+            const sigPageUrl = '/signature?url=' + encodeURIComponent(signEvent.sign_url) + '&pid=' + pid;
+            console.log('Opening signature page:', sigPageUrl);
+            window.open(sigPageUrl, '_blank');
           }
 
           // Auto-reset button after call video finishes (~30s)

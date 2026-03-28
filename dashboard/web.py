@@ -180,9 +180,42 @@ def create_dashboard_app(
     async def receptie_page(request: Request) -> HTMLResponse:
         return templates.TemplateResponse("receptie.html", {"request": request})
 
+    @app.get("/signature", response_class=HTMLResponse)
+    async def signature_page(request: Request) -> HTMLResponse:
+        return templates.TemplateResponse("signature.html", {"request": request})
+
+    # Serve signotec JS library
+    static_dir = Path(__file__).resolve().parent / "static"
+    if static_dir.is_dir():
+        app.mount("/static", StaticFiles(directory=str(static_dir)), name="dashboard_static")
+
+    @app.post("/api/signature-captured")
+    async def signature_captured(request: Request) -> JSONResponse:
+        """Receive captured signature from Sig100 pad."""
+        import logging
+        log = logging.getLogger("clinic")
+        data = await request.json()
+        log.info("Signature captured for presentation %s", data.get("presentation_id"))
+        state.push_event({
+            "event": "signature_captured",
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "person_id": -1,
+            "confidence": 1.0,
+            "presentation_id": data.get("presentation_id", ""),
+        })
+        return JSONResponse(content={"status": "ok"})
+
     @app.post("/api/sign-ready")
     async def sign_ready(request: Request) -> JSONResponse:
-        """Kiosk notifies that patient data was submitted and sign URL is ready."""
+        """Kiosk notifies that patient data was submitted and sign URL is ready.
+
+        Opens the Citobiomed GDPR sign page in the default browser.
+        That page contains JavaScript that communicates with the Sig100 tablet
+        via STPadServer on port 49494.
+        """
+        import logging
+        import subprocess
+        log = logging.getLogger("clinic")
         data = await request.json()
         sign_url = data.get("sign_url", "")
         if sign_url:
@@ -193,6 +226,20 @@ def create_dashboard_app(
                 "confidence": 1.0,
                 "sign_url": sign_url,
             })
+
+            # Open sign URL directly in browser - the Citobiomed page
+            # has built-in JavaScript that activates the Sig100 tablet
+            try:
+                subprocess.Popen(
+                    ["cmd", "/c", "start", "", sign_url],
+                    shell=False,
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                )
+                log.info("Sig100: opened sign URL in browser: %s", sign_url)
+            except Exception as e:
+                log.error("Sig100: failed to open sign URL: %s", e)
+
         return JSONResponse(content={"status": "ok"})
 
     @app.post("/api/call-patient")
@@ -414,6 +461,7 @@ def create_dashboard_app(
                 phone=phone or "0000000000",
                 email=email or "noemail@clinic.local",
                 appointment_id=appointment_id,
+                patient_id=patient_id_from_appt,
                 cnp=cnp or None,
                 gender=gender_val,
             )

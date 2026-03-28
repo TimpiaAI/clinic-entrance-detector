@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Semnatura Pacient - Sig100</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100%; height: 100%; overflow: hidden;
+      background: #0a0a0a; color: #e0e0e0;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+    #app {
+      position: fixed; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 20px; padding: 20px;
+    }
+    h1 { font-size: 28px; color: #fff; text-align: center; }
+    .status-box {
+      padding: 15px 30px;
+      border-radius: 12px;
+      font-size: 20px;
+      font-weight: 600;
+      text-align: center;
+      min-width: 400px;
+    }
+    .status-connecting { background: #1a1a2e; color: #ffa726; border: 2px solid #ffa726; }
+    .status-ready { background: #1a2e1a; color: #66bb6a; border: 2px solid #66bb6a; }
+    .status-signing { background: #1a1a2e; color: #42a5f5; border: 2px solid #42a5f5; animation: pulse 2s ease-in-out infinite; }
+    .status-done { background: #1a2e1a; color: #66bb6a; border: 2px solid #66bb6a; }
+    .status-error { background: #2e1a1a; color: #ef5350; border: 2px solid #ef5350; }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+    #sig-canvas-container {
+      border: 2px solid #333;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fff;
+    }
+    #sigCanvas { display: block; }
+    .btn-row { display: flex; gap: 15px; margin-top: 10px; }
+    .btn {
+      padding: 15px 40px;
+      font-size: 18px; font-weight: 700;
+      border: none; border-radius: 12px;
+      cursor: pointer; color: #fff;
+      transition: transform 0.1s;
+    }
+    .btn:active { transform: scale(0.95); }
+    .btn-confirm { background: #2e7d32; }
+    .btn-confirm:hover { background: #388e3c; }
+    .btn-retry { background: #e65100; }
+    .btn-retry:hover { background: #ef6c00; }
+    .btn-cancel { background: #c62828; }
+    .btn-cancel:hover { background: #d32f2f; }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .sig-image { max-width: 400px; max-height: 200px; border: 1px solid #333; border-radius: 8px; margin-top: 10px; }
+    .info { font-size: 14px; color: #888; text-align: center; }
+    .gdpr-frame {
+      width: 90vw; max-width: 800px; height: 50vh;
+      border: 2px solid #333; border-radius: 12px;
+      background: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <h1>Semnatura GDPR - Tableta Sig100</h1>
+    <div id="status" class="status-box status-connecting">Se conecteaza la tableta...</div>
+
+    <div id="sig-canvas-container" style="display:none;">
+      <canvas id="sigCanvas" width="320" height="200"></canvas>
+    </div>
+
+    <div class="btn-row" id="btn-row" style="display:none;">
+      <button class="btn btn-confirm" id="btn-confirm" onclick="confirmSignature()">Confirma Semnatura</button>
+      <button class="btn btn-retry" id="btn-retry" onclick="retrySignature()">Semneaza Din Nou</button>
+      <button class="btn btn-cancel" id="btn-cancel" onclick="cancelSignature()">Anuleaza</button>
+    </div>
+
+    <img id="sig-image" class="sig-image" style="display:none;" />
+    <div id="info" class="info"></div>
+  </div>
+
+  <script src="/static/STPadServerLib-3.5.0.js"></script>
+  <script>
+    const statusEl = document.getElementById('status');
+    const sigCanvas = document.getElementById('sigCanvas');
+    const canvasContainer = document.getElementById('sig-canvas-container');
+    const btnRow = document.getElementById('btn-row');
+    const sigImage = document.getElementById('sig-image');
+    const infoEl = document.getElementById('info');
+
+    // Get sign_url from query params
+    const urlParams = new URLSearchParams(window.location.search);
+    const signUrl = urlParams.get('url') || '';
+    const presentationId = urlParams.get('pid') || '';
+
+    const wsUri = "wss://local.signotecwebsocket.de:49494";
+    const padIndex = 0;
+    let padState = 'closed'; // closed, opened
+    let scaleFactorX = 1.0;
+    let scaleFactorY = 1.0;
+    let sampleRate = 500;
+    let lastX = -1, lastY = -1;
+    let signatureImageBase64 = null;
+
+    function setStatus(msg, cls) {
+      statusEl.textContent = msg;
+      statusEl.className = 'status-box ' + cls;
+    }
+
+    // --- STPadServer callbacks ---
+    STPadServerLibCommons.handleNextSignaturePoint = function(x, y, p) {
+      drawPoint(x, y, p);
+    };
+
+    STPadServerLibDefault.handleRetrySignature = function() {
+      const ctx = sigCanvas.getContext('2d');
+      ctx.clearRect(0, 0, sigCanvas.width, sigCanvas.height);
+      lastX = -1; lastY = -1;
+      setStatus('Semnati din nou pe tableta...', 'status-signing');
+    };
+
+    STPadServerLibDefault.handleConfirmSignature = function() {
+      // User pressed OK on the pad itself
+      doConfirm();
+    };
+
+    STPadServerLibDefault.handleCancelSignature = function() {
+      setStatus('Semnatura anulata de pacient.', 'status-error');
+      closePad();
+      setTimeout(() => window.close(), 3000);
+    };
+
+    STPadServerLibCommons.handleDisconnect = function(index) {
+      setStatus('Tableta deconectata!', 'status-error');
+      padState = 'closed';
+    };
+
+    function drawPoint(x, y, p) {
+      const cx = x * scaleFactorX;
+      const cy = y * scaleFactorY;
+      const ctx = sigCanvas.getContext('2d');
+
+      if (p > 0) {
+        ctx.strokeStyle = '#000';
+        ctx.lineWidth = Math.max(1, Math.min(3, p / 300));
+        if (lastX >= 0 && lastY >= 0) {
+          ctx.beginPath();
+          ctx.moveTo(lastX, lastY);
+          ctx.lineTo(cx, cy);
+          ctx.stroke();
+        }
+        lastX = cx;
+        lastY = cy;
+      } else {
+        // Pen lifted
+        lastX = -1;
+        lastY = -1;
+      }
+    }
+
+    // --- Main flow ---
+    async function init() {
+      try {
+        setStatus('Se conecteaza la tableta Sig100...', 'status-connecting');
+        await connectToPad();
+        setStatus('Tableta conectata. Se pregateste semnarea...', 'status-ready');
+        await startSignatureCapture();
+      } catch(err) {
+        console.error('Init error:', err);
+        setStatus('Eroare: ' + (err.message || err.toString || err), 'status-error');
+      }
+    }
+
+    function connectToPad() {
+      return new Promise((resolve, reject) => {
+        STPadServerLibCommons.createConnection(wsUri,
+          function onOpen(evt) {
+            console.log('Connected to STPadServer');
+            resolve();
+          },
+          function onClose(evt) {
+            console.log('Disconnected from STPadServer');
+            if (padState === 'closed') {
+              reject(new Error('Nu se poate conecta la STPadServer. Verificati ca STPadServer.exe ruleaza.'));
+            }
+          },
+          function onError(evt) {
+            reject(new Error('Eroare conexiune WebSocket la STPadServer'));
+          }
+        );
+      });
+    }
+
+    async function startSignatureCapture() {
+      // Search for pads
+      const searchParams = new STPadServerLibDefault.Params.searchForPads();
+      searchParams.setPadSubset("USB");
+      const pads = await STPadServerLibDefault.searchForPads(searchParams);
+
+      if (pads.foundPads.length === 0) {
+        setStatus('Nu s-a gasit nicio tableta Sig100 conectata!', 'status-error');
+        return;
+      }
+
+      infoEl.textContent = 'Tableta: ' + pads.foundPads[padIndex].type +
+        ' | S/N: ' + pads.foundPads[padIndex].serialNumber;
+
+      // Open pad
+      const openParams = new STPadServerLibDefault.Params.openPad(padIndex);
+      const padInfo = await STPadServerLibDefault.openPad(openParams);
+      padState = 'opened';
+
+      sigCanvas.width = padInfo.padInfo.displayWidth;
+      sigCanvas.height = padInfo.padInfo.displayHeight;
+      scaleFactorX = padInfo.padInfo.displayWidth / padInfo.padInfo.xResolution;
+      scaleFactorY = padInfo.padInfo.displayHeight / padInfo.padInfo.yResolution;
+      sampleRate = padInfo.padInfo.samplingRate;
+
+      canvasContainer.style.display = 'block';
+      btnRow.style.display = 'flex';
+
+      // Start signature
+      const sigParams = new STPadServerLibDefault.Params.startSignature();
+      sigParams.setFieldName("GDPR Consent");
+      sigParams.setCustomText("Va rugam semnati pentru consimtamant GDPR");
+      sigParams.setConfirmationText("Confirm ca sunt de acord cu prelucrarea datelor personale conform GDPR.");
+      await STPadServerLibDefault.startSignature(sigParams);
+
+      setStatus('Pacientul poate semna pe tableta acum...', 'status-signing');
+    }
+
+    async function confirmSignature() {
+      await doConfirm();
+    }
+
+    async function doConfirm() {
+      try {
+        const signature = await STPadServerLibDefault.confirmSignature();
+        if ((signature.countedPoints / sampleRate) <= 0.2) {
+          setStatus('Semnatura prea scurta! Semnati din nou.', 'status-error');
+          await STPadServerLibDefault.retrySignature();
+          const ctx = sigCanvas.getContext('2d');
+          ctx.clearRect(0, 0, sigCanvas.width, sigCanvas.height);
+          lastX = -1; lastY = -1;
+          setStatus('Semnati din nou pe tableta...', 'status-signing');
+          return;
+        }
+
+        // Get signature image as PNG
+        const imgParams = new STPadServerLibDefault.Params.getSignatureImage();
+        imgParams.setFileType(STPadServerLibDefault.FileType.PNG);
+        imgParams.setPenWidth(5);
+        const sigImg = await STPadServerLibDefault.getSignatureImage(imgParams);
+        signatureImageBase64 = sigImg.file;
+
+        sigImage.src = 'data:image/png;base64,' + signatureImageBase64;
+        sigImage.style.display = 'block';
+
+        // Get signature data
+        const dataParams = new STPadServerLibDefault.Params.getSignatureData();
+        const sigData = await STPadServerLibDefault.getSignatureData(dataParams);
+
+        await closePad();
+
+        setStatus('Semnatura capturata! Se trimite...', 'status-done');
+        btnRow.style.display = 'none';
+
+        // Send signature to backend
+        await submitSignature(signatureImageBase64, sigData.signData || '');
+
+      } catch(err) {
+        console.error('Confirm error:', err);
+        setStatus('Eroare la confirmare: ' + (err.message || err), 'status-error');
+      }
+    }
+
+    async function retrySignature() {
+      try {
+        await STPadServerLibDefault.retrySignature();
+        const ctx = sigCanvas.getContext('2d');
+        ctx.clearRect(0, 0, sigCanvas.width, sigCanvas.height);
+        lastX = -1; lastY = -1;
+        setStatus('Semnati din nou pe tableta...', 'status-signing');
+      } catch(err) {
+        setStatus('Eroare: ' + (err.message || err), 'status-error');
+      }
+    }
+
+    async function cancelSignature() {
+      try {
+        await STPadServerLibDefault.cancelSignature();
+      } catch(e) {}
+      await closePad();
+      setStatus('Semnarea a fost anulata.', 'status-error');
+      btnRow.style.display = 'none';
+      setTimeout(() => window.close(), 3000);
+    }
+
+    async function closePad() {
+      if (padState === 'opened') {
+        try {
+          const closeParams = new STPadServerLibDefault.Params.closePad(padIndex);
+          await STPadServerLibDefault.closePad(closeParams);
+          padState = 'closed';
+        } catch(e) { console.error('closePad error:', e); }
+      }
+    }
+
+    async function submitSignature(imageBase64, signData) {
+      try {
+        // First open the sign URL in an iframe/new window to complete GDPR on citobiomed
+        if (signUrl) {
+          // Notify our backend that signature was captured
+          await fetch('/api/signature-captured', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              presentation_id: presentationId,
+              sign_url: signUrl,
+              signature_image: imageBase64,
+              sign_data: signData,
+            })
+          });
+        }
+
+        setStatus('Semnatura trimisa cu succes!', 'status-done');
+        infoEl.textContent = 'Semnatura a fost inregistrata. Aceasta fereastra se va inchide automat.';
+
+        // Also open the citobiomed sign URL so the server-side GDPR form is completed
+        if (signUrl) {
+          window.open(signUrl, '_blank');
+        }
+
+        setTimeout(() => window.close(), 5000);
+      } catch(err) {
+        console.error('Submit error:', err);
+        setStatus('Eroare la trimitere. Semnatura a fost capturata local.', 'status-error');
+        // Fallback: open sign URL anyway
+        if (signUrl) {
+          window.open(signUrl, '_blank');
+        }
+      }
+    }
+
+    // Start
+    init();
+  </script>
+</body>
+</html>
