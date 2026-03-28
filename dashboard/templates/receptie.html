@@ -192,6 +192,10 @@
       statusDot.className = 'status-dot ' + state;
       statusLabel.className = 'status-label ' + state;
       statusLabel.textContent = STATE_LABELS[state] || state;
+      // Reset queue flag when kiosk returns to idle
+      if (state === 'idle') {
+        callQueued = false;
+      }
       updateButton();
     }
 
@@ -329,31 +333,17 @@
     btn.addEventListener('click', async () => {
       if (btn.disabled) return;
 
-      // If kiosk is busy (form/thank_you), queue the call
-      if (kioskState === 'form' || kioskState === 'thank_you') {
-        // Still send the call — kiosk will queue it
-        try {
-          const res = await fetch('/api/call-patient', { method: 'POST' });
-          const data = await res.json();
-          if (data.status === 'queued') {
+      try {
+        const res = await fetch('/api/call-patient', { method: 'POST' });
+        const data = await res.json();
+
+        if (data.status === 'queued') {
+          if (kioskState === 'form' || kioskState === 'thank_you') {
             callQueued = true;
             updateButton();
             addNotification('Chemare la coada — va rula dupa ce pacientul termina', 'warn', 8000);
           }
-        } catch(err) {
-          addNotification('Eroare conexiune!', 'warn', 5000);
-        }
-        return;
-      }
-
-      // Kiosk is idle — play video directly
-      try {
-        const res = await fetch('/api/call-patient', { method: 'POST' });
-        const data = await res.json();
-        if (data.status === 'queued') {
-          // Will transition to 'calling' via kiosk_state event
-          btn.disabled = true;
-          btn.textContent = 'Se porneste...';
+          // For idle state: updateButton will handle via kiosk_state events
         }
       } catch(err) {
         addNotification('Eroare conexiune!', 'warn', 5000);
