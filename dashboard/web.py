@@ -508,6 +508,25 @@ def create_dashboard_app(
     _video_dir_env = os.getenv("VIDEO_DIR", "")
     video_dir = Path(_video_dir_env) if _video_dir_env else Path(__file__).resolve().parent.parent
     ALLOWED_VIDEOS = {f"video{i}.mp4" for i in range(1, 9)} | {"ADRESADEMAIL.mp4", "CHEAMAPACIENT.mp4", "NUMARTELEFON.mp4"}
+    ALLOWED_AUDIO = {"ava_greeting.mp3"}
+
+    @app.get("/api/audio/{filename}")
+    async def serve_audio(filename: str) -> Response:
+        if filename not in ALLOWED_AUDIO:
+            raise HTTPException(status_code=404, detail="Audio not found")
+
+        file_path = video_dir / filename
+        if not file_path.is_file():
+            raise HTTPException(status_code=404, detail="Audio file missing")
+
+        return Response(
+            content=file_path.read_bytes(),
+            media_type="audio/mpeg",
+            headers={
+                "Content-Length": str(file_path.stat().st_size),
+                "Cache-Control": "public, max-age=86400",
+            },
+        )
 
     @app.get("/api/videos/{filename}")
     async def serve_video(filename: str, request: Request) -> Response:

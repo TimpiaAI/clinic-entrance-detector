@@ -1,657 +1,323 @@
 /**
- * Patient workflow state machine.
+ * Patient workflow state machine — Form version.
  *
- * Orchestrates the full patient interaction cycle: idle -> greeting ->
- * ask_name -> recording_name -> show_name -> ... -> confirm_all ->
- * submitting -> farewell -> farewell_idle -> final -> idle.
+ * When a person is detected entering, a keyboard form is shown
+ * (Nume, Prenume, Email, CNP) with ava_greeting.mp3 playing in background.
+ * After submission, a thank-you message is displayed for a few seconds,
+ * then the system returns to idle.
  *
- * Uses playSingleVideo() for individual video playback (not the linear
- * instruction sequence from Phase 3). Each recording state calls
- * recordAndTranscribe() from audio.ts and shows results via ui.ts.
- *
- * Timeout on any state clears patient data and returns to idle.
- * Emergency stop (Escape) aborts active recordings and transitions to stopped.
+ * States: stopped → idle → form → form_submitting → thank_you → idle
  */
 
 import { apiSubmitPatient } from './api.ts';
-import { recordAndTranscribe, onInterimTranscript } from './audio.ts';
-import type { EventLogEntry, PatientData, TranscribeResult, WorkflowState } from './types.ts';
-import {
-  hideTranscriptionPanel,
-  showConfirmationSummary,
-  showProcessingState,
-  showRecordingState,
-  showTranscriptionResult,
-  updateRecordingInterim,
-  showEditableField,
-  updateEditableField,
-  getEditableFieldValue,
-  hideEditableField,
-} from './ui.ts';
-import { hideVideo, playSingleVideo, showMarquee, hideMarquee, startIdleLoop } from './video.ts';
-import { RO } from './ro.ts';
+import type { EventLogEntry, WorkflowState } from './types.ts';
+import { hideTranscriptionPanel } from './ui.ts';
+import { hideVideo, hideMarquee, startIdleLoop } from './video.ts';
 
 // ---------------------------------------------------------------------------
 //  Constants
 // ---------------------------------------------------------------------------
 
-/** Timeout durations per state (milliseconds). */
-const STATE_TIMEOUTS: Partial<Record<WorkflowState, number>> = {
-  greeting: 60_000,
-  ask_name: 60_000,
-  recording_name: 50_000,       // 30s max record + 20s buffer for transcription
-  show_name: 30_000,
-  ask_question: 60_000,
-  recording_question: 50_000,
-  show_question: 30_000,
-  ask_cnp: 60_000,
-  recording_cnp: 50_000,
-  show_cnp: 30_000,
-  ask_phone: 60_000,
-  recording_phone: 50_000,
-  show_phone: 30_000,
-  ask_email: 60_000,
-  recording_email: 50_000,
-  show_email: 30_000,
-  confirm_all: 60_000,
-  submitting: 30_000,
-  farewell: 60_000,
-  farewell_idle: 6_000,         // 5s idle + 1s buffer
-  final: 60_000,
-};
+/** How long the thank-you screen stays visible (ms). */
+const THANK_YOU_DURATION = 6_000;
 
-/** Recording prompts from controller.py. */
-const RECORDING_PROMPTS: Record<string, string | undefined> = {
-  recording_name: undefined,
-  recording_question: undefined,
-  recording_cnp: '1 2 3 4 5 6 7 8 9 1 2 3 4',
-  recording_phone: '0 7 1 2 3 4 5 6 7 8',
-  recording_email: 'tudor.trocaru arond gmail punct com, radu.popescu arond yahoo punct com, ion.ionescu arond gmail punct com',
-};
-
-/** Video filenames for each state. */
-const STATE_VIDEOS: Partial<Record<WorkflowState, string>> = {
-  greeting: 'video2.mp4',
-  ask_name: 'video3.mp4',
-  ask_question: 'video6.mp4',
-  ask_cnp: 'video7.mp4',
-  ask_phone: 'NUMARTELEFON.mp4',
-  ask_email: 'ADRESADEMAIL.mp4',
-  farewell: 'video4.mp4',
-  final: 'video5.mp4',
-};
-
-/** Marquee labels for video states. */
-const STATE_MARQUEES: Partial<Record<WorkflowState, string>> = {
-  greeting: RO.VIDEO_GREETING,
-  ask_name: RO.VIDEO_ASK_NAME,
-  ask_question: RO.VIDEO_ASK_QUESTION,
-  ask_cnp: RO.VIDEO_ASK_CNP,
-  ask_phone: RO.VIDEO_ASK_PHONE,
-  ask_email: RO.VIDEO_ASK_EMAIL,
-  farewell: RO.VIDEO_FAREWELL,
-  final: RO.VIDEO_FINAL,
-};
+/** Form timeout — auto-reset if nobody submits (ms). */
+const FORM_TIMEOUT = 120_000;
 
 // ---------------------------------------------------------------------------
 //  Module-level state
 // ---------------------------------------------------------------------------
 
 let currentState: WorkflowState = 'stopped';
-let patientData: PatientData = { name: null, question: null, cnp: null, phone: null, email: null };
 let stateTimeout: ReturnType<typeof setTimeout> | null = null;
 
-/**
- * Cancellation flag for active recordings. When set to true, recording
- * results are discarded after the Promise resolves. We cannot truly abort
- * a MediaRecorder from outside, but we can ignore the result.
- */
-/** URL for tablet digital signature (populated after successful submit). */
-let signUrl: string | null = null;
-
-let recordingCancelled = false;
-
-/** Flag indicating a recording is in progress (for abort/timeout). */
-let recordingActive = false;
-
 // ---------------------------------------------------------------------------
-//  Core state machine
+//  DOM refs (resolved lazily)
 // ---------------------------------------------------------------------------
 
-/**
- * Transition to a new workflow state.
- * Clears any active timeout, sets the new state, starts a state-specific
- * timeout, and executes the entry action for the new state.
- */
-function transition(newState: WorkflowState): void {
+function formOverlay(): HTMLElement | null {
+  return document.getElementById('patient-form-overlay');
+}
+
+function thankYouOverlay(): HTMLElement | null {
+  return document.getElementById('thank-you-overlay');
+}
+
+function patientForm(): HTMLFormElement | null {
+  return document.getElementById('patient-form') as HTMLFormElement | null;
+}
+
+function greetingAudio(): HTMLAudioElement | null {
+  return document.getElementById('greeting-audio') as HTMLAudioElement | null;
+}
+
+// ---------------------------------------------------------------------------
+//  Core helpers
+// ---------------------------------------------------------------------------
+
+function clearStateTimeout(): void {
   if (stateTimeout !== null) {
     clearTimeout(stateTimeout);
     stateTimeout = null;
   }
+}
+
+function hideForm(): void {
+  const overlay = formOverlay();
+  if (overlay) overlay.classList.remove('visible');
+}
+
+function hideThankYou(): void {
+  const overlay = thankYouOverlay();
+  if (overlay) overlay.classList.remove('visible');
+}
+
+function resetForm(): void {
+  const form = patientForm();
+  if (form) form.reset();
+}
+
+function playGreeting(): void {
+  const audio = greetingAudio();
+  if (audio) {
+    audio.currentTime = 0;
+    audio.play().catch(() => {
+      // Autoplay may be blocked before user gesture — silently ignore
+    });
+  }
+}
+
+function stopGreeting(): void {
+  const audio = greetingAudio();
+  if (audio) {
+    audio.pause();
+    audio.currentTime = 0;
+  }
+}
+
+// ---------------------------------------------------------------------------
+//  State machine
+// ---------------------------------------------------------------------------
+
+function transition(newState: WorkflowState): void {
+  clearStateTimeout();
 
   const prevState = currentState;
   currentState = newState;
   console.log(`workflow: ${prevState} -> ${newState}`);
 
-  // Start state-specific timeout (if defined)
-  const timeout = STATE_TIMEOUTS[newState];
-  if (timeout !== undefined) {
-    stateTimeout = setTimeout(() => handleTimeout(), timeout);
-  }
-
-  // Execute entry action
   executeStateEntry(newState);
 }
 
-/**
- * Handle timeout -- abort active recording, clear data, return to idle.
- */
-function handleTimeout(): void {
-  console.warn(`workflow: timeout in state ${currentState}`);
-
-  // Cancel any active recording
-  if (recordingActive) {
-    recordingCancelled = true;
-  }
-
-  // Clear patient data
-  resetPatientData();
-
-  // Hide UI
-  hideTranscriptionPanel();
-  hideMarquee();
-
-  // Return to idle
-  transition('idle');
-}
-
-/** Reset patient data to empty. */
-function resetPatientData(): void {
-  patientData = { name: null, question: null, cnp: null, phone: null, email: null };
-  signUrl = null;
-}
-
-// ---------------------------------------------------------------------------
-//  State entry actions
-// ---------------------------------------------------------------------------
-
-/**
- * Execute the entry action for a given state. This is the central
- * dispatcher that orchestrates video, recording, and UI for each state.
- */
 function executeStateEntry(state: WorkflowState): void {
   switch (state) {
     case 'stopped':
+      hideForm();
+      hideThankYou();
+      hideTranscriptionPanel();
+      hideMarquee();
+      hideVideo();
       break;
 
     case 'idle':
+      hideForm();
+      hideThankYou();
       hideTranscriptionPanel();
       hideMarquee();
       startIdleLoop();
-      // Check queue — if receptionist queued a call, auto-trigger after short delay
+      // Drain queue
       if (callPatientQueue > 0) {
         callPatientQueue--;
-        console.log(`workflow: draining queue (remaining=${callPatientQueue})`);
         setTimeout(() => {
-          if (currentState === 'idle') {
-            transition('greeting');
-          }
+          if (currentState === 'idle') transition('form');
         }, 2000);
       }
       break;
 
-    case 'greeting':
-    case 'ask_name':
-    case 'ask_question':
-    case 'ask_cnp':
-    case 'ask_phone':
-    case 'ask_email':
-    case 'farewell':
-    case 'final':
-      executeVideoState(state);
+    case 'form':
+      executeForm();
       break;
 
-    case 'recording_name':
-    case 'recording_question':
-    case 'recording_cnp':
-    case 'recording_phone':
-    case 'recording_email':
-      executeRecordingState(state);
+    case 'form_submitting':
+      executeFormSubmit();
       break;
 
-    case 'show_name':
-    case 'show_question':
-    case 'show_cnp':
-    case 'show_phone':
-    case 'show_email':
-      // show_* states immediately advance to the next ask/confirm step
-      executeShowStateTransition(state);
+    case 'thank_you':
+      executeThankYou();
       break;
 
-    case 'confirm_all':
-      executeConfirmAll();
-      break;
-
-    case 'submitting':
-      executeSubmitting();
-      break;
-
-    case 'farewell_idle':
-      executeFarewellIdle();
-      break;
-  }
-}
-
-// ---------------------------------------------------------------------------
-//  Video states
-// ---------------------------------------------------------------------------
-
-/**
- * Play a single video for a state and transition to the next state on ended.
- */
-function executeVideoState(state: WorkflowState): void {
-  const video = STATE_VIDEOS[state];
-  if (!video) return;
-
-  const marquee = STATE_MARQUEES[state];
-  if (marquee) {
-    showMarquee(marquee);
-  } else {
-    hideMarquee();
-  }
-
-  playSingleVideo(video, () => {
-    hideMarquee();
-    transitionAfterVideo(state);
-  });
-}
-
-/**
- * Determine the next state after a video finishes playing.
- */
-function transitionAfterVideo(state: WorkflowState): void {
-  switch (state) {
-    case 'greeting':
-      transition('ask_name');
-      break;
-    case 'ask_name':
-      transition('recording_name');
-      break;
-    case 'ask_question':
-      transition('recording_question');
-      break;
-    case 'ask_cnp':
-      transition('recording_cnp');
-      break;
-    case 'ask_phone':
-      transition('recording_phone');
-      break;
-    case 'ask_email':
-      transition('recording_email');
-      break;
-    case 'farewell':
-      transition('farewell_idle');
-      break;
-    case 'final':
-      transition('idle');
-      break;
-  }
-}
-
-// ---------------------------------------------------------------------------
-//  Recording states
-// ---------------------------------------------------------------------------
-
-/**
- * Execute a recording state: show recording UI, start idle video loop,
- * record audio, transcribe, show result with confirm/retry.
- */
-function executeRecordingState(state: WorkflowState): void {
-  // Start idle video as background during recording
-  startIdleLoop();
-
-  // Show recording indicator immediately
-  showRecordingState();
-
-  const prompt = RECORDING_PROMPTS[state];
-  recordingCancelled = false;
-  recordingActive = true;
-
-  // For CNP, phone, and email: show editable input field
-  const isEditable = state === 'recording_cnp' || state === 'recording_phone' || state === 'recording_email';
-  if (isEditable) {
-    const label = state === 'recording_cnp' ? RO.CNP_LABEL : state === 'recording_phone' ? RO.PHONE_LABEL : RO.EMAIL_LABEL;
-    showEditableField(label);
-  }
-
-  // Show live interim text as user speaks
-  onInterimTranscript((text) => {
-    updateRecordingInterim(text);
-    if (isEditable) {
-      // Extract digits for CNP/phone, or clean email attempt
-      if (state === 'recording_cnp' || state === 'recording_phone') {
-        const digits = text.replace(/[^0-9]/g, '');
-        if (digits) updateEditableField(digits);
-      } else {
-        updateEditableField(text);
-      }
-    }
-  });
-
-  recordAndTranscribe(10_000, prompt)
-    .then((result: TranscribeResult) => {
-      recordingActive = false;
-
-      // Check if recording was cancelled (timeout or emergency stop)
-      if (recordingCancelled) {
-        recordingCancelled = false;
-        hideEditableField();
-        return;
-      }
-
-      // Check we are still in the expected state (guard against race)
-      if (currentState !== state) {
-        hideEditableField();
-        return;
-      }
-
-      // For editable fields, override result with field value
-      if (isEditable) {
-        const fieldValue = getEditableFieldValue();
-        if (fieldValue) {
-          if (state === 'recording_cnp') {
-            result = { ...result, text: fieldValue, cnp: fieldValue };
-          } else if (state === 'recording_phone') {
-            result = { ...result, text: fieldValue };
-          } else {
-            result = { ...result, text: fieldValue, email: fieldValue };
-          }
-        }
-        hideEditableField();
-      }
-
-      showProcessingState();
-
-      // Determine the show_* state and data field
-      const { showState, dataField } = recordingStateMapping(state);
-
-      // Show transcription result with confirm/retry
-      showTranscriptionResult(result, () => {
-        // On confirm: store data and advance
-        storeRecordingResult(dataField, result);
-        hideTranscriptionPanel();
-        transition(showState);
-      }, () => {
-        // On retry: re-record
-        hideTranscriptionPanel();
-        transition(state);
-      });
-    })
-    .catch((err: unknown) => {
-      recordingActive = false;
-      hideEditableField();
-      console.error('workflow: recording failed', err);
-
-      // On error, show empty result with retry option
-      if (currentState !== state) return;
-      if (recordingCancelled) {
-        recordingCancelled = false;
-        return;
-      }
-
-      showTranscriptionResult({ text: '', cnp: null, email: null }, () => {
-        hideTranscriptionPanel();
-        const { showState, dataField } = recordingStateMapping(state);
-        storeRecordingResult(dataField, { text: '', cnp: null, email: null });
-        transition(showState);
-      }, () => {
-        hideTranscriptionPanel();
-        transition(state);
-      });
-    });
-}
-
-/**
- * Map a recording state to its corresponding show state and patient data field.
- */
-function recordingStateMapping(state: WorkflowState): {
-  showState: WorkflowState;
-  dataField: keyof PatientData;
-} {
-  switch (state) {
-    case 'recording_name':
-      return { showState: 'show_name', dataField: 'name' };
-    case 'recording_question':
-      return { showState: 'show_question', dataField: 'question' };
-    case 'recording_cnp':
-      return { showState: 'show_cnp', dataField: 'cnp' };
-    case 'recording_phone':
-      return { showState: 'show_phone', dataField: 'phone' };
-    case 'recording_email':
-      return { showState: 'show_email', dataField: 'email' };
     default:
-      return { showState: 'idle', dataField: 'name' };
-  }
-}
-
-/**
- * Store a recording result in the appropriate patient data field.
- */
-function storeRecordingResult(field: keyof PatientData, result: TranscribeResult): void {
-  switch (field) {
-    case 'name':
-      patientData.name = result.text || null;
-      break;
-    case 'question':
-      patientData.question = result.text || null;
-      break;
-    case 'cnp':
-      patientData.cnp = result.cnp || result.text || null;
-      break;
-    case 'phone':
-      patientData.phone = result.text ? result.text.replace(/[^0-9+]/g, '') : null;
-      break;
-    case 'email':
-      patientData.email = result.email || result.text || null;
+      // Legacy states from video workflow — ignore in Form version
       break;
   }
 }
 
 // ---------------------------------------------------------------------------
-//  Show states -> next transitions
+//  Form state
 // ---------------------------------------------------------------------------
 
-/**
- * The show_* states immediately transition to the next ask/confirm state.
- * Data was already stored by the recording confirm callback.
- */
-function executeShowStateTransition(state: WorkflowState): void {
-  switch (state) {
-    case 'show_name':
-      transition('ask_question');
-      break;
-    case 'show_question':
-      transition('ask_cnp');
-      break;
-    case 'show_cnp':
-      transition('ask_phone');
-      break;
-    case 'show_phone':
-      transition('ask_email');
-      break;
-    case 'show_email':
-      transition('confirm_all');
-      break;
-  }
-}
+function executeForm(): void {
+  // Hide video, show form
+  hideVideo();
+  hideMarquee();
+  hideTranscriptionPanel();
 
-// ---------------------------------------------------------------------------
-//  Confirm all + Submit
-// ---------------------------------------------------------------------------
+  const overlay = formOverlay();
+  if (overlay) overlay.classList.add('visible');
 
-/**
- * Show the confirmation summary with all patient data.
- */
-function executeConfirmAll(): void {
-  showConfirmationSummary(
-    patientData,
-    () => {
-      // On confirm: submit
-      hideTranscriptionPanel();
-      transition('submitting');
-    },
-    () => {
-      // On cancel: clear and return to idle
-      hideTranscriptionPanel();
-      resetPatientData();
+  resetForm();
+
+  // Play greeting audio in background
+  playGreeting();
+
+  // Focus first field
+  const numeInput = document.getElementById('form-nume') as HTMLInputElement | null;
+  if (numeInput) setTimeout(() => numeInput.focus(), 100);
+
+  // Timeout — return to idle if nobody submits
+  stateTimeout = setTimeout(() => {
+    if (currentState === 'form') {
+      console.warn('workflow: form timeout, returning to idle');
+      stopGreeting();
       transition('idle');
-    },
-  );
+    }
+  }, FORM_TIMEOUT);
 }
 
-/**
- * Submit patient data to the backend.
- */
-function executeSubmitting(): void {
+/** Called when patient form is submitted. */
+function onFormSubmit(e: Event): void {
+  e.preventDefault();
+  if (currentState !== 'form') return;
+
+  transition('form_submitting');
+}
+
+// ---------------------------------------------------------------------------
+//  Submit state
+// ---------------------------------------------------------------------------
+
+function executeFormSubmit(): void {
+  const numeEl = document.getElementById('form-nume') as HTMLInputElement | null;
+  const prenumeEl = document.getElementById('form-prenume') as HTMLInputElement | null;
+  const emailEl = document.getElementById('form-email') as HTMLInputElement | null;
+  const cnpEl = document.getElementById('form-cnp') as HTMLInputElement | null;
+  const submitBtn = patientForm()?.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+
+  const nume = numeEl?.value.trim() || '';
+  const prenume = prenumeEl?.value.trim() || '';
+  const email = emailEl?.value.trim() || '';
+  const cnp = cnpEl?.value.trim() || '';
+
+  // Disable button during submission
+  if (submitBtn) submitBtn.disabled = true;
+
+  stopGreeting();
+
+  // Build patient data compatible with existing backend
+  const patientData = {
+    name: `${prenume} ${nume}`.trim(),
+    question: null,
+    cnp: cnp || null,
+    phone: null,
+    email: email || null,
+  };
+
   apiSubmitPatient(patientData)
     .then((response) => {
-      if (currentState !== 'submitting') return;
-      // Store sign URL for tablet signature
+      if (currentState !== 'form_submitting') return;
+
+      // If sign_url returned, notify receptie
       if (response.sign_url) {
-        signUrl = response.sign_url;
-        console.log('workflow: sign_url =', signUrl);
+        fetch('/api/sign-ready', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ sign_url: response.sign_url }),
+        }).catch(() => {});
       }
-      transition('farewell');
+
+      transition('thank_you');
     })
     .catch((err: unknown) => {
       console.error('workflow: submit failed', err);
-      if (currentState !== 'submitting') return;
-      // On failure, return to idle (data is lost -- acceptable for v1)
-      transition('idle');
+      if (currentState !== 'form_submitting') return;
+      // Still show thank you even if backend fails
+      transition('thank_you');
+    })
+    .finally(() => {
+      if (submitBtn) submitBtn.disabled = false;
     });
 }
 
 // ---------------------------------------------------------------------------
-//  Farewell idle (video1 loop for 5 seconds)
+//  Thank you state
 // ---------------------------------------------------------------------------
 
-function executeFarewellIdle(): void {
-  // Push sign URL to backend so receptie page can open it on the tablet
-  if (signUrl) {
-    console.log('workflow: sign_url ready for receptie:', signUrl);
-    // Post to backend so receptie page picks it up via WebSocket
-    fetch('/api/sign-ready', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ sign_url: signUrl }),
-    }).catch(() => {});
-    signUrl = null;
-  }
-  hideMarquee();
-  startIdleLoop();
-  // The state timeout (6s) will fire and we transition manually to final
-  // Override the timeout handler for this specific state
-  if (stateTimeout !== null) {
-    clearTimeout(stateTimeout);
-  }
+function executeThankYou(): void {
+  hideForm();
+
+  const overlay = thankYouOverlay();
+  if (overlay) overlay.classList.add('visible');
+
   stateTimeout = setTimeout(() => {
-    if (currentState === 'farewell_idle') {
-      transition('final');
+    if (currentState === 'thank_you') {
+      transition('idle');
     }
-  }, 5_000);
+  }, THANK_YOU_DURATION);
 }
 
 // ---------------------------------------------------------------------------
 //  Public API
 // ---------------------------------------------------------------------------
 
-/**
- * Initialize the workflow module. Sets initial state to stopped.
- */
 export function initWorkflow(): void {
   currentState = 'stopped';
-  resetPatientData();
+
+  // Wire form submit handler
+  const form = patientForm();
+  if (form) {
+    form.addEventListener('submit', onFormSubmit);
+  }
 }
 
-/**
- * Start the workflow. Transitions from stopped to idle (starts idle video loop).
- */
 export function startWorkflow(): void {
   if (currentState !== 'stopped') return;
   transition('idle');
 }
 
-/**
- * Stop the workflow. Abort any active recording, clear data,
- * transition to stopped, hide video and transcription panel.
- */
 export function stopWorkflow(): void {
-  // Cancel active recording
-  if (recordingActive) {
-    recordingCancelled = true;
-  }
-
-  // Clear timeout
-  if (stateTimeout !== null) {
-    clearTimeout(stateTimeout);
-    stateTimeout = null;
-  }
-
-  // Clear data
-  resetPatientData();
-
-  // Hide everything
+  clearStateTimeout();
+  stopGreeting();
+  hideForm();
+  hideThankYou();
   hideTranscriptionPanel();
   hideMarquee();
   hideVideo();
-
+  resetForm();
   currentState = 'stopped';
   console.log('workflow: stopped');
 }
 
-/**
- * Returns the current workflow state.
- */
 export function getWorkflowState(): WorkflowState {
   return currentState;
 }
 
-/**
- * Returns a read-only copy of the patient data.
- */
-export function getPatientData(): Readonly<PatientData> {
-  return { ...patientData };
+export function getPatientData(): Readonly<{ name: string | null; question: string | null; cnp: string | null; phone: string | null; email: string | null }> {
+  return { name: null, question: null, cnp: null, phone: null, email: null };
 }
 
-/**
- * Handle a person_entered event. If in idle state, transition to greeting.
- * Otherwise ignore (workflow already active for current patient).
- */
 export function onPersonEntered(): void {
   if (currentState === 'idle') {
-    transition('greeting');
+    transition('form');
   }
 }
 
 // ---------------------------------------------------------------------------
-//  Call-patient queue (triggered by receptionist via /api/call-patient)
+//  Call-patient queue
 // ---------------------------------------------------------------------------
 
-/** Number of queued call_patient requests waiting for workflow to finish. */
 let callPatientQueue = 0;
-
-/** Timestamp of the last call_patient event processed. */
 let lastCallPatientTimestamp: string | null = null;
 
-/**
- * Check the event log for a new call_patient event from receptionist.
- * If workflow is idle -> start greeting immediately.
- * If workflow is busy -> queue it; auto-triggers when workflow returns to idle.
- */
-/**
- * Receptionist "Cheama Pacient" button → just play CHEAMAPACIENT.mp4, nothing else.
- * Does NOT start the recording workflow.
- */
 export function checkForCallPatient(eventLog: EventLogEntry[]): void {
   const latest = eventLog.find((e) => e.event === 'call_patient');
   if (!latest) return;
@@ -659,24 +325,19 @@ export function checkForCallPatient(eventLog: EventLogEntry[]): void {
 
   lastCallPatientTimestamp = latest.timestamp;
 
-  // Only play video if not busy with a patient workflow
   if (currentState === 'idle' || currentState === 'stopped') {
-    console.log('workflow: playing CHEAMAPACIENT video (call_patient)');
-    currentState = 'greeting'; // Block other triggers while video plays
-    playSingleVideo('CHEAMAPACIENT.mp4', () => {
-      // Video ended → back to idle loop, no workflow started
-      currentState = 'idle';
-      startIdleLoop();
-    });
+    // In form version, just start the form workflow
+    if (currentState === 'stopped') currentState = 'idle';
+    transition('form');
   }
 }
 
-/** Timestamp of the last person_entered event processed. */
+// ---------------------------------------------------------------------------
+//  Person-entered detection
+// ---------------------------------------------------------------------------
+
 let lastPersonEnteredTimestamp: string | null = null;
 
-/**
- * Person detected entering → start full workflow (greeting → name → CNP → phone → email → etc).
- */
 export function checkForPersonEnteredWorkflow(eventLog: EventLogEntry[]): void {
   const latest = eventLog.find((e) => e.event === 'person_entered' || e.event === 'signin_started');
   if (!latest) return;
@@ -685,13 +346,12 @@ export function checkForPersonEnteredWorkflow(eventLog: EventLogEntry[]): void {
   lastPersonEnteredTimestamp = latest.timestamp;
 
   if (currentState === 'idle') {
-    transition('greeting');
+    transition('form');
   } else if (currentState === 'stopped') {
     currentState = 'idle';
-    transition('greeting');
+    transition('form');
   } else {
     callPatientQueue++;
     console.log(`workflow: person_entered queued (queue=${callPatientQueue})`);
   }
 }
-

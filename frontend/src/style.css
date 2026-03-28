@@ -507,6 +507,161 @@ body {
 }
 
 /* -----------------------------------------------------------------------
+   Patient form overlay
+   ----------------------------------------------------------------------- */
+.patient-form-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(100% - 300px);
+  height: calc(100% - 30px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 25;
+  background: rgba(0, 0, 0, 0.85);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s;
+}
+
+.patient-form-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.patient-form-card {
+  background: #1a1a2e;
+  border: 2px solid #22c55e;
+  border-radius: 16px;
+  padding: 40px 48px;
+  width: 480px;
+  max-width: 90%;
+}
+
+.form-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #22c55e;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.form-subtitle {
+  font-size: 16px;
+  color: #aaa;
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  color: #ccc;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 18px;
+  border: 2px solid #333;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #e0e0e0;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus {
+  border-color: #22c55e;
+}
+
+.form-group input::placeholder {
+  color: #555;
+}
+
+.form-submit-btn {
+  width: 100%;
+  padding: 14px;
+  margin-top: 10px;
+  font-size: 20px;
+  font-weight: 700;
+  border: none;
+  border-radius: 10px;
+  background: #22c55e;
+  color: #000;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.form-submit-btn:hover {
+  background: #16a34a;
+}
+
+.form-submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* -----------------------------------------------------------------------
+   Thank you overlay
+   ----------------------------------------------------------------------- */
+.thank-you-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(100% - 300px);
+  height: calc(100% - 30px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 25;
+  background: rgba(0, 0, 0, 0.85);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s;
+}
+
+.thank-you-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.thank-you-card {
+  text-align: center;
+  padding: 48px 64px;
+  background: #1a1a2e;
+  border: 2px solid #22c55e;
+  border-radius: 16px;
+}
+
+.thank-you-icon {
+  font-size: 72px;
+  color: #22c55e;
+  margin-bottom: 16px;
+  line-height: 1;
+}
+
+.thank-you-card h2 {
+  font-size: 36px;
+  color: #22c55e;
+  margin-bottom: 12px;
+}
+
+.thank-you-card p {
+  font-size: 20px;
+  color: #ccc;
+  line-height: 1.5;
+}
+
+/* -----------------------------------------------------------------------
    Responsive — narrow screens: sidebar below feed
    ----------------------------------------------------------------------- */
 @media (max-width: 768px) {

@@ -59,7 +59,10 @@ export type WorkflowState =
   | 'submitting'
   | 'farewell'
   | 'farewell_idle'
-  | 'final';
+  | 'final'
+  | 'form'
+  | 'form_submitting'
+  | 'thank_you';
 
 export interface PatientData {
   name: string | null;

@@ -82,6 +82,45 @@
         </table>
       </div>
 
+      <!-- Patient form overlay (shown when person enters) -->
+      <div id="patient-form-overlay" class="patient-form-overlay">
+        <div class="patient-form-card">
+          <h2 class="form-title">Bine ati venit!</h2>
+          <p class="form-subtitle">Va rugam completati datele dumneavoastra:</p>
+          <form id="patient-form" autocomplete="off">
+            <div class="form-group">
+              <label for="form-nume">Nume</label>
+              <input id="form-nume" type="text" required placeholder="Introduceti numele" />
+            </div>
+            <div class="form-group">
+              <label for="form-prenume">Prenume</label>
+              <input id="form-prenume" type="text" required placeholder="Introduceti prenumele" />
+            </div>
+            <div class="form-group">
+              <label for="form-email">Adresa de email</label>
+              <input id="form-email" type="email" required placeholder="exemplu@email.com" />
+            </div>
+            <div class="form-group">
+              <label for="form-cnp">CNP</label>
+              <input id="form-cnp" type="text" inputmode="numeric" maxlength="13" required placeholder="Introduceti CNP-ul (13 cifre)" />
+            </div>
+            <button type="submit" class="form-submit-btn">Trimite</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Thank you overlay -->
+      <div id="thank-you-overlay" class="thank-you-overlay">
+        <div class="thank-you-card">
+          <div class="thank-you-icon">&#10003;</div>
+          <h2>Multumesc!</h2>
+          <p>Va rugam sa luati un loc pana sunteti chemat!</p>
+        </div>
+      </div>
+
+      <!-- Greeting audio (plays in background when form appears) -->
+      <audio id="greeting-audio" preload="auto" src="/api/audio/ava_greeting.mp3"></audio>
+
       <!-- Crash alert (hidden by default, shown when detector crashes) -->
       <div id="crash-alert" class="crash-alert">
         <div class="crash-alert-content">
