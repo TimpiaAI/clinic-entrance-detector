@@ -179,6 +179,8 @@ function executeForm(): void {
     if (currentState === 'form') {
       console.warn('workflow: form timeout, returning to idle');
       stopGreeting();
+      // Notify backend so receptie resets
+      fetch('/api/form-abandoned', { method: 'POST' }).catch(() => {});
       transition('idle');
     }
   }, FORM_TIMEOUT);

@@ -63,14 +63,11 @@
     const status = document.getElementById('status');
 
     let busy = false;
-    let queued = false;
-    let lastCallTimestamp = null;
     let lastSignTimestamp = null;
+    let lastFormCompletedTimestamp = null;
 
     function resetToReady() {
       busy = false;
-      queued = false;
-      lastCallTimestamp = null;
       btn.textContent = 'Cheama Pacient';
       btn.className = 'call-btn';
       status.textContent = 'Sistem activ - apasati butonul';
@@ -78,18 +75,14 @@
     }
 
     function showBusy() {
-      status.textContent = 'Pacient chemat - se proceseaza';
-      status.className = 'status busy';
-    }
-
-    function showQueued() {
-      btn.textContent = 'In asteptare...';
+      busy = true;
+      btn.textContent = 'Pacient in curs...';
       btn.className = 'call-btn waiting';
-      status.textContent = 'Pacient curent in curs - urmatorul va fi chemat automat';
+      status.textContent = 'Pacientul completeaza formularul';
       status.className = 'status busy';
     }
 
-    // WebSocket: monitor event log to detect when workflow finishes
+    // WebSocket: monitor event log for form_completed and sign_ready
     function connectWs() {
       const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
       const ws = new WebSocket(proto + '//' + location.host + '/ws');
@@ -105,24 +98,30 @@
 
           const events = data.event_log;
 
-          // Check for sign_ready event → open local signature page with Sig100 pad
+          // Check for form_completed → reset button
+          const formDone = events.find(ev => ev.event === 'form_completed');
+          if (formDone && formDone.timestamp !== lastFormCompletedTimestamp) {
+            lastFormCompletedTimestamp = formDone.timestamp;
+            if (busy) {
+              const name = formDone.matched_name || '';
+              status.textContent = name
+                ? 'Formular completat: ' + name
+                : 'Formular completat';
+              status.className = 'status connected';
+              // Short delay so receptionist sees the name, then reset
+              setTimeout(resetToReady, 5000);
+            }
+          }
+
+          // Check for sign_ready event → open local signature page
           const signEvent = events.find(ev => ev.event === 'sign_ready');
           if (signEvent && signEvent.sign_url && signEvent.timestamp !== lastSignTimestamp) {
             lastSignTimestamp = signEvent.timestamp;
-            // Extract presentation_id from sign_url
             const pidMatch = signEvent.sign_url.match(/\/sign\/(\d+)/);
             const pid = pidMatch ? pidMatch[1] : '';
             const sigPageUrl = '/signature?url=' + encodeURIComponent(signEvent.sign_url) + '&pid=' + pid;
             console.log('Opening signature page:', sigPageUrl);
             window.open(sigPageUrl, '_blank');
-          }
-
-          // Auto-reset button after call video finishes (~30s)
-          if (busy && lastCallTimestamp) {
-            const callTime = new Date(lastCallTimestamp).getTime();
-            if (Date.now() - callTime > 30000) {
-              resetToReady();
-            }
           }
         } catch(err) {}
       };
@@ -137,37 +136,14 @@
     connectWs();
 
     btn.addEventListener('click', async () => {
-      if (busy && queued) return; // Already queued, ignore
+      if (busy) return;
 
       try {
         const res = await fetch('/api/call-patient', { method: 'POST' });
         const data = await res.json();
 
         if (data.status === 'queued') {
-          if (busy) {
-            queued = true;
-            showQueued();
-          } else {
-            busy = true;
-            lastCallTimestamp = new Date().toISOString();
-            showBusy();
-            // Auto-reset after 30s (greeting video duration)
-            setTimeout(() => {
-              if (queued) {
-                // There was a queued call - it will auto-play on kiosk
-                // Reset after another 30s
-                queued = false;
-                busy = true;
-                lastCallTimestamp = new Date().toISOString();
-                btn.textContent = 'Cheama Pacient';
-                btn.className = 'call-btn';
-                showBusy();
-                setTimeout(resetToReady, 30000);
-              } else {
-                resetToReady();
-              }
-            }, 30000);
-          }
+          showBusy();
         }
       } catch(err) {
         status.textContent = 'Eroare conexiune!';

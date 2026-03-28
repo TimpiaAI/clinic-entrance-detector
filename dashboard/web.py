@@ -242,6 +242,17 @@ def create_dashboard_app(
 
         return JSONResponse(content={"status": "ok"})
 
+    @app.post("/api/form-abandoned")
+    async def form_abandoned() -> JSONResponse:
+        """Kiosk notifies that patient form timed out without submission."""
+        state.push_event({
+            "event": "form_completed",
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "person_id": -1,
+            "confidence": 1.0,
+        })
+        return JSONResponse(content={"status": "ok"})
+
     @app.post("/api/call-patient")
     async def call_patient() -> JSONResponse:
         """Receptionist triggers patient call. Pushed via WebSocket to kiosk."""
@@ -476,6 +487,15 @@ def create_dashboard_app(
             log.info("Presentation created: id=%s, patient=%s, sign_url=%s",
                      response.get("presentation_id") if response else None, patient_id, sign_url)
 
+            # Notify receptie that form is done
+            state.push_event({
+                "event": "form_completed",
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "person_id": -1,
+                "confidence": 1.0,
+                "matched_name": matched_appointment.full_name if matched_appointment else name,
+            })
+
             return JSONResponse(content={
                 "status": "submitted",
                 "presentation_id": response.get("presentation_id") if response else None,
@@ -487,6 +507,13 @@ def create_dashboard_app(
             })
         except Exception as e:
             log.error("Submit patient error: %s", e)
+            # Still notify receptie even on error
+            state.push_event({
+                "event": "form_completed",
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "person_id": -1,
+                "confidence": 1.0,
+            })
             return JSONResponse(content={"status": "error", "error": str(e)})
 
     # Process management endpoints (start/stop/status for detector subprocess)
