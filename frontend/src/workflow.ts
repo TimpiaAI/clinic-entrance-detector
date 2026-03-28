@@ -23,6 +23,79 @@ const THANK_YOU_DURATION = 6_000;
 const FORM_TIMEOUT = 120_000;
 
 // ---------------------------------------------------------------------------
+//  Translations
+// ---------------------------------------------------------------------------
+
+interface FormStrings {
+  title: string;
+  subtitle: string;
+  nume: string;
+  prenume: string;
+  email: string;
+  cnp: string;
+  numePlaceholder: string;
+  prenumePlaceholder: string;
+  emailPlaceholder: string;
+  cnpPlaceholder: string;
+  submit: string;
+  thankYouTitle: string;
+  thankYouMsg: string;
+}
+
+const TRANSLATIONS: Record<string, FormStrings> = {
+  ro: { title: 'Bine ati venit!', subtitle: 'Completati datele pentru inregistrare', nume: 'Nume', prenume: 'Prenume', email: 'Adresa de email', cnp: 'CNP', numePlaceholder: 'Popescu', prenumePlaceholder: 'Ion', emailPlaceholder: 'exemplu@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'Confirma si trimite', thankYouTitle: 'Multumesc!', thankYouMsg: 'Va rugam sa luati un loc\npana sunteti chemat.' },
+  en: { title: 'Welcome!', subtitle: 'Please fill in your details', nume: 'Last name', prenume: 'First name', email: 'Email address', cnp: 'CNP (Personal ID)', numePlaceholder: 'Smith', prenumePlaceholder: 'John', emailPlaceholder: 'example@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'Confirm and submit', thankYouTitle: 'Thank you!', thankYouMsg: 'Please take a seat\nuntil you are called.' },
+  uk: { title: 'Ласкаво просимо!', subtitle: 'Будь ласка, заповніть ваші дані', nume: 'Прізвище', prenume: "Ім'я", email: 'Електронна пошта', cnp: 'CNP (Особистий код)', numePlaceholder: 'Шевченко', prenumePlaceholder: 'Олена', emailPlaceholder: 'приклад@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'Підтвердити та надіслати', thankYouTitle: 'Дякуємо!', thankYouMsg: 'Будь ласка, сідайте\nта чекайте виклику.' },
+  hu: { title: 'Üdvözöljük!', subtitle: 'Kérjük, töltse ki az adatait', nume: 'Vezetéknév', prenume: 'Keresztnév', email: 'Email cím', cnp: 'CNP (Személyi szám)', numePlaceholder: 'Nagy', prenumePlaceholder: 'János', emailPlaceholder: 'pelda@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'Megerősítés és küldés', thankYouTitle: 'Köszönjük!', thankYouMsg: 'Kérjük, foglaljon helyet\namíg szólítjuk.' },
+  de: { title: 'Willkommen!', subtitle: 'Bitte füllen Sie Ihre Daten aus', nume: 'Nachname', prenume: 'Vorname', email: 'E-Mail-Adresse', cnp: 'CNP (Persönliche ID)', numePlaceholder: 'Müller', prenumePlaceholder: 'Hans', emailPlaceholder: 'beispiel@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'Bestätigen und senden', thankYouTitle: 'Danke!', thankYouMsg: 'Bitte nehmen Sie Platz\nbis Sie aufgerufen werden.' },
+  fr: { title: 'Bienvenue!', subtitle: 'Veuillez remplir vos données', nume: 'Nom', prenume: 'Prénom', email: 'Adresse e-mail', cnp: 'CNP (ID personnel)', numePlaceholder: 'Dupont', prenumePlaceholder: 'Marie', emailPlaceholder: 'exemple@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'Confirmer et envoyer', thankYouTitle: 'Merci!', thankYouMsg: 'Veuillez prendre place\njusqu\'à ce qu\'on vous appelle.' },
+  it: { title: 'Benvenuto!', subtitle: 'Compilate i vostri dati', nume: 'Cognome', prenume: 'Nome', email: 'Indirizzo email', cnp: 'CNP (ID personale)', numePlaceholder: 'Rossi', prenumePlaceholder: 'Marco', emailPlaceholder: 'esempio@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'Conferma e invia', thankYouTitle: 'Grazie!', thankYouMsg: 'Prendete posto\nfino alla chiamata.' },
+  es: { title: '¡Bienvenido!', subtitle: 'Por favor complete sus datos', nume: 'Apellido', prenume: 'Nombre', email: 'Correo electrónico', cnp: 'CNP (ID personal)', numePlaceholder: 'García', prenumePlaceholder: 'Carlos', emailPlaceholder: 'ejemplo@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'Confirmar y enviar', thankYouTitle: '¡Gracias!', thankYouMsg: 'Por favor tome asiento\nhasta que le llamen.' },
+  ru: { title: 'Добро пожаловать!', subtitle: 'Пожалуйста, заполните ваши данные', nume: 'Фамилия', prenume: 'Имя', email: 'Электронная почта', cnp: 'CNP (Личный код)', numePlaceholder: 'Иванов', prenumePlaceholder: 'Иван', emailPlaceholder: 'пример@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'Подтвердить и отправить', thankYouTitle: 'Спасибо!', thankYouMsg: 'Пожалуйста, присаживайтесь\nи ждите вызова.' },
+  tr: { title: 'Hoş geldiniz!', subtitle: 'Lütfen bilgilerinizi doldurun', nume: 'Soyadı', prenume: 'Adı', email: 'E-posta adresi', cnp: 'CNP (Kişisel kimlik)', numePlaceholder: 'Yılmaz', prenumePlaceholder: 'Ahmet', emailPlaceholder: 'ornek@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'Onayla ve gönder', thankYouTitle: 'Teşekkürler!', thankYouMsg: 'Lütfen yerinize oturun\nçağrılana kadar bekleyin.' },
+  bg: { title: 'Добре дошли!', subtitle: 'Моля, попълнете данните си', nume: 'Фамилия', prenume: 'Име', email: 'Имейл адрес', cnp: 'CNP (Личен код)', numePlaceholder: 'Иванов', prenumePlaceholder: 'Георги', emailPlaceholder: 'пример@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'Потвърди и изпрати', thankYouTitle: 'Благодаря!', thankYouMsg: 'Моля, заемете място\nдокато ви повикат.' },
+  ar: { title: '!مرحبا', subtitle: 'يرجى ملء بياناتكم', nume: 'اسم العائلة', prenume: 'الاسم الأول', email: 'البريد الإلكتروني', cnp: 'CNP (الرقم الشخصي)', numePlaceholder: 'محمد', prenumePlaceholder: 'أحمد', emailPlaceholder: 'مثال@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'تأكيد وإرسال', thankYouTitle: '!شكرا', thankYouMsg: 'يرجى الجلوس\nحتى يتم استدعاؤكم.' },
+  pl: { title: 'Witamy!', subtitle: 'Proszę wypełnić swoje dane', nume: 'Nazwisko', prenume: 'Imię', email: 'Adres e-mail', cnp: 'CNP (Numer osobisty)', numePlaceholder: 'Kowalski', prenumePlaceholder: 'Jan', emailPlaceholder: 'przyklad@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'Potwierdź i wyślij', thankYouTitle: 'Dziękujemy!', thankYouMsg: 'Proszę usiąść\ni czekać na wezwanie.' },
+};
+
+function getStrings(): FormStrings {
+  const sel = document.getElementById('lang-select') as HTMLSelectElement | null;
+  const lang = sel?.value || 'ro';
+  return TRANSLATIONS[lang] || TRANSLATIONS['ro'];
+}
+
+function applyLanguage(): void {
+  const s = getStrings();
+  const title = document.getElementById('form-title');
+  const subtitle = document.getElementById('form-subtitle');
+  const lblNume = document.querySelector('label[for="form-nume"]');
+  const lblPrenume = document.querySelector('label[for="form-prenume"]');
+  const lblEmail = document.querySelector('label[for="form-email"]');
+  const lblCnp = document.querySelector('label[for="form-cnp"]');
+  const inpNume = document.getElementById('form-nume') as HTMLInputElement | null;
+  const inpPrenume = document.getElementById('form-prenume') as HTMLInputElement | null;
+  const inpEmail = document.getElementById('form-email') as HTMLInputElement | null;
+  const inpCnp = document.getElementById('form-cnp') as HTMLInputElement | null;
+  const btnText = document.querySelector('.form-submit-btn .btn-text');
+  const tyTitle = document.querySelector('.thank-you-card h2');
+  const tyMsg = document.querySelector('.thank-you-card p');
+
+  if (title) title.textContent = s.title;
+  if (subtitle) subtitle.textContent = s.subtitle;
+  if (lblNume) lblNume.textContent = s.nume;
+  if (lblPrenume) lblPrenume.textContent = s.prenume;
+  if (lblEmail) lblEmail.textContent = s.email;
+  if (lblCnp) lblCnp.textContent = s.cnp;
+  if (inpNume) inpNume.placeholder = s.numePlaceholder;
+  if (inpPrenume) inpPrenume.placeholder = s.prenumePlaceholder;
+  if (inpEmail) inpEmail.placeholder = s.emailPlaceholder;
+  if (inpCnp) inpCnp.placeholder = s.cnpPlaceholder;
+  if (btnText) btnText.textContent = s.submit;
+  if (tyTitle) tyTitle.textContent = s.thankYouTitle;
+  if (tyMsg) tyMsg.innerHTML = s.thankYouMsg.replace('\n', '<br/>');
+}
+
+// ---------------------------------------------------------------------------
 //  Module-level state
 // ---------------------------------------------------------------------------
 
@@ -170,6 +243,7 @@ function executeForm(): void {
   if (overlay) overlay.classList.add('visible');
 
   resetForm();
+  applyLanguage();
   playGreeting();
   notifyKioskState('form');
 
@@ -278,6 +352,13 @@ export function initWorkflow(): void {
   if (form) {
     form.addEventListener('submit', onFormSubmit);
   }
+
+  // Wire language selector
+  const langSel = document.getElementById('lang-select');
+  if (langSel) {
+    langSel.addEventListener('change', applyLanguage);
+  }
+  applyLanguage();
 }
 
 export function startWorkflow(): void {

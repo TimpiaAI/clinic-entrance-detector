@@ -86,10 +86,27 @@
       <!-- Patient form overlay -->
       <div id="patient-form-overlay" class="patient-form-overlay">
         <div class="patient-form-card">
+          <div class="form-lang-bar">
+            <select id="lang-select" class="lang-select">
+              <option value="ro" selected>Romana</option>
+              <option value="en">English</option>
+              <option value="uk">Українська</option>
+              <option value="hu">Magyar</option>
+              <option value="de">Deutsch</option>
+              <option value="fr">Français</option>
+              <option value="it">Italiano</option>
+              <option value="es">Español</option>
+              <option value="ru">Русский</option>
+              <option value="tr">Türkçe</option>
+              <option value="bg">Български</option>
+              <option value="ar">العربية</option>
+              <option value="pl">Polski</option>
+            </select>
+          </div>
           <div class="form-header">
             <div class="form-logo">CB</div>
-            <h2 class="form-title">Bine ati venit!</h2>
-            <p class="form-subtitle">Completati datele pentru inregistrare</p>
+            <h2 id="form-title" class="form-title">Bine ati venit!</h2>
+            <p id="form-subtitle" class="form-subtitle">Completati datele pentru inregistrare</p>
           </div>
           <form id="patient-form" autocomplete="off">
             <div class="form-row">
