@@ -107,35 +107,53 @@
               <option value="pl">🇵🇱 Polski</option>
             </select>
           </div>
-          <div class="form-header">
-            <div class="form-logo">CB</div>
-            <h2 id="form-title" class="form-title">Bine ati venit!</h2>
-            <p id="form-subtitle" class="form-subtitle">Completati datele pentru inregistrare</p>
-          </div>
-          <form id="patient-form" autocomplete="off">
-            <div class="form-row">
-              <div class="form-group">
-                <label for="form-nume">Nume</label>
-                <input id="form-nume" type="text" required placeholder="Popescu" />
-              </div>
-              <div class="form-group">
-                <label for="form-prenume">Prenume</label>
-                <input id="form-prenume" type="text" required placeholder="Ion" />
-              </div>
+          <!-- STEP 1: Welcome + Signature -->
+          <div id="form-step1" class="form-step">
+            <div class="form-header">
+              <div class="form-logo">CB</div>
+              <h2 id="form-title" class="form-title">Bine ati venit!</h2>
             </div>
-            <div class="form-group">
-              <label for="form-email">Adresa de email</label>
-              <input id="form-email" type="email" required placeholder="exemplu@email.com" />
+            <div class="signature-notice">
+              <div class="signature-icon">&#9997;</div>
+              <p id="signature-text" class="signature-text">Va rugam sa semnati pe tableta din stanga dumneavoastra pentru acordul de prelucrare a datelor cu caracter personal.</p>
             </div>
-            <div class="form-group">
-              <label for="form-cnp">CNP</label>
-              <input id="form-cnp" type="text" inputmode="numeric" maxlength="13" required placeholder="_ _ _ _ _ _ _ _ _ _ _ _ _" />
-            </div>
-            <button type="submit" class="form-submit-btn">
-              <span class="btn-text">Confirma si trimite</span>
+            <button type="button" id="btn-signed" class="form-submit-btn">
+              <span id="btn-signed-text" class="btn-text">Am semnat, continua</span>
               <span class="btn-arrow">&#10140;</span>
             </button>
-          </form>
+          </div>
+
+          <!-- STEP 2: Patient data form -->
+          <div id="form-step2" class="form-step" style="display:none;">
+            <div class="form-header">
+              <div class="form-logo">CB</div>
+              <p id="form-subtitle" class="form-subtitle">Completati datele pentru inregistrare</p>
+            </div>
+            <form id="patient-form" autocomplete="off">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="form-nume">Nume</label>
+                  <input id="form-nume" type="text" required placeholder="Popescu" />
+                </div>
+                <div class="form-group">
+                  <label for="form-prenume">Prenume</label>
+                  <input id="form-prenume" type="text" required placeholder="Ion" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="form-email">Adresa de email</label>
+                <input id="form-email" type="email" required placeholder="exemplu@email.com" />
+              </div>
+              <div class="form-group">
+                <label for="form-cnp">CNP</label>
+                <input id="form-cnp" type="text" inputmode="numeric" maxlength="13" required placeholder="_ _ _ _ _ _ _ _ _ _ _ _ _" />
+              </div>
+              <button type="submit" class="form-submit-btn">
+                <span class="btn-text">Confirma si trimite</span>
+                <span class="btn-arrow">&#10140;</span>
+              </button>
+            </form>
+          </div>
         </div>
       </div>
 

@@ -26,6 +26,8 @@ const THANK_YOU_DURATION = 6_000;
 
 interface FormStrings {
   title: string;
+  signatureText: string;
+  signedBtn: string;
   subtitle: string;
   nume: string;
   prenume: string;
@@ -40,24 +42,27 @@ interface FormStrings {
   thankYouMsg: string;
 }
 
+const SIG_RO = 'Va rugam sa semnati pe tableta din stanga dumneavoastra pentru acordul de prelucrare a datelor cu caracter personal.';
+const SIGNED_RO = 'Am semnat, continua';
+
 const TRANSLATIONS: Record<string, FormStrings> = {
-  ro: { title: 'Bine ati venit!', subtitle: 'Completati datele pentru inregistrare', nume: 'Nume', prenume: 'Prenume', email: 'Adresa de email', cnp: 'CNP', numePlaceholder: 'Popescu', prenumePlaceholder: 'Ion', emailPlaceholder: 'exemplu@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'Confirma si trimite', thankYouTitle: 'Multumesc!', thankYouMsg: 'Va rugam sa luati un loc\npana sunteti chemat.' },
-  en: { title: 'Welcome!', subtitle: 'Please fill in your details', nume: 'Last name', prenume: 'First name', email: 'Email address', cnp: 'CNP (Personal ID)', numePlaceholder: 'Smith', prenumePlaceholder: 'John', emailPlaceholder: 'example@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'Confirm and submit', thankYouTitle: 'Thank you!', thankYouMsg: 'Please take a seat\nuntil you are called.' },
-  uk: { title: 'Ласкаво просимо!', subtitle: 'Будь ласка, заповніть ваші дані', nume: 'Прізвище', prenume: "Ім'я", email: 'Електронна пошта', cnp: 'CNP (Особистий код)', numePlaceholder: 'Шевченко', prenumePlaceholder: 'Олена', emailPlaceholder: 'приклад@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'Підтвердити та надіслати', thankYouTitle: 'Дякуємо!', thankYouMsg: 'Будь ласка, сідайте\nта чекайте виклику.' },
-  hu: { title: 'Üdvözöljük!', subtitle: 'Kérjük, töltse ki az adatait', nume: 'Vezetéknév', prenume: 'Keresztnév', email: 'Email cím', cnp: 'CNP (Személyi szám)', numePlaceholder: 'Nagy', prenumePlaceholder: 'János', emailPlaceholder: 'pelda@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'Megerősítés és küldés', thankYouTitle: 'Köszönjük!', thankYouMsg: 'Kérjük, foglaljon helyet\namíg szólítjuk.' },
-  de: { title: 'Willkommen!', subtitle: 'Bitte füllen Sie Ihre Daten aus', nume: 'Nachname', prenume: 'Vorname', email: 'E-Mail-Adresse', cnp: 'CNP (Persönliche ID)', numePlaceholder: 'Müller', prenumePlaceholder: 'Hans', emailPlaceholder: 'beispiel@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'Bestätigen und senden', thankYouTitle: 'Danke!', thankYouMsg: 'Bitte nehmen Sie Platz\nbis Sie aufgerufen werden.' },
-  fr: { title: 'Bienvenue!', subtitle: 'Veuillez remplir vos données', nume: 'Nom', prenume: 'Prénom', email: 'Adresse e-mail', cnp: 'CNP (ID personnel)', numePlaceholder: 'Dupont', prenumePlaceholder: 'Marie', emailPlaceholder: 'exemple@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'Confirmer et envoyer', thankYouTitle: 'Merci!', thankYouMsg: 'Veuillez prendre place\njusqu\'à ce qu\'on vous appelle.' },
-  it: { title: 'Benvenuto!', subtitle: 'Compilate i vostri dati', nume: 'Cognome', prenume: 'Nome', email: 'Indirizzo email', cnp: 'CNP (ID personale)', numePlaceholder: 'Rossi', prenumePlaceholder: 'Marco', emailPlaceholder: 'esempio@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'Conferma e invia', thankYouTitle: 'Grazie!', thankYouMsg: 'Prendete posto\nfino alla chiamata.' },
-  es: { title: '¡Bienvenido!', subtitle: 'Por favor complete sus datos', nume: 'Apellido', prenume: 'Nombre', email: 'Correo electrónico', cnp: 'CNP (ID personal)', numePlaceholder: 'García', prenumePlaceholder: 'Carlos', emailPlaceholder: 'ejemplo@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'Confirmar y enviar', thankYouTitle: '¡Gracias!', thankYouMsg: 'Por favor tome asiento\nhasta que le llamen.' },
-  ru: { title: 'Добро пожаловать!', subtitle: 'Пожалуйста, заполните ваши данные', nume: 'Фамилия', prenume: 'Имя', email: 'Электронная почта', cnp: 'CNP (Личный код)', numePlaceholder: 'Иванов', prenumePlaceholder: 'Иван', emailPlaceholder: 'пример@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'Подтвердить и отправить', thankYouTitle: 'Спасибо!', thankYouMsg: 'Пожалуйста, присаживайтесь\nи ждите вызова.' },
-  tr: { title: 'Hoş geldiniz!', subtitle: 'Lütfen bilgilerinizi doldurun', nume: 'Soyadı', prenume: 'Adı', email: 'E-posta adresi', cnp: 'CNP (Kişisel kimlik)', numePlaceholder: 'Yılmaz', prenumePlaceholder: 'Ahmet', emailPlaceholder: 'ornek@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'Onayla ve gönder', thankYouTitle: 'Teşekkürler!', thankYouMsg: 'Lütfen yerinize oturun\nçağrılana kadar bekleyin.' },
-  bg: { title: 'Добре дошли!', subtitle: 'Моля, попълнете данните си', nume: 'Фамилия', prenume: 'Име', email: 'Имейл адрес', cnp: 'CNP (Личен код)', numePlaceholder: 'Иванов', prenumePlaceholder: 'Георги', emailPlaceholder: 'пример@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'Потвърди и изпрати', thankYouTitle: 'Благодаря!', thankYouMsg: 'Моля, заемете място\nдокато ви повикат.' },
-  ar: { title: '!مرحبا', subtitle: 'يرجى ملء بياناتكم', nume: 'اسم العائلة', prenume: 'الاسم الأول', email: 'البريد الإلكتروني', cnp: 'CNP (الرقم الشخصي)', numePlaceholder: 'محمد', prenumePlaceholder: 'أحمد', emailPlaceholder: 'مثال@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'تأكيد وإرسال', thankYouTitle: '!شكرا', thankYouMsg: 'يرجى الجلوس\nحتى يتم استدعاؤكم.' },
-  pt: { title: 'Bem-vindo!', subtitle: 'Por favor preencha os seus dados', nume: 'Apelido', prenume: 'Nome', email: 'Endereço de email', cnp: 'CNP (ID pessoal)', numePlaceholder: 'Silva', prenumePlaceholder: 'João', emailPlaceholder: 'exemplo@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'Confirmar e enviar', thankYouTitle: 'Obrigado!', thankYouMsg: 'Por favor tome assento\naté ser chamado.' },
-  zh: { title: '欢迎！', subtitle: '请填写您的信息', nume: '姓', prenume: '名', email: '电子邮件', cnp: 'CNP（个人身份号）', numePlaceholder: '王', prenumePlaceholder: '明', emailPlaceholder: 'example@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: '确认并提交', thankYouTitle: '谢谢！', thankYouMsg: '请就座\n等待叫号。' },
-  hi: { title: 'स्वागत है!', subtitle: 'कृपया अपना विवरण भरें', nume: 'उपनाम', prenume: 'नाम', email: 'ईमेल पता', cnp: 'CNP (व्यक्तिगत आईडी)', numePlaceholder: 'शर्मा', prenumePlaceholder: 'राज', emailPlaceholder: 'example@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'पुष्टि करें और भेजें', thankYouTitle: 'धन्यवाद!', thankYouMsg: 'कृपया बैठ जाइए\nजब तक आपको बुलाया न जाए।' },
-  bn: { title: 'স্বাগতম!', subtitle: 'অনুগ্রহ করে আপনার তথ্য পূরণ করুন', nume: 'পদবি', prenume: 'নাম', email: 'ইমেইল ঠিকানা', cnp: 'CNP (ব্যক্তিগত আইডি)', numePlaceholder: 'রহমান', prenumePlaceholder: 'করিম', emailPlaceholder: 'example@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'নিশ্চিত করুন ও পাঠান', thankYouTitle: 'ধন্যবাদ!', thankYouMsg: 'অনুগ্রহ করে বসুন\nডাকা পর্যন্ত অপেক্ষা করুন।' },
-  pl: { title: 'Witamy!', subtitle: 'Proszę wypełnić swoje dane', nume: 'Nazwisko', prenume: 'Imię', email: 'Adres e-mail', cnp: 'CNP (Numer osobisty)', numePlaceholder: 'Kowalski', prenumePlaceholder: 'Jan', emailPlaceholder: 'przyklad@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'Potwierdź i wyślij', thankYouTitle: 'Dziękujemy!', thankYouMsg: 'Proszę usiąść\ni czekać na wezwanie.' },
+  ro: { title: 'Bine ati venit!', signatureText: SIG_RO, signedBtn: SIGNED_RO, subtitle: 'Completati datele pentru inregistrare', nume: 'Nume', prenume: 'Prenume', email: 'Adresa de email', cnp: 'CNP', numePlaceholder: 'Popescu', prenumePlaceholder: 'Ion', emailPlaceholder: 'exemplu@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'Confirma si trimite', thankYouTitle: 'Multumesc!', thankYouMsg: 'Va rugam sa luati un loc\npana sunteti chemat.' },
+  en: { title: 'Welcome!', signatureText: 'Please sign on the tablet to your left to consent to personal data processing.', signedBtn: 'I signed, continue', subtitle: 'Please fill in your details', nume: 'Last name', prenume: 'First name', email: 'Email address', cnp: 'CNP (Personal ID)', numePlaceholder: 'Smith', prenumePlaceholder: 'John', emailPlaceholder: 'example@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'Confirm and submit', thankYouTitle: 'Thank you!', thankYouMsg: 'Please take a seat\nuntil you are called.' },
+  uk: { title: 'Ласкаво просимо!', signatureText: 'Будь ласка, підпишіть на планшеті зліва для згоди на обробку персональних даних.', signedBtn: 'Я підписав, далі', subtitle: 'Будь ласка, заповніть ваші дані', nume: 'Прізвище', prenume: "Ім'я", email: 'Електронна пошта', cnp: 'CNP (Особистий код)', numePlaceholder: 'Шевченко', prenumePlaceholder: 'Олена', emailPlaceholder: 'приклад@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'Підтвердити та надіслати', thankYouTitle: 'Дякуємо!', thankYouMsg: 'Будь ласка, сідайте\nта чекайте виклику.' },
+  hu: { title: 'Üdvözöljük!', signatureText: 'Kérjük, írja alá a bal oldali tableten a személyes adatok feldolgozásához való hozzájárulást.', signedBtn: 'Aláírtam, tovább', subtitle: 'Kérjük, töltse ki az adatait', nume: 'Vezetéknév', prenume: 'Keresztnév', email: 'Email cím', cnp: 'CNP (Személyi szám)', numePlaceholder: 'Nagy', prenumePlaceholder: 'János', emailPlaceholder: 'pelda@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'Megerősítés és küldés', thankYouTitle: 'Köszönjük!', thankYouMsg: 'Kérjük, foglaljon helyet\namíg szólítjuk.' },
+  de: { title: 'Willkommen!', signatureText: 'Bitte unterschreiben Sie auf dem Tablet links für die Einwilligung zur Verarbeitung personenbezogener Daten.', signedBtn: 'Unterschrieben, weiter', subtitle: 'Bitte füllen Sie Ihre Daten aus', nume: 'Nachname', prenume: 'Vorname', email: 'E-Mail-Adresse', cnp: 'CNP (Persönliche ID)', numePlaceholder: 'Müller', prenumePlaceholder: 'Hans', emailPlaceholder: 'beispiel@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'Bestätigen und senden', thankYouTitle: 'Danke!', thankYouMsg: 'Bitte nehmen Sie Platz\nbis Sie aufgerufen werden.' },
+  fr: { title: 'Bienvenue!', signatureText: 'Veuillez signer sur la tablette à votre gauche pour le consentement au traitement des données personnelles.', signedBtn: 'J\'ai signé, continuer', subtitle: 'Veuillez remplir vos données', nume: 'Nom', prenume: 'Prénom', email: 'Adresse e-mail', cnp: 'CNP (ID personnel)', numePlaceholder: 'Dupont', prenumePlaceholder: 'Marie', emailPlaceholder: 'exemple@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'Confirmer et envoyer', thankYouTitle: 'Merci!', thankYouMsg: 'Veuillez prendre place\njusqu\'à ce qu\'on vous appelle.' },
+  it: { title: 'Benvenuto!', signatureText: 'Si prega di firmare sul tablet alla vostra sinistra per il consenso al trattamento dei dati personali.', signedBtn: 'Ho firmato, continua', subtitle: 'Compilate i vostri dati', nume: 'Cognome', prenume: 'Nome', email: 'Indirizzo email', cnp: 'CNP (ID personale)', numePlaceholder: 'Rossi', prenumePlaceholder: 'Marco', emailPlaceholder: 'esempio@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'Conferma e invia', thankYouTitle: 'Grazie!', thankYouMsg: 'Prendete posto\nfino alla chiamata.' },
+  es: { title: '¡Bienvenido!', signatureText: 'Por favor firme en la tableta a su izquierda para el consentimiento de procesamiento de datos personales.', signedBtn: 'Ya firmé, continuar', subtitle: 'Por favor complete sus datos', nume: 'Apellido', prenume: 'Nombre', email: 'Correo electrónico', cnp: 'CNP (ID personal)', numePlaceholder: 'García', prenumePlaceholder: 'Carlos', emailPlaceholder: 'ejemplo@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'Confirmar y enviar', thankYouTitle: '¡Gracias!', thankYouMsg: 'Por favor tome asiento\nhasta que le llamen.' },
+  ru: { title: 'Добро пожаловать!', signatureText: 'Пожалуйста, подпишите на планшете слева для согласия на обработку персональных данных.', signedBtn: 'Я подписал, далее', subtitle: 'Пожалуйста, заполните ваши данные', nume: 'Фамилия', prenume: 'Имя', email: 'Электронная почта', cnp: 'CNP (Личный код)', numePlaceholder: 'Иванов', prenumePlaceholder: 'Иван', emailPlaceholder: 'пример@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'Подтвердить и отправить', thankYouTitle: 'Спасибо!', thankYouMsg: 'Пожалуйста, присаживайтесь\nи ждите вызова.' },
+  tr: { title: 'Hoş geldiniz!', signatureText: 'Lütfen kişisel verilerin işlenmesine onay vermek için soldaki tablette imzalayın.', signedBtn: 'İmzaladım, devam', subtitle: 'Lütfen bilgilerinizi doldurun', nume: 'Soyadı', prenume: 'Adı', email: 'E-posta adresi', cnp: 'CNP (Kişisel kimlik)', numePlaceholder: 'Yılmaz', prenumePlaceholder: 'Ahmet', emailPlaceholder: 'ornek@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'Onayla ve gönder', thankYouTitle: 'Teşekkürler!', thankYouMsg: 'Lütfen yerinize oturun\nçağrılana kadar bekleyin.' },
+  bg: { title: 'Добре дошли!', signatureText: 'Моля, подпишете на таблета отляво за съгласие за обработка на лични данни.', signedBtn: 'Подписах, напред', subtitle: 'Моля, попълнете данните си', nume: 'Фамилия', prenume: 'Име', email: 'Имейл адрес', cnp: 'CNP (Личен код)', numePlaceholder: 'Иванов', prenumePlaceholder: 'Георги', emailPlaceholder: 'пример@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'Потвърди и изпрати', thankYouTitle: 'Благодаря!', thankYouMsg: 'Моля, заемете място\nдокато ви повикат.' },
+  ar: { title: '!مرحبا', signatureText: 'يرجى التوقيع على الجهاز اللوحي الموجود على يسارك للموافقة على معالجة البيانات الشخصية.', signedBtn: 'وقعت، متابعة', subtitle: 'يرجى ملء بياناتكم', nume: 'اسم العائلة', prenume: 'الاسم الأول', email: 'البريد الإلكتروني', cnp: 'CNP (الرقم الشخصي)', numePlaceholder: 'محمد', prenumePlaceholder: 'أحمد', emailPlaceholder: 'مثال@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'تأكيد وإرسال', thankYouTitle: '!شكرا', thankYouMsg: 'يرجى الجلوس\nحتى يتم استدعاؤكم.' },
+  pt: { title: 'Bem-vindo!', signatureText: 'Por favor assine no tablet à sua esquerda para o consentimento de processamento de dados pessoais.', signedBtn: 'Assinei, continuar', subtitle: 'Por favor preencha os seus dados', nume: 'Apelido', prenume: 'Nome', email: 'Endereço de email', cnp: 'CNP (ID pessoal)', numePlaceholder: 'Silva', prenumePlaceholder: 'João', emailPlaceholder: 'exemplo@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'Confirmar e enviar', thankYouTitle: 'Obrigado!', thankYouMsg: 'Por favor tome assento\naté ser chamado.' },
+  zh: { title: '欢迎！', signatureText: '请在左侧的平板电脑上签名，同意个人数据处理。', signedBtn: '已签名，继续', subtitle: '请填写您的信息', nume: '姓', prenume: '名', email: '电子邮件', cnp: 'CNP（个人身份号）', numePlaceholder: '王', prenumePlaceholder: '明', emailPlaceholder: 'example@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: '确认并提交', thankYouTitle: '谢谢！', thankYouMsg: '请就座\n等待叫号。' },
+  hi: { title: 'स्वागत है!', signatureText: 'कृपया व्यक्तिगत डेटा प्रसंस्करण की सहमति के लिए बाईं ओर के टैबलेट पर हस्ताक्षर करें।', signedBtn: 'मैंने हस्ताक्षर किया, आगे बढ़ें', subtitle: 'कृपया अपना विवरण भरें', nume: 'उपनाम', prenume: 'नाम', email: 'ईमेल पता', cnp: 'CNP (व्यक्तिगत आईडी)', numePlaceholder: 'शर्मा', prenumePlaceholder: 'राज', emailPlaceholder: 'example@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'पुष्टि करें और भेजें', thankYouTitle: 'धन्यवाद!', thankYouMsg: 'कृपया बैठ जाइए\nजब तक आपको बुलाया न जाए।' },
+  bn: { title: 'স্বাগতম!', signatureText: 'ব্যক্তিগত তথ্য প্রক্রিয়াকরণের সম্মতির জন্য অনুগ্রহ করে বাম দিকের ট্যাবলেটে স্বাক্ষর করুন।', signedBtn: 'স্বাক্ষর করেছি, এগিয়ে যান', subtitle: 'অনুগ্রহ করে আপনার তথ্য পূরণ করুন', nume: 'পদবি', prenume: 'নাম', email: 'ইমেইল ঠিকানা', cnp: 'CNP (ব্যক্তিগত আইডি)', numePlaceholder: 'রহমান', prenumePlaceholder: 'করিম', emailPlaceholder: 'example@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'নিশ্চিত করুন ও পাঠান', thankYouTitle: 'ধন্যবাদ!', thankYouMsg: 'অনুগ্রহ করে বসুন\nডাকা পর্যন্ত অপেক্ষা করুন।' },
+  pl: { title: 'Witamy!', signatureText: 'Proszę podpisać na tablecie po lewej stronie w celu wyrażenia zgody na przetwarzanie danych osobowych.', signedBtn: 'Podpisałem, dalej', subtitle: 'Proszę wypełnić swoje dane', nume: 'Nazwisko', prenume: 'Imię', email: 'Adres e-mail', cnp: 'CNP (Numer osobisty)', numePlaceholder: 'Kowalski', prenumePlaceholder: 'Jan', emailPlaceholder: 'przyklad@email.com', cnpPlaceholder: '_ _ _ _ _ _ _ _ _ _ _ _ _', submit: 'Potwierdź i wyślij', thankYouTitle: 'Dziękujemy!', thankYouMsg: 'Proszę usiąść\ni czekać na wezwanie.' },
 };
 
 function getStrings(): FormStrings {
@@ -82,7 +87,12 @@ function applyLanguage(): void {
   const tyTitle = document.querySelector('.thank-you-card h2');
   const tyMsg = document.querySelector('.thank-you-card p');
 
+  const sigText = document.getElementById('signature-text');
+  const signedBtnText = document.getElementById('btn-signed-text');
+
   if (title) title.textContent = s.title;
+  if (sigText) sigText.textContent = s.signatureText;
+  if (signedBtnText) signedBtnText.textContent = s.signedBtn;
   if (subtitle) subtitle.textContent = s.subtitle;
   if (lblNume) lblNume.textContent = s.nume;
   if (lblPrenume) lblPrenume.textContent = s.prenume;
@@ -231,6 +241,7 @@ function executeShowForm(): void {
   hideVideo();
   showForm();
   resetForm();
+  showStep1();
   applyLanguage();
   notifyKioskState('idle');
 }
@@ -330,12 +341,36 @@ function executeCallPatientVideo(): void {
 //  Public API
 // ---------------------------------------------------------------------------
 
+function showStep1(): void {
+  const step1 = document.getElementById('form-step1');
+  const step2 = document.getElementById('form-step2');
+  if (step1) step1.style.display = '';
+  if (step2) step2.style.display = 'none';
+}
+
+function showStep2(): void {
+  const step1 = document.getElementById('form-step1');
+  const step2 = document.getElementById('form-step2');
+  if (step1) step1.style.display = 'none';
+  if (step2) step2.style.display = '';
+  const numeInput = document.getElementById('form-nume') as HTMLInputElement | null;
+  if (numeInput) setTimeout(() => numeInput.focus(), 100);
+}
+
 export function initWorkflow(): void {
   currentState = 'stopped';
 
   const form = patientForm();
   if (form) {
     form.addEventListener('submit', onFormSubmit);
+  }
+
+  // "Am semnat" button → go to step 2
+  const signedBtn = document.getElementById('btn-signed');
+  if (signedBtn) {
+    signedBtn.addEventListener('click', () => {
+      showStep2();
+    });
   }
 
   const langSel = document.getElementById('lang-select');
