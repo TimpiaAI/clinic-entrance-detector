@@ -28,6 +28,7 @@ const FORM_TIMEOUT = 120_000;
 
 let currentState: WorkflowState = 'stopped';
 let stateTimeout: ReturnType<typeof setTimeout> | null = null;
+let callPatientQueue = 0;
 
 // ---------------------------------------------------------------------------
 //  DOM refs
@@ -119,6 +120,14 @@ function executeStateEntry(state: WorkflowState): void {
 
     case 'idle':
       hideAll();
+      notifyKioskState('idle');
+      // Drain call-patient queue
+      if (callPatientQueue > 0) {
+        callPatientQueue--;
+        setTimeout(() => {
+          if (currentState === 'idle') transition('greeting');
+        }, 1500);
+      }
       break;
 
     case 'form':
@@ -146,6 +155,14 @@ function executeStateEntry(state: WorkflowState): void {
 //  FLOW 1: Detection → Form
 // ---------------------------------------------------------------------------
 
+function notifyKioskState(kioskState: string): void {
+  fetch('/api/kiosk-state', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ state: kioskState }),
+  }).catch(() => {});
+}
+
 function executeForm(): void {
   hideAll();
 
@@ -154,6 +171,7 @@ function executeForm(): void {
 
   resetForm();
   playGreeting();
+  notifyKioskState('form');
 
   const numeInput = document.getElementById('form-nume') as HTMLInputElement | null;
   if (numeInput) setTimeout(() => numeInput.focus(), 100);
@@ -223,6 +241,7 @@ function executeFormSubmit(): void {
 
 function executeThankYou(): void {
   hideForm();
+  notifyKioskState('thank_you');
 
   const overlay = thankYouOverlay();
   if (overlay) overlay.classList.add('visible');
@@ -240,9 +259,9 @@ function executeThankYou(): void {
 
 function executeCallPatientVideo(): void {
   hideAll();
+  notifyKioskState('calling');
 
   playSingleVideo('CHEAMAPACIENT.mp4', () => {
-    // Video finished → notify receptie, back to idle (detection mode)
     fetch('/api/call-patient-done', { method: 'POST' }).catch(() => {});
     transition('idle');
   });
@@ -305,8 +324,11 @@ export function checkForCallPatient(eventLog: EventLogEntry[]): void {
   if (currentState === 'idle' || currentState === 'stopped') {
     if (currentState === 'stopped') currentState = 'idle';
     transition('greeting');
+  } else {
+    // Busy (form/thank_you) — queue, will play after returning to idle
+    callPatientQueue++;
+    console.log(`workflow: call_patient queued (queue=${callPatientQueue})`);
   }
-  // If busy (form/thank_you), ignore — patient is already being served
 }
 
 // ---------------------------------------------------------------------------

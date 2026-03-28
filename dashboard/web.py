@@ -242,6 +242,20 @@ def create_dashboard_app(
 
         return JSONResponse(content={"status": "ok"})
 
+    @app.post("/api/kiosk-state")
+    async def kiosk_state_update(request: Request) -> JSONResponse:
+        """Kiosk pushes its current state so receptie can track it live."""
+        data = await request.json()
+        kiosk_st = data.get("state", "unknown")
+        state.push_event({
+            "event": "kiosk_state",
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "person_id": -1,
+            "confidence": 1.0,
+            "kiosk_state": kiosk_st,
+        })
+        return JSONResponse(content={"status": "ok"})
+
     @app.post("/api/form-abandoned")
     async def form_abandoned() -> JSONResponse:
         """Kiosk notifies that patient form timed out without submission."""
