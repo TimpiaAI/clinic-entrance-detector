@@ -613,7 +613,8 @@ body {
   color: #f0f6ff;
   outline: none;
   transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
-  cursor: text;
+  cursor: default;
+  caret-color: #0ea5e9;
 }
 
 .form-group input:focus {
