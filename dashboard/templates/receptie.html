@@ -55,11 +55,7 @@
     let lastSignTs = null;
 
     function updateButton() {
-      if (connected && kioskState === 'idle') {
-        btn.disabled = false;
-      } else {
-        btn.disabled = true;
-      }
+      btn.disabled = !connected;
     }
 
     function connectWs() {
