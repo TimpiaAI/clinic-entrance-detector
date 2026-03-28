@@ -264,6 +264,17 @@ def create_dashboard_app(
         })
         return JSONResponse(content={"status": "queued"})
 
+    @app.post("/api/call-patient-done")
+    async def call_patient_done() -> JSONResponse:
+        """Kiosk notifies that CHEAMAPACIENT video finished playing."""
+        state.push_event({
+            "event": "call_patient_done",
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "person_id": -1,
+            "confidence": 1.0,
+        })
+        return JSONResponse(content={"status": "ok"})
+
     @app.get("/video_feed")
     async def video_feed() -> StreamingResponse:
         return StreamingResponse(

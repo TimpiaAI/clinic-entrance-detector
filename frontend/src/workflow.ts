@@ -1,27 +1,25 @@
 /**
  * Patient workflow state machine — Form version.
  *
- * When a person is detected entering, a keyboard form is shown
- * (Nume, Prenume, Email, CNP) with ava_greeting.mp3 playing in background.
- * After submission, a thank-you message is displayed for a few seconds,
- * then the system returns to idle.
+ * Two independent flows:
+ *
+ * 1. DETECTION: person enters → mp3 + form → submit → thank_you → idle
+ * 2. CALL PATIENT: receptionist button → CHEAMAPACIENT.mp4 video → idle
  *
  * States: stopped → idle → form → form_submitting → thank_you → idle
+ *                        → greeting (call patient video) → idle
  */
 
 import { apiSubmitPatient } from './api.ts';
 import type { EventLogEntry, WorkflowState } from './types.ts';
 import { hideTranscriptionPanel } from './ui.ts';
-import { hideVideo, hideMarquee } from './video.ts';
+import { hideVideo, hideMarquee, playSingleVideo } from './video.ts';
 
 // ---------------------------------------------------------------------------
 //  Constants
 // ---------------------------------------------------------------------------
 
-/** How long the thank-you screen stays visible (ms). */
 const THANK_YOU_DURATION = 6_000;
-
-/** Form timeout — auto-reset if nobody submits (ms). */
 const FORM_TIMEOUT = 120_000;
 
 // ---------------------------------------------------------------------------
@@ -32,7 +30,7 @@ let currentState: WorkflowState = 'stopped';
 let stateTimeout: ReturnType<typeof setTimeout> | null = null;
 
 // ---------------------------------------------------------------------------
-//  DOM refs (resolved lazily)
+//  DOM refs
 // ---------------------------------------------------------------------------
 
 function formOverlay(): HTMLElement | null {
@@ -52,7 +50,7 @@ function greetingAudio(): HTMLAudioElement | null {
 }
 
 // ---------------------------------------------------------------------------
-//  Core helpers
+//  Helpers
 // ---------------------------------------------------------------------------
 
 function clearStateTimeout(): void {
@@ -81,9 +79,7 @@ function playGreeting(): void {
   const audio = greetingAudio();
   if (audio) {
     audio.currentTime = 0;
-    audio.play().catch(() => {
-      // Autoplay may be blocked before user gesture — silently ignore
-    });
+    audio.play().catch(() => {});
   }
 }
 
@@ -95,43 +91,34 @@ function stopGreeting(): void {
   }
 }
 
+function hideAll(): void {
+  hideForm();
+  hideThankYou();
+  hideTranscriptionPanel();
+  hideMarquee();
+  hideVideo();
+}
+
 // ---------------------------------------------------------------------------
 //  State machine
 // ---------------------------------------------------------------------------
 
 function transition(newState: WorkflowState): void {
   clearStateTimeout();
-
   const prevState = currentState;
   currentState = newState;
   console.log(`workflow: ${prevState} -> ${newState}`);
-
   executeStateEntry(newState);
 }
 
 function executeStateEntry(state: WorkflowState): void {
   switch (state) {
     case 'stopped':
-      hideForm();
-      hideThankYou();
-      hideTranscriptionPanel();
-      hideMarquee();
-      hideVideo();
+      hideAll();
       break;
 
     case 'idle':
-      hideForm();
-      hideThankYou();
-      hideTranscriptionPanel();
-      hideMarquee();
-      hideVideo();
-      // Drain queue
-      if (callPatientQueue > 0) {
-        callPatientQueue--;
-        setTimeout(() => {
-          if (currentState === 'idle') transition('form');
-        }, 2000);
-      }
+      hideAll();
       break;
 
     case 'form':
@@ -146,57 +133,46 @@ function executeStateEntry(state: WorkflowState): void {
       executeThankYou();
       break;
 
+    case 'greeting':
+      executeCallPatientVideo();
+      break;
+
     default:
-      // Legacy states from video workflow — ignore in Form version
       break;
   }
 }
 
 // ---------------------------------------------------------------------------
-//  Form state
+//  FLOW 1: Detection → Form
 // ---------------------------------------------------------------------------
 
 function executeForm(): void {
-  // Hide video, show form
-  hideVideo();
-  hideMarquee();
-  hideTranscriptionPanel();
+  hideAll();
 
   const overlay = formOverlay();
   if (overlay) overlay.classList.add('visible');
 
   resetForm();
-
-  // Play greeting audio in background
   playGreeting();
 
-  // Focus first field
   const numeInput = document.getElementById('form-nume') as HTMLInputElement | null;
   if (numeInput) setTimeout(() => numeInput.focus(), 100);
 
-  // Timeout — return to idle if nobody submits
   stateTimeout = setTimeout(() => {
     if (currentState === 'form') {
       console.warn('workflow: form timeout, returning to idle');
       stopGreeting();
-      // Notify backend so receptie resets
       fetch('/api/form-abandoned', { method: 'POST' }).catch(() => {});
       transition('idle');
     }
   }, FORM_TIMEOUT);
 }
 
-/** Called when patient form is submitted. */
 function onFormSubmit(e: Event): void {
   e.preventDefault();
   if (currentState !== 'form') return;
-
   transition('form_submitting');
 }
-
-// ---------------------------------------------------------------------------
-//  Submit state
-// ---------------------------------------------------------------------------
 
 function executeFormSubmit(): void {
   const numeEl = document.getElementById('form-nume') as HTMLInputElement | null;
@@ -210,12 +186,9 @@ function executeFormSubmit(): void {
   const email = emailEl?.value.trim() || '';
   const cnp = cnpEl?.value.trim() || '';
 
-  // Disable button during submission
   if (submitBtn) submitBtn.disabled = true;
-
   stopGreeting();
 
-  // Build patient data compatible with existing backend
   const patientData = {
     name: `${prenume} ${nume}`.trim(),
     question: null,
@@ -228,7 +201,6 @@ function executeFormSubmit(): void {
     .then((response) => {
       if (currentState !== 'form_submitting') return;
 
-      // If sign_url returned, notify receptie
       if (response.sign_url) {
         fetch('/api/sign-ready', {
           method: 'POST',
@@ -242,17 +214,12 @@ function executeFormSubmit(): void {
     .catch((err: unknown) => {
       console.error('workflow: submit failed', err);
       if (currentState !== 'form_submitting') return;
-      // Still show thank you even if backend fails
       transition('thank_you');
     })
     .finally(() => {
       if (submitBtn) submitBtn.disabled = false;
     });
 }
-
-// ---------------------------------------------------------------------------
-//  Thank you state
-// ---------------------------------------------------------------------------
 
 function executeThankYou(): void {
   hideForm();
@@ -268,13 +235,26 @@ function executeThankYou(): void {
 }
 
 // ---------------------------------------------------------------------------
+//  FLOW 2: Call Patient → Video CHEAMAPACIENT.mp4
+// ---------------------------------------------------------------------------
+
+function executeCallPatientVideo(): void {
+  hideAll();
+
+  playSingleVideo('CHEAMAPACIENT.mp4', () => {
+    // Video finished → notify receptie, back to idle (detection mode)
+    fetch('/api/call-patient-done', { method: 'POST' }).catch(() => {});
+    transition('idle');
+  });
+}
+
+// ---------------------------------------------------------------------------
 //  Public API
 // ---------------------------------------------------------------------------
 
 export function initWorkflow(): void {
   currentState = 'stopped';
 
-  // Wire form submit handler
   const form = patientForm();
   if (form) {
     form.addEventListener('submit', onFormSubmit);
@@ -289,11 +269,7 @@ export function startWorkflow(): void {
 export function stopWorkflow(): void {
   clearStateTimeout();
   stopGreeting();
-  hideForm();
-  hideThankYou();
-  hideTranscriptionPanel();
-  hideMarquee();
-  hideVideo();
+  hideAll();
   resetForm();
   currentState = 'stopped';
   console.log('workflow: stopped');
@@ -314,10 +290,9 @@ export function onPersonEntered(): void {
 }
 
 // ---------------------------------------------------------------------------
-//  Call-patient queue
+//  Call-patient (receptionist button → play CHEAMAPACIENT.mp4)
 // ---------------------------------------------------------------------------
 
-let callPatientQueue = 0;
 let lastCallPatientTimestamp: string | null = null;
 
 export function checkForCallPatient(eventLog: EventLogEntry[]): void {
@@ -328,14 +303,14 @@ export function checkForCallPatient(eventLog: EventLogEntry[]): void {
   lastCallPatientTimestamp = latest.timestamp;
 
   if (currentState === 'idle' || currentState === 'stopped') {
-    // In form version, just start the form workflow
     if (currentState === 'stopped') currentState = 'idle';
-    transition('form');
+    transition('greeting');
   }
+  // If busy (form/thank_you), ignore — patient is already being served
 }
 
 // ---------------------------------------------------------------------------
-//  Person-entered detection
+//  Person-entered detection → show form
 // ---------------------------------------------------------------------------
 
 let lastPersonEnteredTimestamp: string | null = null;
@@ -352,8 +327,5 @@ export function checkForPersonEnteredWorkflow(eventLog: EventLogEntry[]): void {
   } else if (currentState === 'stopped') {
     currentState = 'idle';
     transition('form');
-  } else {
-    callPatientQueue++;
-    console.log(`workflow: person_entered queued (queue=${callPatientQueue})`);
   }
 }

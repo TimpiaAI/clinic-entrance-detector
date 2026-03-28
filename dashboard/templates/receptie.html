@@ -64,7 +64,7 @@
 
     let busy = false;
     let lastSignTimestamp = null;
-    let lastFormCompletedTimestamp = null;
+    let lastCallDoneTimestamp = null;
 
     function resetToReady() {
       busy = false;
@@ -76,13 +76,13 @@
 
     function showBusy() {
       busy = true;
-      btn.textContent = 'Pacient in curs...';
+      btn.textContent = 'Se reda...';
       btn.className = 'call-btn waiting';
-      status.textContent = 'Pacientul completeaza formularul';
+      status.textContent = 'Video-ul de chemare ruleaza pe ecranul pacientului';
       status.className = 'status busy';
     }
 
-    // WebSocket: monitor event log for form_completed and sign_ready
+    // WebSocket: monitor event log for call_patient_done and sign_ready
     function connectWs() {
       const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
       const ws = new WebSocket(proto + '//' + location.host + '/ws');
@@ -98,18 +98,12 @@
 
           const events = data.event_log;
 
-          // Check for form_completed → reset button
-          const formDone = events.find(ev => ev.event === 'form_completed');
-          if (formDone && formDone.timestamp !== lastFormCompletedTimestamp) {
-            lastFormCompletedTimestamp = formDone.timestamp;
+          // Check for call_patient_done → video finished, reset button
+          const callDone = events.find(ev => ev.event === 'call_patient_done');
+          if (callDone && callDone.timestamp !== lastCallDoneTimestamp) {
+            lastCallDoneTimestamp = callDone.timestamp;
             if (busy) {
-              const name = formDone.matched_name || '';
-              status.textContent = name
-                ? 'Formular completat: ' + name
-                : 'Formular completat';
-              status.className = 'status connected';
-              // Short delay so receptionist sees the name, then reset
-              setTimeout(resetToReady, 5000);
+              resetToReady();
             }
           }
 
