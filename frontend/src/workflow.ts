@@ -12,7 +12,7 @@
 import { apiSubmitPatient } from './api.ts';
 import type { EventLogEntry, WorkflowState } from './types.ts';
 import { hideTranscriptionPanel } from './ui.ts';
-import { hideVideo, hideMarquee, startIdleLoop } from './video.ts';
+import { hideVideo, hideMarquee } from './video.ts';
 
 // ---------------------------------------------------------------------------
 //  Constants
@@ -124,7 +124,7 @@ function executeStateEntry(state: WorkflowState): void {
       hideThankYou();
       hideTranscriptionPanel();
       hideMarquee();
-      startIdleLoop();
+      hideVideo();
       // Drain queue
       if (callPatientQueue > 0) {
         callPatientQueue--;
