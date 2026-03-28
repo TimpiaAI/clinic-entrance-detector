@@ -120,22 +120,15 @@ export async function startSystem(): Promise<void> {
   try {
     await apiStartDetector();
     await apiWakeLockActivate();
-
-    // Initialize audio if not already ready (user gesture required)
-    if (!isMicReady()) {
-      await initAudio(); // May fail silently -- that's OK
-    }
-
-    startWorkflow(); // Transitions workflow to idle, starts idle video loop
-    startHealthMonitor();
-    systemRunning = true;
-    wasDetectorRunning = true;
-    updateSystemButton(true); // Show "Stop"
   } catch (err) {
-    console.error('system-control: startSystem failed', err);
-    systemRunning = false;
-    updateSystemButton(false);
+    console.warn('system-control: start backend failed', err);
   }
+
+  startWorkflow();
+  startHealthMonitor();
+  systemRunning = true;
+  wasDetectorRunning = true;
+  updateSystemButton(true); // Show "Stop"
 }
 
 /**
@@ -205,19 +198,24 @@ export async function autoStart(): Promise<void> {
   try {
     await apiStartDetector();
     await apiWakeLockActivate();
+  } catch (err) {
+    console.warn('system-control: auto-start backend failed', err);
+  }
 
-    // Initialize audio if not already ready
+  // Always start workflow (form always visible) regardless of audio/detector
+  startWorkflow();
+  startHealthMonitor();
+  systemRunning = true;
+  wasDetectorRunning = true;
+  updateSystemButton(true);
+
+  // Try audio init separately — don't block workflow
+  try {
     if (!isMicReady()) {
       await initAudio();
     }
-
-    startWorkflow(); // Start workflow so person_entered events trigger the flow
-    startHealthMonitor();
-    systemRunning = true;
-    wasDetectorRunning = true;
-    updateSystemButton(true);
   } catch (err) {
-    console.warn('system-control: auto-start failed', err);
+    console.warn('system-control: audio init failed (non-blocking)', err);
   }
 }
 
