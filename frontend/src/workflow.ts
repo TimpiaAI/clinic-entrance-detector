@@ -1,13 +1,12 @@
 /**
- * Patient workflow state machine — Form version.
+ * Patient workflow — Always-on form version.
  *
- * Two independent flows:
+ * The form is ALWAYS visible. Detection only plays the greeting mp3.
+ * After submit → thank_you (6s) → form reappears empty.
+ * Call patient → CHEAMAPACIENT.mp4 over form → form reappears.
  *
- * 1. DETECTION: person enters → mp3 + form → submit → thank_you → idle
- * 2. CALL PATIENT: receptionist button → CHEAMAPACIENT.mp4 video → idle
- *
- * States: stopped → idle → form → form_submitting → thank_you → idle
- *                        → greeting (call patient video) → idle
+ * States: stopped → form (always) → form_submitting → thank_you → form
+ *                                 → greeting (video) → form
  */
 
 import { apiSubmitPatient } from './api.ts';
@@ -20,7 +19,6 @@ import { hideVideo, hideMarquee, playSingleVideo } from './video.ts';
 // ---------------------------------------------------------------------------
 
 const THANK_YOU_DURATION = 6_000;
-const FORM_TIMEOUT = 120_000;
 
 // ---------------------------------------------------------------------------
 //  Translations
@@ -105,7 +103,6 @@ function applyLanguage(): void {
 
 let currentState: WorkflowState = 'stopped';
 let stateTimeout: ReturnType<typeof setTimeout> | null = null;
-let callPatientQueue = 0;
 
 // ---------------------------------------------------------------------------
 //  DOM refs
@@ -138,11 +135,6 @@ function clearStateTimeout(): void {
   }
 }
 
-function hideForm(): void {
-  const overlay = formOverlay();
-  if (overlay) overlay.classList.remove('visible');
-}
-
 function hideThankYou(): void {
   const overlay = thankYouOverlay();
   if (overlay) overlay.classList.remove('visible');
@@ -151,6 +143,16 @@ function hideThankYou(): void {
 function resetForm(): void {
   const form = patientForm();
   if (form) form.reset();
+}
+
+function showForm(): void {
+  const overlay = formOverlay();
+  if (overlay) overlay.classList.add('visible');
+}
+
+function hideForm(): void {
+  const overlay = formOverlay();
+  if (overlay) overlay.classList.remove('visible');
 }
 
 function playGreeting(): void {
@@ -169,12 +171,12 @@ function stopGreeting(): void {
   }
 }
 
-function hideAll(): void {
-  hideForm();
-  hideThankYou();
-  hideTranscriptionPanel();
-  hideMarquee();
-  hideVideo();
+function notifyKioskState(state: string): void {
+  fetch('/api/kiosk-state', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ state }),
+  }).catch(() => {});
 }
 
 // ---------------------------------------------------------------------------
@@ -192,23 +194,14 @@ function transition(newState: WorkflowState): void {
 function executeStateEntry(state: WorkflowState): void {
   switch (state) {
     case 'stopped':
-      hideAll();
-      break;
-
-    case 'idle':
-      hideAll();
-      notifyKioskState('idle');
-      // Drain call-patient queue
-      if (callPatientQueue > 0) {
-        callPatientQueue--;
-        setTimeout(() => {
-          if (currentState === 'idle') transition('greeting');
-        }, 1500);
-      }
+      hideForm();
+      hideThankYou();
+      hideMarquee();
+      hideVideo();
       break;
 
     case 'form':
-      executeForm();
+      executeShowForm();
       break;
 
     case 'form_submitting':
@@ -229,39 +222,17 @@ function executeStateEntry(state: WorkflowState): void {
 }
 
 // ---------------------------------------------------------------------------
-//  FLOW 1: Detection → Form
+//  Form (always visible as default state)
 // ---------------------------------------------------------------------------
 
-function notifyKioskState(kioskState: string): void {
-  fetch('/api/kiosk-state', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ state: kioskState }),
-  }).catch(() => {});
-}
-
-function executeForm(): void {
-  hideAll();
-
-  const overlay = formOverlay();
-  if (overlay) overlay.classList.add('visible');
-
+function executeShowForm(): void {
+  hideThankYou();
+  hideMarquee();
+  hideVideo();
+  showForm();
   resetForm();
   applyLanguage();
-  playGreeting();
-  notifyKioskState('form');
-
-  const numeInput = document.getElementById('form-nume') as HTMLInputElement | null;
-  if (numeInput) setTimeout(() => numeInput.focus(), 100);
-
-  stateTimeout = setTimeout(() => {
-    if (currentState === 'form') {
-      console.warn('workflow: form timeout, returning to idle');
-      stopGreeting();
-      fetch('/api/form-abandoned', { method: 'POST' }).catch(() => {});
-      transition('idle');
-    }
-  }, FORM_TIMEOUT);
+  notifyKioskState('idle');
 }
 
 function onFormSubmit(e: Event): void {
@@ -269,6 +240,10 @@ function onFormSubmit(e: Event): void {
   if (currentState !== 'form') return;
   transition('form_submitting');
 }
+
+// ---------------------------------------------------------------------------
+//  Submit
+// ---------------------------------------------------------------------------
 
 function executeFormSubmit(): void {
   const numeEl = document.getElementById('form-nume') as HTMLInputElement | null;
@@ -317,31 +292,37 @@ function executeFormSubmit(): void {
     });
 }
 
+// ---------------------------------------------------------------------------
+//  Thank you → back to form
+// ---------------------------------------------------------------------------
+
 function executeThankYou(): void {
   hideForm();
   notifyKioskState('thank_you');
+  applyLanguage();
 
   const overlay = thankYouOverlay();
   if (overlay) overlay.classList.add('visible');
 
   stateTimeout = setTimeout(() => {
     if (currentState === 'thank_you') {
-      transition('idle');
+      transition('form');
     }
   }, THANK_YOU_DURATION);
 }
 
 // ---------------------------------------------------------------------------
-//  FLOW 2: Call Patient → Video CHEAMAPACIENT.mp4
+//  Call Patient → Video over form → back to form
 // ---------------------------------------------------------------------------
 
 function executeCallPatientVideo(): void {
-  hideAll();
+  hideForm();
+  hideThankYou();
   notifyKioskState('calling');
 
   playSingleVideo('CHEAMAPACIENT.mp4', () => {
     fetch('/api/call-patient-done', { method: 'POST' }).catch(() => {});
-    transition('idle');
+    transition('form');
   });
 }
 
@@ -357,7 +338,6 @@ export function initWorkflow(): void {
     form.addEventListener('submit', onFormSubmit);
   }
 
-  // Wire language selector
   const langSel = document.getElementById('lang-select');
   if (langSel) {
     langSel.addEventListener('change', applyLanguage);
@@ -367,13 +347,17 @@ export function initWorkflow(): void {
 
 export function startWorkflow(): void {
   if (currentState !== 'stopped') return;
-  transition('idle');
+  transition('form');
 }
 
 export function stopWorkflow(): void {
   clearStateTimeout();
   stopGreeting();
-  hideAll();
+  hideForm();
+  hideThankYou();
+  hideMarquee();
+  hideVideo();
+  hideTranscriptionPanel();
   resetForm();
   currentState = 'stopped';
   console.log('workflow: stopped');
@@ -388,9 +372,8 @@ export function getPatientData(): Readonly<{ name: string | null; question: stri
 }
 
 export function onPersonEntered(): void {
-  if (currentState === 'idle') {
-    transition('form');
-  }
+  // Detection just plays greeting sound — form is already visible
+  playGreeting();
 }
 
 // ---------------------------------------------------------------------------
@@ -406,18 +389,14 @@ export function checkForCallPatient(eventLog: EventLogEntry[]): void {
 
   lastCallPatientTimestamp = latest.timestamp;
 
-  if (currentState === 'idle' || currentState === 'stopped') {
-    if (currentState === 'stopped') currentState = 'idle';
+  if (currentState === 'form') {
     transition('greeting');
-  } else {
-    // Busy (form/thank_you) — queue, will play after returning to idle
-    callPatientQueue++;
-    console.log(`workflow: call_patient queued (queue=${callPatientQueue})`);
   }
+  // If thank_you or greeting already playing, ignore
 }
 
 // ---------------------------------------------------------------------------
-//  Person-entered detection → show form
+//  Person-entered detection → just play greeting mp3
 // ---------------------------------------------------------------------------
 
 let lastPersonEnteredTimestamp: string | null = null;
@@ -429,10 +408,6 @@ export function checkForPersonEnteredWorkflow(eventLog: EventLogEntry[]): void {
 
   lastPersonEnteredTimestamp = latest.timestamp;
 
-  if (currentState === 'idle') {
-    transition('form');
-  } else if (currentState === 'stopped') {
-    currentState = 'idle';
-    transition('form');
-  }
+  // Just play greeting audio — form is already showing
+  playGreeting();
 }
