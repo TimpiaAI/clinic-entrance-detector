@@ -15,68 +15,71 @@
       position: fixed; inset: 0;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      gap: 24px;
+      gap: 20px;
       background: linear-gradient(160deg, #060a10 0%, #0a1020 50%, #0c1428 100%);
+      padding: 24px;
     }
 
-    /* ----- Kiosk status indicator ----- */
-    .kiosk-status {
-      display: flex; align-items: center; gap: 14px;
-      padding: 14px 28px;
+    /* ----- Kiosk status panel ----- */
+    .status-panel {
+      display: flex; flex-direction: column; gap: 10px;
+      padding: 20px 28px;
       background: rgba(15, 23, 42, 0.8);
       border: 1px solid rgba(51, 65, 85, 0.4);
-      border-radius: 14px;
-      min-width: 360px;
-      justify-content: center;
+      border-radius: 16px;
+      min-width: 420px;
+    }
+    .status-panel-title {
+      font-size: 13px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.1em; color: #475569; text-align: center;
+      margin-bottom: 4px;
+    }
+    .status-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      background: rgba(0, 0, 0, 0.3);
     }
     .status-dot {
-      width: 14px; height: 14px;
-      border-radius: 50%;
-      background: #334155;
-      transition: background 0.3s;
-      flex-shrink: 0;
+      width: 12px; height: 12px; border-radius: 50%;
+      flex-shrink: 0; background: #334155;
+      transition: all 0.3s;
     }
-    .status-dot.idle { background: #22c55e; box-shadow: 0 0 12px rgba(34, 197, 94, 0.5); }
-    .status-dot.form { background: #f59e0b; box-shadow: 0 0 12px rgba(245, 158, 11, 0.5); animation: pulse-dot 1.5s ease-in-out infinite; }
-    .status-dot.calling { background: #0ea5e9; box-shadow: 0 0 12px rgba(14, 165, 233, 0.5); animation: pulse-dot 1s ease-in-out infinite; }
-    .status-dot.thank_you { background: #a78bfa; box-shadow: 0 0 12px rgba(167, 139, 250, 0.5); }
-    .status-dot.offline { background: #ef4444; box-shadow: 0 0 12px rgba(239, 68, 68, 0.5); }
+    .status-dot.on { background: #22c55e; box-shadow: 0 0 10px rgba(34,197,94,0.5); }
+    .status-dot.busy { background: #f59e0b; box-shadow: 0 0 10px rgba(245,158,11,0.5); animation: pulse-dot 1.5s ease-in-out infinite; }
+    .status-dot.active { background: #0ea5e9; box-shadow: 0 0 10px rgba(14,165,233,0.5); animation: pulse-dot 1s ease-in-out infinite; }
+    .status-dot.done { background: #a78bfa; box-shadow: 0 0 10px rgba(167,139,250,0.5); }
+    .status-dot.off { background: #ef4444; box-shadow: 0 0 10px rgba(239,68,68,0.5); }
 
     @keyframes pulse-dot {
       0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(0.8); opacity: 0.6; }
+      50% { transform: scale(0.7); opacity: 0.5; }
     }
-
-    .status-label {
-      font-size: 20px; font-weight: 600; color: #94a3b8;
-      transition: color 0.3s;
+    .status-text {
+      font-size: 16px; font-weight: 500; color: #94a3b8;
     }
-    .status-label.idle { color: #4ade80; }
-    .status-label.form { color: #fbbf24; }
-    .status-label.calling { color: #38bdf8; }
-    .status-label.thank_you { color: #c4b5fd; }
-    .status-label.offline { color: #f87171; }
 
     /* ----- Call button ----- */
     .call-btn {
-      padding: 48px 96px;
-      font-size: 44px; font-weight: 800;
+      padding: 44px 88px;
+      font-size: 40px; font-weight: 800;
       letter-spacing: 0.04em; text-transform: uppercase;
       color: #fff;
       background: linear-gradient(145deg, #e53935, #b71c1c);
       border: none; border-radius: 24px;
       cursor: pointer;
-      box-shadow: 0 8px 40px rgba(229,57,53,0.35), 0 0 60px rgba(229,57,53,0.1);
+      box-shadow: 0 8px 40px rgba(229,57,53,0.35);
       transition: all 0.25s ease;
       user-select: none;
+      min-width: 420px;
+      text-align: center;
     }
     .call-btn:hover:not(:disabled) {
       transform: scale(1.03);
-      box-shadow: 0 12px 50px rgba(229,57,53,0.5), 0 0 80px rgba(229,57,53,0.15);
+      box-shadow: 0 12px 50px rgba(229,57,53,0.5);
     }
     .call-btn:active:not(:disabled) { transform: scale(0.97); }
     .call-btn:disabled {
-      opacity: 0.35;
       cursor: not-allowed;
       transform: none;
     }
@@ -84,91 +87,127 @@
       background: linear-gradient(145deg, #0ea5e9, #0369a1);
       box-shadow: 0 8px 40px rgba(14,165,233,0.35);
       animation: pulse-btn 2s ease-in-out infinite;
+      opacity: 1;
     }
     .call-btn.queued {
       background: linear-gradient(145deg, #f59e0b, #d97706);
       box-shadow: 0 8px 40px rgba(245,158,11,0.35);
+      opacity: 1;
+    }
+    .call-btn.called {
+      background: linear-gradient(145deg, #22c55e, #15803d);
+      box-shadow: 0 8px 40px rgba(34,197,94,0.35);
+      opacity: 1;
     }
     @keyframes pulse-btn {
       0%, 100% { box-shadow: 0 8px 40px rgba(14,165,233,0.35); }
-      50% { box-shadow: 0 12px 60px rgba(14,165,233,0.5); }
+      50% { box-shadow: 0 12px 60px rgba(14,165,233,0.55); }
+    }
+
+    /* ----- Button subtitle ----- */
+    .btn-subtitle {
+      font-size: 16px; color: #64748b; text-align: center;
+      min-height: 22px;
+      transition: color 0.3s;
     }
 
     /* ----- Notification area ----- */
     .notification-area {
       display: flex; flex-direction: column; align-items: center; gap: 8px;
-      min-height: 60px;
-      width: 500px; max-width: 90vw;
+      min-height: 50px; width: 500px; max-width: 90vw;
     }
     .notification {
       display: flex; align-items: center; gap: 10px;
-      padding: 12px 24px;
-      border-radius: 12px;
-      font-size: 17px; font-weight: 500;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 15px; font-weight: 500;
       animation: notif-in 0.4s ease-out;
-      width: 100%;
-      justify-content: center;
+      width: 100%; justify-content: center;
     }
     @keyframes notif-in {
-      from { opacity: 0; transform: translateY(10px); }
+      from { opacity: 0; transform: translateY(8px); }
       to { opacity: 1; transform: translateY(0); }
     }
     .notification.info {
-      background: rgba(14, 165, 233, 0.12);
-      border: 1px solid rgba(14, 165, 233, 0.3);
+      background: rgba(14, 165, 233, 0.1);
+      border: 1px solid rgba(14, 165, 233, 0.25);
       color: #7dd3fc;
     }
     .notification.success {
-      background: rgba(34, 197, 94, 0.12);
-      border: 1px solid rgba(34, 197, 94, 0.3);
+      background: rgba(34, 197, 94, 0.1);
+      border: 1px solid rgba(34, 197, 94, 0.25);
       color: #86efac;
     }
     .notification.warn {
-      background: rgba(245, 158, 11, 0.12);
-      border: 1px solid rgba(245, 158, 11, 0.3);
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.25);
       color: #fcd34d;
     }
-    .notification .notif-icon {
-      font-size: 20px; flex-shrink: 0;
-    }
 
-    /* ----- Bottom hint ----- */
     .bottom-hint {
-      position: fixed; bottom: 16px;
-      font-size: 14px; color: #334155;
+      position: fixed; bottom: 12px;
+      font-size: 13px; color: #1e293b;
     }
 
     @media (max-width: 600px) {
-      .call-btn { padding: 32px 56px; font-size: 28px; }
-      .kiosk-status { min-width: auto; padding: 10px 20px; }
-      .status-label { font-size: 16px; }
+      .call-btn { padding: 32px 48px; font-size: 26px; min-width: auto; }
+      .status-panel { min-width: auto; }
     }
   </style>
 </head>
 <body>
   <div id="app">
-    <div id="kiosk-status" class="kiosk-status">
-      <span id="status-dot" class="status-dot offline"></span>
-      <span id="status-label" class="status-label offline">Conectare...</span>
+    <!-- Status panel -->
+    <div class="status-panel">
+      <div class="status-panel-title">Stare kiosk</div>
+      <div class="status-row">
+        <span id="dot-detect" class="status-dot"></span>
+        <span id="txt-detect" class="status-text">Detectare: activa</span>
+      </div>
+      <div class="status-row">
+        <span id="dot-form" class="status-dot"></span>
+        <span id="txt-form" class="status-text">Formular: —</span>
+      </div>
+      <div class="status-row">
+        <span id="dot-video" class="status-dot"></span>
+        <span id="txt-video" class="status-text">Video chemare: —</span>
+      </div>
+      <div class="status-row">
+        <span id="dot-conn" class="status-dot"></span>
+        <span id="txt-conn" class="status-text">Conexiune: —</span>
+      </div>
     </div>
 
+    <!-- Call button -->
     <button id="call-btn" class="call-btn" disabled>Cheama Pacient</button>
+    <div id="btn-subtitle" class="btn-subtitle"></div>
 
+    <!-- Notifications -->
     <div id="notification-area" class="notification-area"></div>
 
-    <div class="bottom-hint">Pagina receptie &middot; Citobiomed</div>
+    <div class="bottom-hint">Receptie &middot; Citobiomed</div>
   </div>
 
   <script>
     const btn = document.getElementById('call-btn');
-    const statusDot = document.getElementById('status-dot');
-    const statusLabel = document.getElementById('status-label');
+    const btnSub = document.getElementById('btn-subtitle');
     const notifArea = document.getElementById('notification-area');
 
-    // ---- State tracking ----
-    let kioskState = 'unknown';  // idle, form, calling, thank_you
+    // Status panel elements
+    const dotDetect = document.getElementById('dot-detect');
+    const txtDetect = document.getElementById('txt-detect');
+    const dotForm = document.getElementById('dot-form');
+    const txtForm = document.getElementById('txt-form');
+    const dotVideo = document.getElementById('dot-video');
+    const txtVideo = document.getElementById('txt-video');
+    const dotConn = document.getElementById('dot-conn');
+    const txtConn = document.getElementById('txt-conn');
+
+    // ---- State ----
+    let kioskState = 'unknown';
     let connected = false;
     let callQueued = false;
+    let callDone = false;  // true after video finished, until next action
 
     let lastKioskStateTs = null;
     let lastPersonEnteredTs = null;
@@ -176,75 +215,108 @@
     let lastCallDoneTs = null;
     let lastSignTs = null;
 
-    // ---- Status labels ----
-    const STATE_LABELS = {
-      idle: 'Kiosk liber — gata de chemare',
-      form: 'Pacient completeaza formularul',
-      calling: 'Video chemare activ',
-      thank_you: 'Mesaj multumire afisat',
-      unknown: 'Conectare...',
-      offline: 'Deconectat',
-    };
+    // ---- Status panel updates ----
+    function updateStatusPanel() {
+      // Connection
+      dotConn.className = 'status-dot ' + (connected ? 'on' : 'off');
+      txtConn.textContent = 'Conexiune: ' + (connected ? 'conectat' : 'deconectat');
 
-    // ---- UI updates ----
-    function updateKioskStatus(state) {
-      kioskState = state;
-      statusDot.className = 'status-dot ' + state;
-      statusLabel.className = 'status-label ' + state;
-      statusLabel.textContent = STATE_LABELS[state] || state;
-      // Reset queue flag when kiosk returns to idle
-      if (state === 'idle') {
-        callQueued = false;
+      // Detection
+      if (kioskState === 'idle') {
+        dotDetect.className = 'status-dot on';
+        txtDetect.textContent = 'Detectare: activa — asteapta pacienti';
+      } else {
+        dotDetect.className = 'status-dot';
+        txtDetect.textContent = 'Detectare: in pauza';
       }
-      updateButton();
+
+      // Form
+      if (kioskState === 'form') {
+        dotForm.className = 'status-dot busy';
+        txtForm.textContent = 'Formular: pacient completeaza acum';
+      } else if (kioskState === 'thank_you') {
+        dotForm.className = 'status-dot done';
+        txtForm.textContent = 'Formular: completat — multumire afisata';
+      } else {
+        dotForm.className = 'status-dot';
+        txtForm.textContent = 'Formular: inactiv';
+      }
+
+      // Video
+      if (kioskState === 'calling') {
+        dotVideo.className = 'status-dot active';
+        txtVideo.textContent = 'Video chemare: ruleaza acum';
+      } else if (callQueued) {
+        dotVideo.className = 'status-dot busy';
+        txtVideo.textContent = 'Video chemare: programat — asteapta formular';
+      } else if (callDone) {
+        dotVideo.className = 'status-dot on';
+        txtVideo.textContent = 'Video chemare: pacient chemat';
+      } else {
+        dotVideo.className = 'status-dot';
+        txtVideo.textContent = 'Video chemare: —';
+      }
     }
 
+    // ---- Button updates ----
     function updateButton() {
       if (!connected) {
         btn.disabled = true;
         btn.textContent = 'Cheama Pacient';
         btn.className = 'call-btn';
+        btnSub.textContent = 'Deconectat de la server';
         return;
       }
 
       if (kioskState === 'calling') {
         btn.disabled = true;
-        btn.textContent = 'Se reda...';
+        btn.textContent = 'Se cheama...';
         btn.className = 'call-btn playing';
+        btnSub.textContent = 'Video-ul de chemare ruleaza pe ecranul pacientului';
+      } else if (callDone && !callQueued) {
+        btn.disabled = false;
+        btn.textContent = 'Pacient chemat!';
+        btn.className = 'call-btn called';
+        btnSub.textContent = 'Pacientul a fost notificat — apasati din nou daca e nevoie';
       } else if (callQueued) {
         btn.disabled = true;
-        btn.textContent = 'La coada...';
+        btn.textContent = 'Programat';
         btn.className = 'call-btn queued';
-      } else if (kioskState === 'idle') {
-        btn.disabled = false;
-        btn.textContent = 'Cheama Pacient';
-        btn.className = 'call-btn';
+        if (kioskState === 'form') {
+          btnSub.textContent = 'Va rula automat dupa ce pacientul termina formularul';
+        } else if (kioskState === 'thank_you') {
+          btnSub.textContent = 'Va rula automat in cateva secunde';
+        } else {
+          btnSub.textContent = 'Va rula automat cand kiosk-ul e liber';
+        }
       } else {
-        // form or thank_you — can queue
         btn.disabled = false;
         btn.textContent = 'Cheama Pacient';
         btn.className = 'call-btn';
+        if (kioskState === 'form') {
+          btnSub.textContent = 'Un pacient completeaza — apasati pentru a programa chemarea';
+        } else if (kioskState === 'thank_you') {
+          btnSub.textContent = 'Mesajul de multumire e afisat — apasati pentru a programa chemarea';
+        } else {
+          btnSub.textContent = 'Kiosk-ul e liber — apasati pentru a chema pacientul';
+        }
       }
     }
 
+    function updateAll() {
+      updateStatusPanel();
+      updateButton();
+    }
+
+    // ---- Notifications ----
     function addNotification(text, type, durationMs) {
       const el = document.createElement('div');
       el.className = 'notification ' + type;
-
-      let icon = '';
-      if (type === 'info') icon = '\u{1F6C8}';
-      if (type === 'success') icon = '\u2713';
-      if (type === 'warn') icon = '\u26A0';
-
-      el.innerHTML = '<span class="notif-icon">' + icon + '</span><span>' + text + '</span>';
+      el.textContent = text;
       notifArea.prepend(el);
-
-      // Max 3 notifications visible
       while (notifArea.children.length > 3) {
         notifArea.removeChild(notifArea.lastChild);
       }
-
-      // Auto-remove
       setTimeout(() => {
         if (el.parentNode) {
           el.style.opacity = '0';
@@ -262,9 +334,9 @@
       ws.onopen = () => {
         connected = true;
         if (kioskState === 'unknown' || kioskState === 'offline') {
-          updateKioskStatus('idle');
+          kioskState = 'idle';
         }
-        updateButton();
+        updateAll();
       };
 
       ws.onmessage = (e) => {
@@ -277,37 +349,52 @@
           const ksEvent = events.find(ev => ev.event === 'kiosk_state');
           if (ksEvent && ksEvent.timestamp !== lastKioskStateTs) {
             lastKioskStateTs = ksEvent.timestamp;
-            updateKioskStatus(ksEvent.kiosk_state || 'unknown');
+            const newState = ksEvent.kiosk_state || 'unknown';
+            kioskState = newState;
+            // Reset callDone when kiosk goes to idle (fresh cycle)
+            if (newState === 'idle') {
+              callQueued = false;
+            }
+            updateAll();
           }
 
-          // Person entered → notify receptie
+          // Person entered
           const personEvent = events.find(ev => ev.event === 'person_entered');
           if (personEvent && personEvent.timestamp !== lastPersonEnteredTs) {
             lastPersonEnteredTs = personEvent.timestamp;
+            callDone = false;  // New patient cycle
             addNotification('O persoana a intrat — completeaza formularul', 'info', 10000);
+            updateAll();
           }
 
-          // Form completed → notify receptie
+          // Form completed
           const formDone = events.find(ev => ev.event === 'form_completed');
           if (formDone && formDone.timestamp !== lastFormCompletedTs) {
             lastFormCompletedTs = formDone.timestamp;
             const name = formDone.matched_name || '';
             if (name) {
-              addNotification('Formular completat: ' + name, 'success', 10000);
+              addNotification('Formular completat: ' + name, 'success', 12000);
             } else {
               addNotification('Formularul a expirat — nimeni nu a completat', 'warn', 8000);
             }
           }
 
-          // Call patient done → reset queue
-          const callDone = events.find(ev => ev.event === 'call_patient_done');
-          if (callDone && callDone.timestamp !== lastCallDoneTs) {
-            lastCallDoneTs = callDone.timestamp;
+          // Call patient done (video finished)
+          const callDoneEv = events.find(ev => ev.event === 'call_patient_done');
+          if (callDoneEv && callDoneEv.timestamp !== lastCallDoneTs) {
+            lastCallDoneTs = callDoneEv.timestamp;
             callQueued = false;
-            updateButton();
+            callDone = true;
+            addNotification('Pacientul a fost chemat', 'success', 8000);
+            updateAll();
+            // Auto-clear callDone after 15s so button returns to normal red
+            setTimeout(() => {
+              callDone = false;
+              updateAll();
+            }, 15000);
           }
 
-          // Sign ready → open signature page
+          // Sign ready
           const signEvent = events.find(ev => ev.event === 'sign_ready');
           if (signEvent && signEvent.sign_url && signEvent.timestamp !== lastSignTs) {
             lastSignTs = signEvent.timestamp;
@@ -322,7 +409,8 @@
 
       ws.onclose = () => {
         connected = false;
-        updateKioskStatus('offline');
+        kioskState = 'offline';
+        updateAll();
         setTimeout(connectWs, 3000);
       };
       ws.onerror = () => ws.close();
@@ -333,17 +421,21 @@
     btn.addEventListener('click', async () => {
       if (btn.disabled) return;
 
+      // If callDone is showing, reset it first
+      if (callDone) {
+        callDone = false;
+      }
+
       try {
         const res = await fetch('/api/call-patient', { method: 'POST' });
         const data = await res.json();
 
         if (data.status === 'queued') {
-          if (kioskState === 'form' || kioskState === 'thank_you') {
+          if (kioskState !== 'idle') {
             callQueued = true;
-            updateButton();
-            addNotification('Chemare la coada — va rula dupa ce pacientul termina', 'warn', 8000);
+            addNotification('Chemare programata — va rula dupa formular', 'warn', 8000);
           }
-          // For idle state: updateButton will handle via kiosk_state events
+          updateAll();
         }
       } catch(err) {
         addNotification('Eroare conexiune!', 'warn', 5000);
