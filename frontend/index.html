@@ -107,7 +107,7 @@
               <option value="pl">🇵🇱 Polski</option>
             </select>
           </div>
-          <!-- STEP 1: Welcome + Signature -->
+          <!-- STEP 1: Welcome + Signature (auto-activates Sig100 pad) -->
           <div id="form-step1" class="form-step">
             <div class="form-header">
               <div class="form-logo">CB</div>
@@ -117,8 +117,15 @@
               <div class="signature-icon">&#9997;</div>
               <p id="signature-text" class="signature-text">Va rugam sa semnati pe tableta din stanga dumneavoastra pentru acordul de prelucrare a datelor cu caracter personal.</p>
             </div>
-            <button type="button" id="btn-signed" class="form-submit-btn">
-              <span id="btn-signed-text" class="btn-text">Am semnat, continua</span>
+            <div id="pad-status" class="pad-status pad-idle">
+              <span class="pad-dot"></span>
+              <span id="pad-status-text"></span>
+            </div>
+            <div id="sig-preview" class="sig-preview" style="display:none;">
+              <canvas id="sig-preview-canvas"></canvas>
+            </div>
+            <button type="button" id="btn-signed" class="form-submit-btn" disabled>
+              <span id="btn-signed-text" class="btn-text">Se conecteaza...</span>
               <span class="btn-arrow">&#10140;</span>
             </button>
           </div>
@@ -187,6 +194,7 @@
 
       <div id="shortcuts-hint">F2: Pornire/Oprire | F3: Suprapunere | F4: Testare | Esc: Oprire urgenta</div>
     </div>
+    <script src="/STPadServerLib-3.5.0.js"></script>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

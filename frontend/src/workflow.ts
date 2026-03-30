@@ -10,6 +10,7 @@
  */
 
 import { apiSubmitPatient } from './api.ts';
+import * as signpad from './signpad.ts';
 import type { EventLogEntry, WorkflowState } from './types.ts';
 import { hideTranscriptionPanel } from './ui.ts';
 import { hideVideo, hideMarquee, playSingleVideo } from './video.ts';
@@ -113,6 +114,7 @@ function applyLanguage(): void {
 
 let currentState: WorkflowState = 'stopped';
 let stateTimeout: ReturnType<typeof setTimeout> | null = null;
+let signatureResult: signpad.SignatureResult | null = null;
 
 // ---------------------------------------------------------------------------
 //  DOM refs
@@ -197,6 +199,12 @@ function transition(newState: WorkflowState): void {
   clearStateTimeout();
   const prevState = currentState;
   currentState = newState;
+
+  // Close signature pad when leaving form state
+  if (prevState === 'form' && newState !== 'form') {
+    signpad.disconnect();
+  }
+
   console.log(`workflow: ${prevState} -> ${newState}`);
   executeStateEntry(newState);
 }
@@ -244,6 +252,76 @@ function executeShowForm(): void {
   showStep1();
   applyLanguage();
   notifyKioskState('idle');
+  activateSignpad();
+}
+
+// ---------------------------------------------------------------------------
+//  Signature pad integration
+// ---------------------------------------------------------------------------
+
+function activateSignpad(): void {
+  signatureResult = null;
+  signpad.clearResult();
+
+  const cvs = document.getElementById('sig-preview-canvas') as HTMLCanvasElement | null;
+  signpad.setCanvas(cvs);
+
+  const statusEl = document.getElementById('pad-status');
+  const statusText = document.getElementById('pad-status-text');
+  const preview = document.getElementById('sig-preview');
+  const btn = document.getElementById('btn-signed') as HTMLButtonElement | null;
+  const btnText = document.getElementById('btn-signed-text');
+
+  // If library not loaded (e.g. running at home without STPadServer), show manual button
+  if (!signpad.isAvailable()) {
+    if (statusEl) statusEl.className = 'pad-status pad-idle';
+    if (btn) btn.disabled = false;
+    if (btnText) btnText.textContent = getStrings().signedBtn;
+    return;
+  }
+
+  signpad.onStatusChange((status) => {
+    if (statusEl) statusEl.className = 'pad-status pad-' + status;
+
+    switch (status) {
+      case 'connecting':
+        if (statusText) statusText.textContent = 'Se conecteaza la tableta...';
+        if (btn) btn.disabled = true;
+        if (btnText) btnText.textContent = 'Se conecteaza...';
+        if (preview) preview.style.display = 'none';
+        break;
+      case 'signing':
+        if (statusText) statusText.textContent = 'Puteti semna pe tableta acum';
+        if (btn) btn.disabled = true;
+        if (btnText) btnText.textContent = 'Asteptam semnatura...';
+        if (preview) preview.style.display = 'block';
+        break;
+      case 'captured':
+        if (statusText) statusText.textContent = 'Semnatura capturata!';
+        // Auto-advance happens via onSignatureConfirmed callback
+        break;
+      case 'error':
+        if (statusText) statusText.textContent = 'Tableta indisponibila';
+        // Enable manual fallback button
+        if (btn) btn.disabled = false;
+        if (btnText) btnText.textContent = getStrings().signedBtn;
+        if (preview) preview.style.display = 'none';
+        break;
+    }
+  });
+
+  signpad.onSignatureConfirmed((res) => {
+    signatureResult = res;
+    showStep2();
+  });
+
+  signpad.onSignatureCancelled(() => {
+    // Enable manual button as fallback
+    if (btn) btn.disabled = false;
+    if (btnText) btnText.textContent = getStrings().signedBtn;
+  });
+
+  signpad.activate();
 }
 
 function onFormSubmit(e: Event): void {
@@ -277,6 +355,8 @@ function executeFormSubmit(): void {
     cnp: cnp || null,
     phone: null,
     email: email || null,
+    signature_image: signatureResult?.imageBase64 || null,
+    signature_data: signatureResult?.signData || null,
   };
 
   apiSubmitPatient(patientData)
@@ -388,6 +468,7 @@ export function startWorkflow(): void {
 export function stopWorkflow(): void {
   clearStateTimeout();
   stopGreeting();
+  signpad.disconnect();
   hideForm();
   hideThankYou();
   hideMarquee();

@@ -165,24 +165,22 @@ def create_dashboard_app(
         @app.get("/", response_class=HTMLResponse)
         async def index(request: Request) -> HTMLResponse:
             return templates.TemplateResponse(
+                request,
                 "index.html",
-                {
-                    "request": request,
-                    "dashboard_port": request.url.port,
-                },
+                context={"dashboard_port": request.url.port},
             )
 
     @app.get("/calibrate", response_class=HTMLResponse)
     async def calibrate_page(request: Request) -> HTMLResponse:
-        return templates.TemplateResponse("calibrate.html", {"request": request})
+        return templates.TemplateResponse(request, "calibrate.html")
 
     @app.get("/receptie", response_class=HTMLResponse)
     async def receptie_page(request: Request) -> HTMLResponse:
-        return templates.TemplateResponse("receptie.html", {"request": request})
+        return templates.TemplateResponse(request, "receptie.html")
 
     @app.get("/signature", response_class=HTMLResponse)
     async def signature_page(request: Request) -> HTMLResponse:
-        return templates.TemplateResponse("signature.html", {"request": request})
+        return templates.TemplateResponse(request, "signature.html")
 
     # Serve signotec JS library
     static_dir = Path(__file__).resolve().parent / "static"

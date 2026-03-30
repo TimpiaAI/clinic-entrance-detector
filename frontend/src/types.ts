@@ -70,4 +70,6 @@ export interface PatientData {
   cnp: string | null;
   phone: string | null;
   email: string | null;
+  signature_image?: string | null;
+  signature_data?: string | null;
 }

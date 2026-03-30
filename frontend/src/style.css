@@ -585,6 +585,91 @@ body {
   width: 100%;
 }
 
+/* Signature pad status indicator */
+.pad-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 16px;
+  transition: all 0.3s ease;
+}
+
+.pad-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: background 0.3s;
+}
+
+.pad-idle {
+  display: none;
+}
+
+.pad-connecting {
+  background: rgba(234, 179, 8, 0.1);
+  border: 1px solid rgba(234, 179, 8, 0.3);
+  color: #facc15;
+}
+.pad-connecting .pad-dot {
+  background: #facc15;
+  animation: pad-pulse 1.5s ease-in-out infinite;
+}
+
+.pad-signing {
+  background: rgba(14, 165, 233, 0.1);
+  border: 1px solid rgba(14, 165, 233, 0.3);
+  color: #38bdf8;
+}
+.pad-signing .pad-dot {
+  background: #38bdf8;
+  animation: pad-pulse 1.5s ease-in-out infinite;
+}
+
+.pad-captured {
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #4ade80;
+}
+.pad-captured .pad-dot {
+  background: #4ade80;
+}
+
+.pad-error {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #f87171;
+}
+.pad-error .pad-dot {
+  background: #f87171;
+}
+
+@keyframes pad-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+/* Signature preview canvas */
+.sig-preview {
+  margin: 0 auto 16px;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid rgba(14, 165, 233, 0.25);
+  overflow: hidden;
+  max-width: 320px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.sig-preview canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 /* Signature notice */
 .signature-notice {
   text-align: center;

@@ -282,11 +282,20 @@ class FunctieAPIClient:
                 "phone": phone,
                 "email": email,
             }
-            # birth_date and gender as integers in JSON body
+            # Send CNP as 'pid' — Citobiomed uses this for patient identification
+            if cnp:
+                body["pid"] = cnp
+            # birth_date is REQUIRED by API when pid is missing
             if birth_date:
                 body["birth_date"] = birth_date
+            elif not cnp:
+                # Fallback: API requires birth_date if no CNP — use a placeholder
+                body["birth_date"] = "1900-01-01"
             if gender:
                 body["gender"] = gender
+            elif not cnp:
+                # Default gender if unknown (API requires it when no CNP)
+                body["gender"] = 1
             if appointment_id:
                 body["appointment_id"] = appointment_id
             if patient_id:
