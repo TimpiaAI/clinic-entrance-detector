@@ -512,8 +512,8 @@ def create_dashboard_app(
 
             # Step 6: Upload signature to Citobiomed if captured locally
             signature_image = data.get("signature_image")
-            if signature_image and presentation_id_val and functie:
-                sig_ok, sig_err = functie.upload_signature(presentation_id_val, signature_image)
+            if signature_image and presentation_id_val and manager.functie:
+                sig_ok, sig_err = manager.functie.upload_signature(presentation_id_val, signature_image)
                 if sig_ok:
                     log.info("Signature uploaded to Citobiomed for presentation %s", presentation_id_val)
                 else:
