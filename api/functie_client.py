@@ -346,3 +346,55 @@ class FunctieAPIClient:
             if self.logger:
                 self.logger.error(msg)
             return None, msg
+
+    def upload_signature(
+        self,
+        presentation_id: int,
+        signature_image_base64: str,
+    ) -> tuple[bool, str | None]:
+        """Upload a captured signature image to Citobiomed for a presentation.
+
+        Args:
+            presentation_id: The presentation ID returned by create_presentation.
+            signature_image_base64: Base64-encoded PNG image of the signature.
+
+        Returns:
+            (success, error_message) tuple.
+        """
+        try:
+            # API expects "data:image/png;base64,..." prefix
+            if not signature_image_base64.startswith("data:"):
+                signature_image_base64 = f"data:image/png;base64,{signature_image_base64}"
+
+            response = self._http.post(
+                f"{self.BASE_URL}/api/uploadSignature",
+                params={"key": self.api_key},
+                json={
+                    "presentation_id": presentation_id,
+                    "signature_image": signature_image_base64,
+                },
+            )
+
+            if response.status_code == 200:
+                try:
+                    data = response.json()
+                    ok, error = self._check_error(data)
+                    if not ok:
+                        if self.logger:
+                            self.logger.warning(f"uploadSignature error: {error}")
+                        return False, error
+                except Exception:
+                    pass
+                if self.logger:
+                    self.logger.info(f"Signature uploaded for presentation {presentation_id}")
+                return True, None
+
+            msg = f"uploadSignature returned {response.status_code}"
+            if self.logger:
+                self.logger.warning(msg)
+            return False, msg
+        except Exception as e:
+            msg = f"upload_signature failed: {str(e)}"
+            if self.logger:
+                self.logger.error(msg)
+            return False, msg

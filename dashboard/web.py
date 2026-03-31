@@ -510,6 +510,15 @@ def create_dashboard_app(
             log.info("Presentation created: id=%s, patient=%s, sign_url=%s",
                      response.get("presentation_id") if response else None, patient_id, sign_url)
 
+            # Step 6: Upload signature to Citobiomed if captured locally
+            signature_image = data.get("signature_image")
+            if signature_image and presentation_id_val and functie:
+                sig_ok, sig_err = functie.upload_signature(presentation_id_val, signature_image)
+                if sig_ok:
+                    log.info("Signature uploaded to Citobiomed for presentation %s", presentation_id_val)
+                else:
+                    log.warning("Signature upload failed: %s", sig_err)
+
             # Notify receptie that form is done
             state.push_event({
                 "event": "form_completed",
