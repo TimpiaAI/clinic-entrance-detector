@@ -142,13 +142,13 @@ async function doConfirm(): Promise<void> {
     }
 
     // Get PNG image
-    const ip = new getDefault().Params.getSignatureImage();
+    const ip = new (getDefault().Params.getSignatureImage)();
     ip.setFileType(getDefault().FileType.PNG);
     ip.setPenWidth(5);
     const img = await getDefault().getSignatureImage(ip);
 
     // Get biometric data
-    const dp = new getDefault().Params.getSignatureData();
+    const dp = new (getDefault().Params.getSignatureData)();
     const sd = await getDefault().getSignatureData(dp);
 
     await closePad();
@@ -169,7 +169,7 @@ async function doConfirm(): Promise<void> {
 export async function closePad(): Promise<void> {
   if (!padOpened) return;
   try {
-    const p = new getDefault().Params.closePad(PAD_INDEX);
+    const p = new (getDefault().Params.closePad)(PAD_INDEX);
     await getDefault().closePad(p);
   } catch (_) { /* ignore */ }
   padOpened = false;
@@ -229,7 +229,7 @@ export async function activate(): Promise<boolean> {
     });
 
     // Search for USB signature pads
-    const sp = new getDefault().Params.searchForPads();
+    const sp = new (getDefault().Params.searchForPads)();
     sp.setPadSubset('USB');
     const found = await getDefault().searchForPads(sp);
 
@@ -239,7 +239,7 @@ export async function activate(): Promise<boolean> {
     }
 
     // Open the first pad
-    const op = new getDefault().Params.openPad(PAD_INDEX);
+    const op = new (getDefault().Params.openPad)(PAD_INDEX);
     const info = await getDefault().openPad(op);
     padOpened = true;
 
@@ -255,7 +255,7 @@ export async function activate(): Promise<boolean> {
     }
 
     // Start signature capture — display "Acord GDPR" on pad screen
-    const sigP = new getDefault().Params.startSignature();
+    const sigP = new (getDefault().Params.startSignature)();
     sigP.setFieldName('Acord GDPR');
     sigP.setCustomText('Semnati aici');
     await getDefault().startSignature(sigP);
