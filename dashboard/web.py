@@ -205,39 +205,8 @@ def create_dashboard_app(
 
     @app.post("/api/sign-ready")
     async def sign_ready(request: Request) -> JSONResponse:
-        """Kiosk notifies that patient data was submitted and sign URL is ready.
-
-        Opens the Citobiomed GDPR sign page in the default browser.
-        That page contains JavaScript that communicates with the Sig100 tablet
-        via STPadServer on port 49494.
-        """
-        import logging
-        import subprocess
-        log = logging.getLogger("clinic")
-        data = await request.json()
-        sign_url = data.get("sign_url", "")
-        if sign_url:
-            state.push_event({
-                "event": "sign_ready",
-                "timestamp": datetime.now(timezone.utc).isoformat(),
-                "person_id": -1,
-                "confidence": 1.0,
-                "sign_url": sign_url,
-            })
-
-            # Open sign URL directly in browser - the Citobiomed page
-            # has built-in JavaScript that activates the Sig100 tablet
-            try:
-                subprocess.Popen(
-                    ["cmd", "/c", "start", "", sign_url],
-                    shell=False,
-                    stdout=subprocess.DEVNULL,
-                    stderr=subprocess.DEVNULL,
-                )
-                log.info("Sig100: opened sign URL in browser: %s", sign_url)
-            except Exception as e:
-                log.error("Sig100: failed to open sign URL: %s", e)
-
+        """Legacy endpoint — signature is now captured in Step 1 of kiosk form.
+        Kept for backwards compatibility but no longer opens browser."""
         return JSONResponse(content={"status": "ok"})
 
     @app.post("/api/kiosk-state")

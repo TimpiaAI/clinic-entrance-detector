@@ -81,13 +81,8 @@
             updateButton();
           }
 
-          const signEvent = events.find(ev => ev.event === 'sign_ready');
-          if (signEvent && signEvent.sign_url && signEvent.timestamp !== lastSignTs) {
-            lastSignTs = signEvent.timestamp;
-            const pidMatch = signEvent.sign_url.match(/\/sign\/(\d+)/);
-            const pid = pidMatch ? pidMatch[1] : '';
-            window.open('/signature?url=' + encodeURIComponent(signEvent.sign_url) + '&pid=' + pid, '_blank');
-          }
+          // Signature is now captured in Step 1 of the kiosk form.
+          // No need to open sign URL from receptie.
         } catch(err) {}
       };
 
