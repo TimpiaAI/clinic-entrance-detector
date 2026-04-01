@@ -360,16 +360,11 @@ function executeFormSubmit(): void {
   };
 
   apiSubmitPatient(patientData)
-    .then((response) => {
+    .then((_response) => {
       if (currentState !== 'form_submitting') return;
 
-      if (response.sign_url) {
-        fetch('/api/sign-ready', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ sign_url: response.sign_url }),
-        }).catch(() => {});
-      }
+      // Signature already captured in Step 1 and uploaded with form data.
+      // No need to open citobiomed sign URL separately.
 
       transition('thank_you');
     })
