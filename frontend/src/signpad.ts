@@ -4,9 +4,13 @@
  * Requires STPadServerLib-3.5.0.js loaded as a global <script> before use.
  */
 
+// @ts-nocheck
 /* eslint-disable @typescript-eslint/no-explicit-any */
-declare const STPadServerLibCommons: any;
-declare const STPadServerLibDefault: any;
+declare const STPadServerLib: { STPadServerLibCommons: any; STPadServerLibDefault: any; STPadServerLibApi: any } | undefined;
+
+// The library uses UMD and exposes globals under window.STPadServerLib.*
+function getCommons(): any { return (typeof STPadServerLib !== 'undefined') ? STPadServerLib.STPadServerLibCommons : undefined; }
+function getDefault(): any { return (typeof STPadServerLib !== 'undefined') ? STPadServerLib.STPadServerLibDefault : undefined; }
 
 // ---------------------------------------------------------------------------
 //  Config
@@ -73,8 +77,10 @@ export function clearResult(): void {
 }
 
 export function isAvailable(): boolean {
-  return typeof STPadServerLibCommons !== 'undefined' &&
-         typeof STPadServerLibDefault !== 'undefined';
+  const commons = getCommons() !== undefined;
+  const defaults = getDefault() !== undefined;
+  console.log(`signpad: isAvailable() commons=${commons} defaults=${defaults}`);
+  return commons && defaults;
 }
 
 // ---------------------------------------------------------------------------
@@ -125,25 +131,25 @@ function drawPoint(x: number, y: number, p: number): void {
 
 async function doConfirm(): Promise<void> {
   try {
-    const sig = await STPadServerLibDefault.confirmSignature();
+    const sig = await getDefault().confirmSignature();
 
     // Reject signatures shorter than MIN_SIGN_SECONDS
     if ((sig.countedPoints / sampleRate) <= MIN_SIGN_SECONDS) {
-      await STPadServerLibDefault.retrySignature();
+      await getDefault().retrySignature();
       clearCanvas();
       emit('signing');
       return;
     }
 
     // Get PNG image
-    const ip = new STPadServerLibDefault.Params.getSignatureImage();
-    ip.setFileType(STPadServerLibDefault.FileType.PNG);
+    const ip = new getDefault().Params.getSignatureImage();
+    ip.setFileType(getDefault().FileType.PNG);
     ip.setPenWidth(5);
-    const img = await STPadServerLibDefault.getSignatureImage(ip);
+    const img = await getDefault().getSignatureImage(ip);
 
     // Get biometric data
-    const dp = new STPadServerLibDefault.Params.getSignatureData();
-    const sd = await STPadServerLibDefault.getSignatureData(dp);
+    const dp = new getDefault().Params.getSignatureData();
+    const sd = await getDefault().getSignatureData(dp);
 
     await closePad();
 
@@ -163,15 +169,15 @@ async function doConfirm(): Promise<void> {
 export async function closePad(): Promise<void> {
   if (!padOpened) return;
   try {
-    const p = new STPadServerLibDefault.Params.closePad(PAD_INDEX);
-    await STPadServerLibDefault.closePad(p);
+    const p = new getDefault().Params.closePad(PAD_INDEX);
+    await getDefault().closePad(p);
   } catch (_) { /* ignore */ }
   padOpened = false;
 }
 
 export function disconnect(): void {
   closePad();
-  try { STPadServerLibCommons.destroyConnection(); } catch (_) { /* ignore */ }
+  try { getCommons().destroyConnection(); } catch (_) { /* ignore */ }
   emit('idle');
 }
 
@@ -186,24 +192,24 @@ export async function activate(): Promise<boolean> {
   }
 
   // Register signotec callbacks
-  STPadServerLibCommons.handleNextSignaturePoint = drawPoint;
+  getCommons().handleNextSignaturePoint = drawPoint;
 
-  STPadServerLibDefault.handleRetrySignature = () => {
+  getDefault().handleRetrySignature = () => {
     clearCanvas();
     emit('signing');
   };
 
-  STPadServerLibDefault.handleConfirmSignature = () => {
+  getDefault().handleConfirmSignature = () => {
     doConfirm();
   };
 
-  STPadServerLibDefault.handleCancelSignature = () => {
+  getDefault().handleCancelSignature = () => {
     closePad();
     emit('error', 'Cancelled');
     if (onCancel) onCancel();
   };
 
-  STPadServerLibCommons.handleDisconnect = () => {
+  getCommons().handleDisconnect = () => {
     padOpened = false;
     emit('error', 'Disconnected');
   };
@@ -214,7 +220,7 @@ export async function activate(): Promise<boolean> {
     // Connect to local STPadServer via WebSocket
     await new Promise<void>((resolve, reject) => {
       let settled = false;
-      STPadServerLibCommons.createConnection(
+      getCommons().createConnection(
         WS_URI,
         () => { settled = true; resolve(); },
         () => { if (!settled) { settled = true; reject(new Error('Connection closed')); } },
@@ -223,9 +229,9 @@ export async function activate(): Promise<boolean> {
     });
 
     // Search for USB signature pads
-    const sp = new STPadServerLibDefault.Params.searchForPads();
+    const sp = new getDefault().Params.searchForPads();
     sp.setPadSubset('USB');
-    const found = await STPadServerLibDefault.searchForPads(sp);
+    const found = await getDefault().searchForPads(sp);
 
     if (found.foundPads.length === 0) {
       emit('error', 'No pad found');
@@ -233,8 +239,8 @@ export async function activate(): Promise<boolean> {
     }
 
     // Open the first pad
-    const op = new STPadServerLibDefault.Params.openPad(PAD_INDEX);
-    const info = await STPadServerLibDefault.openPad(op);
+    const op = new getDefault().Params.openPad(PAD_INDEX);
+    const info = await getDefault().openPad(op);
     padOpened = true;
 
     const dw = info.padInfo.displayWidth;
@@ -249,10 +255,10 @@ export async function activate(): Promise<boolean> {
     }
 
     // Start signature capture — display "Acord GDPR" on pad screen
-    const sigP = new STPadServerLibDefault.Params.startSignature();
+    const sigP = new getDefault().Params.startSignature();
     sigP.setFieldName('Acord GDPR');
     sigP.setCustomText('Semnati aici');
-    await STPadServerLibDefault.startSignature(sigP);
+    await getDefault().startSignature(sigP);
 
     emit('signing');
     return true;
