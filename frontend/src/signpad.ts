@@ -232,7 +232,7 @@ export async function activate(): Promise<boolean> {
     console.log('signpad: connected OK, searching for pads...');
     // Search for USB signature pads
     const sp = new (getDefault().Params.searchForPads)();
-    sp.setPadSubset('USB');
+    sp.setPadSubset('HID');
     const found = await getDefault().searchForPads(sp);
 
     console.log('signpad: found', found.foundPads.length, 'pads');
