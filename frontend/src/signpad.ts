@@ -230,12 +230,20 @@ export async function activate(): Promise<boolean> {
     });
 
     console.log('signpad: connected OK, searching for pads...');
-    // Search for USB signature pads
+    // Search for signature pads — try HID first (default), then USB
     const sp = new (getDefault().Params.searchForPads)();
-    sp.setPadSubset('USB');
-    const found = await getDefault().searchForPads(sp);
+    sp.setPadSubset('HID');
+    let found = await getDefault().searchForPads(sp);
+    console.log('signpad: HID search found', found.foundPads.length, 'pads');
 
-    console.log('signpad: found', found.foundPads.length, 'pads');
+    if (found.foundPads.length === 0) {
+      // Fallback: try USB subset
+      const sp2 = new (getDefault().Params.searchForPads)();
+      sp2.setPadSubset('USB');
+      found = await getDefault().searchForPads(sp2);
+      console.log('signpad: USB search found', found.foundPads.length, 'pads');
+    }
+
     if (found.foundPads.length === 0) {
       emit('error', 'No pad found');
       return false;
