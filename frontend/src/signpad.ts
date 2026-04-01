@@ -215,6 +215,7 @@ export async function activate(): Promise<boolean> {
   };
 
   emit('connecting');
+  console.log('signpad: connecting to', WS_URI);
 
   try {
     // Connect to local STPadServer via WebSocket
@@ -228,11 +229,13 @@ export async function activate(): Promise<boolean> {
       );
     });
 
+    console.log('signpad: connected OK, searching for pads...');
     // Search for USB signature pads
     const sp = new (getDefault().Params.searchForPads)();
     sp.setPadSubset('USB');
     const found = await getDefault().searchForPads(sp);
 
+    console.log('signpad: found', found.foundPads.length, 'pads');
     if (found.foundPads.length === 0) {
       emit('error', 'No pad found');
       return false;
