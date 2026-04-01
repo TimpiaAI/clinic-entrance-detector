@@ -230,12 +230,12 @@ export async function activate(): Promise<boolean> {
     });
 
     console.log('signpad: connected OK, searching for pads...');
-    // Search for USB signature pads
+    // Search for all signature pads (no subset filter)
     const sp = new (getDefault().Params.searchForPads)();
     sp.setPadSubset('HID');
     const found = await getDefault().searchForPads(sp);
+    console.log('signpad: found', found.foundPads.length, 'pads', found.foundPads);
 
-    console.log('signpad: found', found.foundPads.length, 'pads');
     if (found.foundPads.length === 0) {
       emit('error', 'No pad found');
       return false;
